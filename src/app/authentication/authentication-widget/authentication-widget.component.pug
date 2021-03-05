@@ -1,0 +1,101 @@
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="signinTemplate", triggers="manual", (click)="signinPopover.open()", autoClose="outside", #signinPopover="ngbPopover", [hidden]="!state.mode.is.signin()")
+  | Authenticate
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="signupTemplate", triggers="manual", (click)="signupPopover.open()", autoClose="outside", #signupPopover="ngbPopover", [hidden]="!state.mode.is.signup()")
+  | Authenticate
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="passwordResetTemplate", triggers="manual", (click)="passwordResetPopover.open()", autoClose="outside", #passwordResetPopover="ngbPopover", [hidden]="!state.mode.is.passwordReset()")
+  | Authenticate
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="authenticatedTemplate", triggers="manual", (click)="authenticatedPopover.open()", autoClose="outside", #authenticatedPopover="ngbPopover", [hidden]="!state.mode.is.authenticated()")
+  | Your account
+
+ng-template(#signinTemplate="")
+  form.form.mb-0(#signinForm="ngForm", (ngSubmit)="onSignin(signinForm)")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-envelope
+        input.form-control.form-control-sm(ngModel="", name="email", placeholder="Email", type="email", required="", spellcheck="false")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-lock
+        input.form-control.form-control-sm(ngModel="", name="password", placeholder="Password", type="password", required="")
+    .form-group
+      button.btn.btn-sm.btn-outline-primary.btn-block(type="submit", [disabled]="signinForm.invalid || state.signin.loading")
+        span(*ngIf="!state.signin.loading") Sign in
+        span(*ngIf="state.signin.loading")
+          i.fas.fa-cog.fa-spin
+    .alert.alert-danger.text-center(*ngIf="state.signin.errored") There was a problem during signin
+    .form-group.text-center.mb-0
+      small.btn.btn-sm.btn-link.btn-sm((click)="switchMode(Mode.Signup, true)") Don't have an account?
+    .form-group.text-center.mb-0
+      small.btn.btn-sm.btn-link.btn-sm((click)="switchMode(Mode.PasswordReset, true)") Forgot your password?
+
+ng-template(#signupTemplate="")
+  form.form.mb-0(#signupForm="ngForm", (ngSubmit)="onSignup(signupForm)")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-envelope
+        input.form-control.form-control-sm(ngModel="", name="email", placeholder="Email", type="email", required="", spellcheck="false")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-user
+        input.form-control.form-control-sm(ngModel="", name="nickname", placeholder="Nickname", type="text", required="", spellcheck="false")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-lock
+        input.form-control.form-control-sm(ngModel="", name="password", placeholder="Password", type="password", required="")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-lock
+        input.form-control.form-control-sm(ngModel="", name="passwordConfirmation", placeholder="Password confirmation", type="password", required="")
+    .form-group
+      button.btn.btn-sm.btn-outline-primary.btn-block(type="submit", [disabled]="signupForm.invalid || state.signup.loading")
+        span(*ngIf="!state.signup.loading") Sign up
+        span(*ngIf="state.signup.loading")
+          i.fas.fa-cog.fa-spin
+    .alert.alert-danger.text-center(*ngIf="state.signup.errored") There was a problem during signup
+    .alert.alert-primary.text-center(*ngIf="state.signup.success") Check your email
+    .form-group.text-center.mb-0
+      small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signin, true)") Already have an account?
+
+ng-template(#passwordResetTemplate="")
+  form.form.mb-0(#passwordResetForm="ngForm", (ngSubmit)="onPasswordResetRequest(passwordResetForm)")
+    .form-group
+      .input-group
+        .input-group-prepend
+          span.input-group-text
+            i.fas.fa-envelope
+        input.form-control.form-control-sm(ngModel="", name="email", placeholder="Email", type="email", required="", spellcheck="false")
+    .form-group
+      button.btn.btn-sm.btn-outline-primary.btn-block(type="submit", [disabled]="passwordResetForm.invalid || state.passwordReset.loading")
+        span(*ngIf="!state.passwordReset.loading") Request password reset
+        span(*ngIf="state.passwordReset.loading")
+          i.fas.fa-cog.fa-spin
+    .alert.alert-danger.text-center(*ngIf="state.passwordReset.errored") There was a problem requesting your password reset
+    .alert.alert-primary.text-center(*ngIf="state.passwordReset.success") Check your email
+    .form-group.text-center.mb-0
+      small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signin, true)") Click here to sign in
+    .form-group.text-center.mb-0
+      small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signup, true)") ... or here to register
+
+ng-template(#authenticatedTemplate="")
+  .alert.alert-default.text-center {{ player.nickname }}
+  .form-group
+    button.btn.btn-sm.btn-outline-danger.btn-block(type="button", (click)="onSignout()", [disabled]="state.signout.loading")
+      span(*ngIf="!state.signout.loading")
+        i.fas.fa-sign-out-alt
+        | Signout
+      span(*ngIf="state.signout.loading")
+        i.fas.fa-cog.fa-spin
+  .alert.alert-danger.text-center(*ngIf="state.signout.errored") There was a problem signing out
+  .alert.alert-primary.text-center(*ngIf="state.signout.success") Signed out
