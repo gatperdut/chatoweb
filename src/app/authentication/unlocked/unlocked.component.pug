@@ -1,0 +1,9 @@
+.row.mt-5
+  .col-xs-12.col-md-6.col-lg-4.offset-md-3.offset-lg-4
+    .card.text-center(*ngIf="unlock")
+      .card-header
+        | Welcome back to ChatoMud
+      .card-body
+        h5.card-title Your account has been unlocked
+        p.card-text Try to sign in again.
+    .alert.alert-danger(*ngIf="!unlock") Something went wrong while unlocking your account.

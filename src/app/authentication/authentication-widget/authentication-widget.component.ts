@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Player } from 'src/app/players/model/player.model';
+import { AuthenticationErrorService } from '../services/authentication-error.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { clearFormState } from '../state/authentication-form.state';
 import { AuthenticationWidgetState, Mode } from './state/authentication-widget.state';
@@ -28,7 +30,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
   public player: Player = null;
 
   constructor(
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private authenticationErrorService: AuthenticationErrorService
   ) {
 
   }
@@ -55,6 +58,11 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
   }
 
   public switchMode(mode: Mode, open: boolean): void {
+    clearFormState(this.state.signin);
+    clearFormState(this.state.signup);
+    clearFormState(this.state.passwordReset);
+    clearFormState(this.state.signout);
+
     this.signinPopover.close();
     this.signupPopover.close();
     this.passwordResetPopover.close();
@@ -69,11 +77,11 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         }
 
         switch(mode) {
-          case Mode.Signup:
-            this.signupPopover.open();
-            break;
           case Mode.Signin:
             this.signinPopover.open();
+            break;
+          case Mode.Signup:
+            this.signupPopover.open();
             break;
           case Mode.PasswordReset:
             this.passwordResetPopover.open();
@@ -100,8 +108,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         clearFormState(this.state.signin);
         signinForm.reset();
       },
-      (error: any): void => {
-        this.state.signin.errored = true;
+      (httpErrorResponse: HttpErrorResponse): void => {
+        this.state.signin.error = this.authenticationErrorService.errorMessage(httpErrorResponse);
         this.state.signin.loading = false;
       }
     );
@@ -123,8 +131,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         this.state.signup.success = true;
         signupForm.reset();
       },
-      (error: any): void => {
-        this.state.signup.errored = true;
+      (httpErrorResponse: HttpErrorResponse): void => {
+        this.state.signup.error = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.signup.loading = false;
       }
     );
@@ -143,8 +151,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         this.state.passwordReset.success = true;
         passwordResetForm.reset();
       },
-      (error: any): void => {
-        this.state.passwordReset.errored = true;
+      (httpErrorResponse: HttpErrorResponse): void => {
+        this.state.passwordReset.error = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.passwordReset.loading = false;
       }
     );
@@ -161,8 +169,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         this.state.signout.success = true;
         this.switchMode(Mode.Signin, false);
       },
-      (error: any) => {
-        this.state.signout.errored = true;
+      (httpErrorResponse: HttpErrorResponse) => {
+        this.state.signout.error = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.signout.loading = false;
       }
     )

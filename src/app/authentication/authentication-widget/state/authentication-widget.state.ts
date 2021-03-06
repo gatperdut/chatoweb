@@ -1,5 +1,5 @@
 import { formatDiagnosticsWithColorAndContext } from "typescript";
-import { formState } from "../../state/authentication-form.state";
+import { FormState, formState } from "../../state/authentication-form.state";
 
 export enum Mode {
   Signin = 'SIGNIN',
@@ -31,12 +31,12 @@ export class AuthenticationWidgetState {
     }
   };
 
-  public readonly signup = formState();
+  public readonly signup: FormState = formState();
 
-  public readonly signin = formState();
+  public readonly signin: FormState = formState();
 
-  public readonly passwordReset = formState();
+  public readonly passwordReset: FormState = formState();
 
-  public readonly signout = formState();
+  public readonly signout: FormState = formState();
 
 }

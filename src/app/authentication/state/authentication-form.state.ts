@@ -1,19 +1,19 @@
-type FormState = {
-  errored: boolean,
+export type FormState = {
+  error: string,
   loading: boolean,
   success: boolean
 };
 
 export const formState = (): FormState => {
   return {
-    errored: false,
+    error: null,
     loading: false,
     success: false
   } as FormState;
 };
 
 export const clearFormState = (formState: FormState) => {
-  formState.errored = false;
+  formState.error = null;
   formState.loading = false;
   formState.success = false;
 };

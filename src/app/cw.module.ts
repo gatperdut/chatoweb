@@ -14,6 +14,7 @@ import { HomeComponent } from "./home/home.component";
 import { ItemTemplatesComponent } from "./item-templates/item-templates.component";
 import { PlayersComponent } from "./players/players.component";
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
+import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PasswordResetComponent } from './authentication/password-reset/password
     AuthenticationComponent,
     AuthenticationWidgetComponent,
     ConfirmationComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    UnlockedComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthenticationErrorService } from '../services/authentication-error.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { formState } from '../state/authentication-form.state';
 
@@ -20,6 +22,7 @@ export class PasswordResetComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private authenticationErrorService: AuthenticationErrorService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
@@ -39,7 +42,7 @@ export class PasswordResetComponent implements OnInit {
   }
 
   public onResetPassword(passwordResetForm: NgForm): void {
-    this.state.errored = false;
+    this.state.error = null;
     this.state.loading = true;
     this.state.success = false;
 
@@ -54,8 +57,8 @@ export class PasswordResetComponent implements OnInit {
         this.state.success = true;
         passwordResetForm.reset();
       },
-      (error: any): void => {
-        this.state.errored = true;
+      (httpErrorResponse: HttpErrorResponse): void => {
+        this.state.error = this.authenticationErrorService.errorMessage(httpErrorResponse);
         this.state.loading = false;
       }
     )

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { pipe, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'cw-authentication-confirmation',
@@ -10,11 +10,24 @@ import { AuthenticationService } from 'src/app/authentication/services/authentic
 })
 export class ConfirmationComponent implements OnInit, OnDestroy {
 
+  public accountConfirmationSuccess: boolean;
+
   constructor(
-  ) { }
+    private activatedRoute: ActivatedRoute
+  ) {
+
+  }
 
   ngOnInit(): void {
-
+    this.activatedRoute.queryParams
+    .pipe(
+      first()
+    )
+    .subscribe(
+      (params: Params): void => {
+        this.accountConfirmationSuccess = params['account_confirmation_success'] === 'true';
+      }
+    );
   }
 
   ngOnDestroy(): void {

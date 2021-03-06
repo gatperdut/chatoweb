@@ -26,7 +26,7 @@ export class AuthenticationService {
 
   }
 
-  private handleAuthentication(player: Player): void {
+  public handleAuthentication(player: Player): void {
     this.player = player;
 
     this.playerUpdated.next(player);
@@ -41,6 +41,21 @@ export class AuthenticationService {
       'player',
       JSON.stringify(authenticationStorage)
     );
+  }
+
+  public craftPlayer(
+    authenticationSigninResponse: AuthenticationSigninResponse,
+    credentialsToken: string,
+    credentialsClient: string
+    ): Player {
+      return new Player(
+        authenticationSigninResponse.data.id,
+        authenticationSigninResponse.data.email,
+        authenticationSigninResponse.data.nickname,
+        authenticationSigninResponse.data.image,
+        credentialsToken,
+        credentialsClient,
+      );
   }
 
   public automaticSignin(): void {
@@ -58,15 +73,8 @@ export class AuthenticationService {
       authenticationStorage.credentialsToken
     )
     .subscribe(
-      (authenticationSigninResponseResponse: AuthenticationSigninResponse) => {
-        const player: Player = new Player(
-          authenticationSigninResponseResponse.data.id,
-          authenticationSigninResponseResponse.data.email,
-          authenticationSigninResponseResponse.data.nickname,
-          authenticationSigninResponseResponse.data.image,
-          authenticationStorage.credentialsToken,
-          authenticationStorage.credentialsClient,
-        );
+      (authenticationSigninResponse: AuthenticationSigninResponse) => {
+        const player: Player = this.craftPlayer(authenticationSigninResponse, authenticationStorage.credentialsToken, authenticationStorage.credentialsClient);
 
         this.handleAuthentication(player);
       },
@@ -77,7 +85,7 @@ export class AuthenticationService {
     );
   };
 
-  private validateToken(email: string, credentialsClient: string, credentialsToken: string): Observable<AuthenticationSigninResponse> {
+  public validateToken(email: string, credentialsClient: string, credentialsToken: string): Observable<AuthenticationSigninResponse> {
     return this.httpClient.get<AuthenticationSigninResponse>(
       environment.cmBaseUrl + '/authentication/validate_token?uid=' + email + '&access-token=' + encodeURIComponent(credentialsToken) + '&client=' + encodeURIComponent(credentialsClient)
     );
