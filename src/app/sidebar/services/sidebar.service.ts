@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class SidebarService implements OnInit {
 
-  public readonly sidebarSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public readonly sidebarSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
