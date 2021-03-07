@@ -2,6 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AuthenticationWidgetComponent } from "./authentication/authentication-widget/authentication-widget.component";
 import { AuthenticationComponent } from "./authentication/authentication.component";
@@ -16,6 +17,8 @@ import { PlayersComponent } from "./players/players.component";
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
 import { AuthenticationInterceptor } from "./authentication/interceptors/authentication.interceptor";
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SystemComponent } from './sidebar/system/system.component';
 
 @NgModule({
   declarations: [
@@ -29,10 +32,13 @@ import { AuthenticationInterceptor } from "./authentication/interceptors/authent
     AuthenticationWidgetComponent,
     ConfirmationComponent,
     PasswordResetComponent,
-    UnlockedComponent
+    UnlockedComponent,
+    SidebarComponent,
+    SystemComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     NgbModule,

@@ -11,5 +11,11 @@ textarea {
 }
 
 body {
-  padding-top: 56px;
+  margin-top: 56px;
+}
+
+.btn:focus,
+.btn:active{
+  box-shadow: none !important;
+  outline: 0px !important;
 }

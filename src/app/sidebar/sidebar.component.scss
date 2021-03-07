@@ -1,0 +1,14 @@
+:host {
+  position: fixed;
+  top: 0;
+  margin-top: 56px;
+  z-index: 50;
+  height: calc(100vmax - 56px);
+  width: 350px;
+}
+
+.sidebar {
+  background-color: red;
+  height: calc(100vmax - 56px);
+  padding: 10px;
+}

@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { combineLatest, Observable, of, pipe, Subscriber } from "rxjs";
-import { concatMap, first, map, mergeMap, switchMap, take, tap, withLatestFrom } from "rxjs/operators";
+import { Observable, Subscriber } from "rxjs";
 import { Player } from "src/app/players/model/player.model";
 import { AuthenticationService } from "../services/authentication.service";
 

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AsyncSubject, BehaviorSubject, Observable, Subject } from "rxjs";
-import { first, map, tap } from 'rxjs/operators';
+import { AsyncSubject, BehaviorSubject, Observable } from "rxjs";
+import { map, tap } from 'rxjs/operators';
 import { PlayerData } from "src/app/players/model/player-data.interface";
 import { Player } from "src/app/players/model/player.model";
 import { environment } from "src/environments/environment";
@@ -42,7 +42,7 @@ export class AuthenticationService {
     );
   }
 
-  public handleAuthentication(player: Player): void {
+  private handleAuthentication(player: Player): void {
     this.player = player;
 
     this.playerSigninSubject.next(player);
@@ -59,7 +59,7 @@ export class AuthenticationService {
     );
   }
 
-  public craftPlayer(
+  private craftPlayer(
     authenticationSigninResponse: AuthenticationSigninResponse,
     credentialsToken: string,
     credentialsClient: string
@@ -72,6 +72,12 @@ export class AuthenticationService {
         credentialsToken,
         credentialsClient,
       );
+  }
+
+  private validateToken(email: string, credentialsClient: string, credentialsToken: string): Observable<AuthenticationSigninResponse> {
+    return this.httpClient.get<AuthenticationSigninResponse>(
+      environment.cmBaseUrl + '/authentication/validate_token?uid=' + email + '&access-token=' + encodeURIComponent(credentialsToken) + '&client=' + encodeURIComponent(credentialsClient)
+    );
   }
 
   public automaticSignin(): void {
@@ -105,12 +111,6 @@ export class AuthenticationService {
       }
     );
   };
-
-  public validateToken(email: string, credentialsClient: string, credentialsToken: string): Observable<AuthenticationSigninResponse> {
-    return this.httpClient.get<AuthenticationSigninResponse>(
-      environment.cmBaseUrl + '/authentication/validate_token?uid=' + email + '&access-token=' + encodeURIComponent(credentialsToken) + '&client=' + encodeURIComponent(credentialsClient)
-    );
-  }
 
   public signin(email: string, password: string): Observable<PlayerData> {
     return this.httpClient.post<AuthenticationSigninResponse>(
