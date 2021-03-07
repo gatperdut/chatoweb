@@ -1,12 +1,12 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
-import { map, tap } from 'rxjs/operators';
+import { AsyncSubject, BehaviorSubject, Observable, Subject } from "rxjs";
+import { first, map, tap } from 'rxjs/operators';
 import { PlayerData } from "src/app/players/model/player-data.interface";
 import { Player } from "src/app/players/model/player.model";
 import { environment } from "src/environments/environment";
 import { AuthenticationSigninResponse } from "../types/authentication-signin-response.type";
-import { AuthenticationStorage } from "../model/authentication-storage.type";
+import { AuthenticationStorage } from "../types/authentication-storage.type";
 import { Router } from "@angular/router";
 import { AuthenticationSignoutResponse } from "../types/authentication-signout-response.type";
 
@@ -17,7 +17,9 @@ export class AuthenticationService {
 
   private player: Player = null;
 
-  public readonly playerUpdated: BehaviorSubject<Player> = new BehaviorSubject<Player>(null);
+  public readonly playerAutomaticSigninSubject: AsyncSubject<Player> = new AsyncSubject<Player>();
+
+  public readonly playerSigninSubject: BehaviorSubject<Player> = new BehaviorSubject<Player>(null);
 
   constructor(
     private httpClient: HttpClient,
@@ -26,10 +28,24 @@ export class AuthenticationService {
 
   }
 
+  public get isLoggedIn(): boolean {
+    return !!this.player;
+  }
+
+  public requestHeaders(): HttpHeaders {
+    return new HttpHeaders(
+      {
+        'uid': this.player.email,
+        'client': this.player.credentials.client,
+        'access-token': this.player.credentials.token
+      }
+    );
+  }
+
   public handleAuthentication(player: Player): void {
     this.player = player;
 
-    this.playerUpdated.next(player);
+    this.playerSigninSubject.next(player);
 
     const authenticationStorage: AuthenticationStorage = {
       email: player.email,
@@ -62,6 +78,8 @@ export class AuthenticationService {
     const authenticationStorageRaw: string = localStorage.getItem('player');
 
     if (!authenticationStorageRaw) {
+      this.playerAutomaticSigninSubject.next(null);
+      this.playerAutomaticSigninSubject.complete();
       return;
     }
 
@@ -75,10 +93,13 @@ export class AuthenticationService {
     .subscribe(
       (authenticationSigninResponse: AuthenticationSigninResponse) => {
         const player: Player = this.craftPlayer(authenticationSigninResponse, authenticationStorage.credentialsToken, authenticationStorage.credentialsClient);
-
+        this.playerAutomaticSigninSubject.next(player);
+        this.playerAutomaticSigninSubject.complete();
         this.handleAuthentication(player);
       },
       (httpErrorResponse: HttpErrorResponse) => {
+        this.playerAutomaticSigninSubject.next(null);
+        this.playerAutomaticSigninSubject.complete();
         localStorage.removeItem('player');
         this.router.navigate(['/']);
       }
@@ -105,11 +126,8 @@ export class AuthenticationService {
     .pipe(
       map(
         (httpResponse: HttpResponse<AuthenticationSigninResponse>): Player => {
-          return new Player(
-            httpResponse.body.data.id,
-            httpResponse.body.data.email,
-            httpResponse.body.data.nickname,
-            httpResponse.body.data.image,
+          return this.craftPlayer(
+            httpResponse.body,
             httpResponse.headers.get('access-token'),
             httpResponse.headers.get('client')
           );
@@ -152,25 +170,19 @@ export class AuthenticationService {
   }
 
   public signout(): Observable<AuthenticationSignoutResponse> {
-    const httpHeaders: HttpHeaders = new HttpHeaders(
-      {
-        'uid': this.player.email,
-        'client': this.player.credentials.client,
-        'access-token': this.player.credentials.token
-      }
-    );
-
     return this.httpClient.delete<AuthenticationSignoutResponse>(
-      environment.cmBaseUrl + '/authentication/sign_out',
-      {
-        headers: httpHeaders
-      }
+      environment.cmBaseUrl + '/authentication/sign_out'
     )
     .pipe(
       tap(
         (authenticationSignoutResponse: AuthenticationSignoutResponse) => {
-          this.router.navigate(['/']);
-          localStorage.removeItem('player');
+          this.router.navigate(['/'])
+          .then(
+            (): void => {
+              localStorage.removeItem('player');
+              window.location.reload();
+            }
+          );
         }
       )
     );

@@ -1,4 +1,4 @@
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
@@ -15,6 +15,7 @@ import { ItemTemplatesComponent } from "./item-templates/item-templates.componen
 import { PlayersComponent } from "./players/players.component";
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
+import { AuthenticationInterceptor } from "./authentication/interceptors/authentication.interceptor";
 
 @NgModule({
   declarations: [
@@ -38,11 +39,11 @@ import { UnlockedComponent } from './authentication/unlocked/unlocked.component'
     CwRoutingModule
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthenticationInterceptor,
-    //   multi: true
-    // }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [
     CwComponent

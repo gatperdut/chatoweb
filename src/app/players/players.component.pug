@@ -1,0 +1,9 @@
+.row.mt-5
+  .col-xs-12.col-md-8.offset-md-2
+    .row
+      .col-xs-6.col-md-4(*ngFor="let playerData of playersData")
+        .card.text-center
+          .card-header {{ playerData.nickname }}
+          .card-body
+            h5.card-title More Info
+            p.card-text Try to sign in again.

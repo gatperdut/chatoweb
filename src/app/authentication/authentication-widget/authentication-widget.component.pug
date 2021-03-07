@@ -4,7 +4,7 @@ button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]=
   | Authenticate
 button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="passwordResetTemplate", triggers="manual", (click)="passwordResetPopover.open()", autoClose="outside", #passwordResetPopover="ngbPopover", [hidden]="!state.mode.is.passwordReset()")
   | Authenticate
-button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="authenticatedTemplate", triggers="manual", (click)="authenticatedPopover.open()", autoClose="outside", #authenticatedPopover="ngbPopover", [hidden]="!state.mode.is.authenticated()")
+button.btn.btn-outline-primary(type="button", [openDelay]="500", [ngbPopover]="authenticatedTemplate", triggers="manual", (click)="authenticatedPopover.open()", autoClose="outside", #authenticatedPopover="ngbPopover", [hidden]="!state.mode.is.authenticated()")
   | Your account
 
 ng-template(#signinTemplate="")
@@ -90,13 +90,14 @@ ng-template(#passwordResetTemplate="")
       small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signup, true)") ... or here to register
 
 ng-template(#authenticatedTemplate="")
-  .alert.alert-default.text-center {{ player.nickname }}
-  .form-group
-    button.btn.btn-sm.btn-outline-danger.btn-block(type="button", (click)="onSignout()", [disabled]="state.signout.loading")
-      span(*ngIf="!state.signout.loading")
-        i.fas.fa-sign-out-alt
-        | Signout
-      span(*ngIf="state.signout.loading")
-        i.fas.fa-cog.fa-spin
-  .alert.alert-danger.text-center(*ngIf="state.signout.error") {{ state.signout.error }}
-  .alert.alert-primary.text-center(*ngIf="state.signout.success") Signed out
+  div(*ngIf="player")
+    .alert.alert-default.text-center {{ player.nickname }}
+    .form-group
+      button.btn.btn-sm.btn-outline-danger.btn-block(type="button", (click)="onSignout()", [disabled]="state.signout.loading")
+        span(*ngIf="!state.signout.loading")
+          i.fas.fa-sign-out-alt
+          | Signout
+        span(*ngIf="state.signout.loading")
+          i.fas.fa-cog.fa-spin
+    .alert.alert-danger.text-center(*ngIf="state.signout.error") {{ state.signout.error }}
+    .alert.alert-primary.text-center(*ngIf="state.signout.success") Signed out

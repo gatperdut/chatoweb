@@ -15,7 +15,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   public intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
-    return this.authenticationService.playerUpdated
+    return this.authenticationService.playerSigninSubject
     .pipe(
       take(1),
       exhaustMap(
@@ -24,12 +24,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
             return httpHandler.handle(httpRequest);
           }
 
-          const httpHeaders: HttpHeaders = new HttpHeaders(
-            {
-              'X-PLAYER-ID': player.id.toString(),
-              'X-PLAYER-AUTHENTICATION-TOKEN': player.credentials.token
-            }
-          );
+          const httpHeaders: HttpHeaders = this.authenticationService.requestHeaders();
 
           const _httpRequest = httpRequest.clone(
             {

@@ -37,11 +37,12 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.playerSubscription = this.authenticationService.playerUpdated.subscribe(
+    this.playerSubscription = this.authenticationService.playerSigninSubject.subscribe(
       (player: Player): void => {
         this.player = player;
 
         if (player) {
+          this.player = player;
           this.switchMode(Mode.Authenticated, false);
         }
         else {
@@ -63,10 +64,18 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
     clearFormState(this.state.passwordReset);
     clearFormState(this.state.signout);
 
-    this.signinPopover.close();
-    this.signupPopover.close();
-    this.passwordResetPopover.close();
-    this.authenticatedPopover.close();
+    if (this.signinPopover) {
+      this.signinPopover.close();
+    }
+    if (this.signupPopover) {
+      this.signupPopover.close();
+    }
+    if (this.passwordResetPopover) {
+      this.passwordResetPopover.close();
+    }
+    if (this.authenticatedPopover) {
+      this.authenticatedPopover.close();
+    }
 
     setTimeout(
       (): void => {

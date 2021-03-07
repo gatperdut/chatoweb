@@ -15,6 +15,12 @@ export class PlayerService {
 
   }
 
+  public index(): Observable<PlayerData[]> {
+    return this.httpClient.get<PlayerData[]>(
+      environment.cmBaseUrl + '/players'
+    );
+  }
+
   public show(id: number): Observable<PlayerData> {
     return this.httpClient.get<PlayerData>(
       environment.cmBaseUrl + '/players/' + id
