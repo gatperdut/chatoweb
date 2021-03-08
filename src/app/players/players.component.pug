@@ -1,9 +1,24 @@
 .row.mt-5
   .col-12.col-md-10.offset-md-1
     .row
-      .col-12.col-md-4.col-lg-3(*ngFor="let playerData of playersData")
-        .card.text-center
-          .card-header {{ playerData.nickname }}
+      .col-12.col-md-4.col-lg-3(*ngFor="let player of players")
+        .card
+          .card-header.text-center
+            .float-left
+              i.fas.fa-question.unconfirmed(*ngIf="!player.confirmed", ngbTooltip="Unconfirmed account")
+              i.fas.fa-check.confirmed(*ngIf="player.confirmed", ngbTooltip="Confirmed account")
+              i.fas.fa-locked.locked-access(*ngIf="player.access_locked", ngbTooltip="Locked account")
+            span {{ player.nickname }}
+            .float-right
+              i.fas.fa-user(*ngIf="player.roleIs.regular()", ngbTooltip="Regular player")
+              i.fas.fa-user-shield.admin(*ngIf="player.roleIs.admin()", ngbTooltip="Admin")
+              i.fas.fa-crown.owner(*ngIf="player.roleIs.owner()", ngbTooltip="Owner")
+          img.card-img([src]="player.image", onerror="this.src='./assets/images/players/placeholder.png'")
           .card-body
+            .card-text
+              i.fas.fa-fw.fa-calendar-plus
+              small {{ player.created_at | date:'mediumDate':'GMT' }}
+            .card-text
+              i.fas.fa-fw.fa-envelope
+              small {{ player.email }}
             h5.card-title More Info
-            p.card-text Try to sign in again.

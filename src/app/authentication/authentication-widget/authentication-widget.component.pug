@@ -27,7 +27,8 @@ ng-template(#signinTemplate="")
         span(*ngIf="!state.signin.loading") Sign in
         span(*ngIf="state.signin.loading")
           i.fas.fa-cog.fa-spin
-    .alert.alert-danger.text-center(*ngIf="state.signin.error") {{ state.signin.error }}
+    div(*ngIf="state.signin.errors")
+      .alert.alert-danger.text-center(*ngFor="let error of state.signin.errors") {{ error }}
     .form-group.text-center.mb-0
       small.btn.btn-sm.btn-link.btn-sm((click)="switchMode(Mode.Signup, true)") Don't have an account?
     .form-group.text-center.mb-0
@@ -64,7 +65,8 @@ ng-template(#signupTemplate="")
         span(*ngIf="!state.signup.loading") Sign up
         span(*ngIf="state.signup.loading")
           i.fas.fa-cog.fa-spin
-    .alert.alert-danger.text-center(*ngIf="state.signup.error") {{ state.signup.error }}
+    div(*ngIf="state.signup.errors")
+      .alert.alert-danger.text-center(*ngFor="let error of state.signup.errors") {{ error }}
     .alert.alert-primary.text-center(*ngIf="state.signup.success") Check your email
     .form-group.text-center.mb-0
       small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signin, true)") Already have an account?
@@ -82,7 +84,8 @@ ng-template(#passwordResetTemplate="")
         span(*ngIf="!state.passwordReset.loading") Request password reset
         span(*ngIf="state.passwordReset.loading")
           i.fas.fa-cog.fa-spin
-    .alert.alert-danger.text-center(*ngIf="state.passwordReset.error") {{ state.passwordReset.error }}
+    div(*ngIf="state.passwordReset.errors")
+      .alert.alert-danger.text-center(*ngFor="let error of state.passwordReset.errors") {{ error }}
     .alert.alert-primary.text-center(*ngIf="state.passwordReset.success") An email with further instructions has been sent to that address, if it exists.
     .form-group.text-center.mb-0
       small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signin, true)") Click here to sign in
@@ -99,5 +102,6 @@ ng-template(#authenticatedTemplate="")
           | Signout
         span(*ngIf="state.signout.loading")
           i.fas.fa-cog.fa-spin
-    .alert.alert-danger.text-center(*ngIf="state.signout.error") {{ state.signout.error }}
+    div(*ngIf="state.signout.errors")
+      .alert.alert-danger.text-center(*ngFor="let error of state.signout.errors") {{ error }}
     .alert.alert-primary.text-center(*ngIf="state.signout.success") Signed out

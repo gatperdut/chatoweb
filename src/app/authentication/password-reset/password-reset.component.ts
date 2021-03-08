@@ -42,7 +42,7 @@ export class PasswordResetComponent implements OnInit {
   }
 
   public onResetPassword(passwordResetForm: NgForm): void {
-    this.state.error = null;
+    this.state.errors = null;
     this.state.loading = true;
     this.state.success = false;
 
@@ -58,7 +58,7 @@ export class PasswordResetComponent implements OnInit {
         passwordResetForm.reset();
       },
       (httpErrorResponse: HttpErrorResponse): void => {
-        this.state.error = this.authenticationErrorService.errorMessage(httpErrorResponse);
+        this.state.errors = this.authenticationErrorService.errorMessage(httpErrorResponse);
         this.state.loading = false;
       }
     )

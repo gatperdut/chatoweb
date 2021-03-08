@@ -118,7 +118,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         signinForm.reset();
       },
       (httpErrorResponse: HttpErrorResponse): void => {
-        this.state.signin.error = this.authenticationErrorService.errorMessage(httpErrorResponse);
+        this.state.signin.errors = this.authenticationErrorService.errorMessage(httpErrorResponse);
         this.state.signin.loading = false;
       }
     );
@@ -141,7 +141,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         signupForm.reset();
       },
       (httpErrorResponse: HttpErrorResponse): void => {
-        this.state.signup.error = this.authenticationErrorService.errorMessage(httpErrorResponse);;
+        this.state.signup.errors = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.signup.loading = false;
       }
     );
@@ -161,7 +161,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         passwordResetForm.reset();
       },
       (httpErrorResponse: HttpErrorResponse): void => {
-        this.state.passwordReset.error = this.authenticationErrorService.errorMessage(httpErrorResponse);;
+        this.state.passwordReset.errors = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.passwordReset.loading = false;
       }
     );
@@ -179,7 +179,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
         this.switchMode(Mode.Signin, false);
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        this.state.signout.error = this.authenticationErrorService.errorMessage(httpErrorResponse);;
+        this.state.signout.errors = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.signout.loading = false;
       }
     )

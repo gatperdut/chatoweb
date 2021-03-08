@@ -68,7 +68,11 @@ export class AuthenticationService {
         authenticationSigninResponse.data.id,
         authenticationSigninResponse.data.email,
         authenticationSigninResponse.data.nickname,
+        authenticationSigninResponse.data.role,
         authenticationSigninResponse.data.image,
+        new Date(authenticationSigninResponse.data.created_at),
+        authenticationSigninResponse.data.access_locked,
+        authenticationSigninResponse.data.confirmed,
         credentialsToken,
         credentialsClient,
       );

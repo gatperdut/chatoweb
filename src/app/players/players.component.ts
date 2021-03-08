@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { PlayerData } from './model/player-data.interface';
+import { Player } from './model/player.model';
 import { PlayerService } from './services/player.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { PlayerService } from './services/player.service';
 })
 export class PlayersComponent implements OnInit {
 
-  public playersData: PlayerData[] = [];
+  public players: Player[] = [];
 
   constructor(
     private playerService: PlayerService
@@ -24,8 +24,8 @@ export class PlayersComponent implements OnInit {
       first()
     )
     .subscribe(
-      (playersData: PlayerData[]): void => {
-        this.playersData = playersData;
+      (players: Player[]): void => {
+        this.players = players;
       }
     )
   }

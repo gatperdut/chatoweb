@@ -8,6 +8,10 @@ textarea {
   &.ng-invalid {
     border-left: 3px solid red !important;
   }
+
+  &.ng-valid {
+    border-left: 3px solid green !important;
+  }
 }
 
 body {

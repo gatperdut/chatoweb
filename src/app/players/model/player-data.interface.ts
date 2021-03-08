@@ -2,14 +2,22 @@ import { Credentials } from "src/app/authentication/types/credentials.type";
 
 export interface PlayerData {
 
-  readonly id: number,
+  readonly id: number;
 
-  readonly email: string,
+  readonly email: string;
 
-  readonly nickname: string,
+  readonly nickname: string;
 
-  readonly image: string
+  readonly role: string;
 
-  readonly credentials: Credentials
+  readonly image: string;
+
+  readonly created_at: Date;
+
+  readonly access_locked: boolean;
+
+  readonly confirmed: boolean;
+
+  readonly credentials: Credentials;
 
 }
