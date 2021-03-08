@@ -1,24 +1,34 @@
 .row.mt-5
   .col-12.col-md-10.offset-md-1
     .row
+      .col-12
+        form.form.mb-0(#queryPlayersForm="ngForm")
+          .form-group
+            .input-group
+              .input-group-prepend
+                span.input-group-text
+                  i.fas.fa-user
+              input.form-control.form-control-sm([(ngModel)]="playerQuery.nickname", name="nickname", placeholder="Search by nickname", cwDelayedInput, (delayedInput)="query()", type="text", required="", spellcheck="false")
+    .row
       .col-12.col-md-4.col-lg-3(*ngFor="let player of players")
         .card
-          .card-header.text-center
-            .float-left
+          .card-header.p-2
+            .float-left.mr-1
               i.fas.fa-question.unconfirmed(*ngIf="!player.confirmed", ngbTooltip="Unconfirmed account")
               i.fas.fa-check.confirmed(*ngIf="player.confirmed", ngbTooltip="Confirmed account")
               i.fas.fa-locked.locked-access(*ngIf="player.access_locked", ngbTooltip="Locked account")
-            span {{ player.nickname }}
-            .float-right
+            .float-left.mr-1
               i.fas.fa-user(*ngIf="player.roleIs.regular()", ngbTooltip="Regular player")
               i.fas.fa-user-shield.admin(*ngIf="player.roleIs.admin()", ngbTooltip="Admin")
               i.fas.fa-crown.owner(*ngIf="player.roleIs.owner()", ngbTooltip="Owner")
+            span.text-1-line(title="{{ player.nickname }}") {{ player.nickname }}
           img.card-img([src]="player.image", onerror="this.src='./assets/images/players/placeholder.png'")
           .card-body
-            .card-text
+            .card-text.text-1-line
               i.fas.fa-fw.fa-calendar-plus
-              small {{ player.created_at | date:'mediumDate':'GMT' }}
-            .card-text
+              small(title="{{ player.created_at | date:'mediumDate':'GMT' }}") {{ player.created_at | date:'mediumDate':'GMT' }}
+            .card-text.text-1-line
               i.fas.fa-fw.fa-envelope
-              small {{ player.email }}
+              small
+                a(title="{{ player.email }}", href="mailto:{{ player.email }}") {{ player.email}}
             h5.card-title More Info

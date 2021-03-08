@@ -19,6 +19,7 @@ import { UnlockedComponent } from './authentication/unlocked/unlocked.component'
 import { AuthenticationInterceptor } from "./authentication/interceptors/authentication.interceptor";
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SystemComponent } from './sidebar/system/system.component';
+import { DelayedInputDirective } from './shared/delayed-input.directive';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SystemComponent } from './sidebar/system/system.component';
     PasswordResetComponent,
     UnlockedComponent,
     SidebarComponent,
-    SystemComponent
+    SystemComponent,
+    DelayedInputDirective
   ],
   imports: [
     BrowserModule,
@@ -53,6 +55,9 @@ import { SystemComponent } from './sidebar/system/system.component';
   ],
   bootstrap: [
     CwComponent
+  ],
+  exports: [
+
   ]
 })
 export class CwModule {

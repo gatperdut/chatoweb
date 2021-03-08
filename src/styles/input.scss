@@ -1,0 +1,14 @@
+input,
+textarea {
+  outline: none;
+  box-shadow: none !important;
+  border: 1px solid #CCCCCC !important;
+
+  &.ng-invalid {
+    border-left: 3px solid red !important;
+  }
+
+  &.ng-valid {
+    border-left: 3px solid green !important;
+  }
+}

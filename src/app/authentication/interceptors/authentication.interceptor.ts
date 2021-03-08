@@ -1,15 +1,18 @@
-import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpParams, HttpRequest, HttpResponseBase } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable } from "rxjs";
-import { exhaustMap, take } from "rxjs/operators";
+import { exhaustMap, take, tap } from "rxjs/operators";
 import { Player } from "src/app/players/model/player.model";
+import * as _ from "underscore";
 import { AuthenticationService } from "../services/authentication.service";
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 
   constructor(
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) {
 
   }
@@ -20,19 +23,37 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       take(1),
       exhaustMap(
         (player: Player): Observable<HttpEvent<any>> => {
+          let _httpRequest: HttpRequest<any>;
+
           if (!player) {
-            return httpHandler.handle(httpRequest);
+            _httpRequest = httpRequest
+
+          }
+          else {
+            const httpHeaders: HttpHeaders = this.authenticationService.requestHeaders();
+
+            _httpRequest = httpRequest.clone(
+              {
+                headers: httpHeaders
+              }
+            );
           }
 
-          const httpHeaders: HttpHeaders = this.authenticationService.requestHeaders();
+          return httpHandler.handle(_httpRequest)
+          .pipe(
+            tap(
+              () => {
 
-          const _httpRequest = httpRequest.clone(
-            {
-              headers: httpHeaders
-            }
+              },
+              (error: HttpResponseBase): void => {
+                if (error instanceof HttpErrorResponse) {
+                  if (_.include([401, 403], error.status)) {
+                    this.router.navigate(['/']);
+                  }
+                }
+              }
+            )
           );
-
-          return httpHandler.handle(_httpRequest);
         }
       )
     );

@@ -1,25 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-input,
-textarea {
-  outline: none;
-  box-shadow: none !important;
-  border: 1px solid #CCCCCC !important;
 
-  &.ng-invalid {
-    border-left: 3px solid red !important;
-  }
-
-  &.ng-valid {
-    border-left: 3px solid green !important;
-  }
-}
+@import './styles/text.scss';
+@import './styles/input.scss';
+@import './styles/button.scss';
 
 body {
   margin-top: 56px;
-}
-
-.btn:focus,
-.btn:active{
-  box-shadow: none !important;
-  outline: 0px !important;
 }
