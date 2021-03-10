@@ -4,22 +4,22 @@ export interface PlayerData {
 
   readonly id: number;
 
-  readonly email: string;
+  email: string;
 
-  readonly nickname: string;
+  nickname: string;
 
-  readonly role: string;
+  role: string;
 
-  readonly image: string;
+  image: string;
 
-  readonly created_at: Date;
+  created_at: Date;
 
   readonly access_locked: boolean;
 
   readonly confirmed: boolean;
 
-  readonly credentials: Credentials;
+  credentials: Credentials;
 
-  readonly current_character: any;
+  current_character: any;
 
 }

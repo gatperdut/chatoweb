@@ -47,8 +47,8 @@ export class PasswordResetComponent implements OnInit {
     this.state.success = false;
 
     this.authenticationService.passwordResetUpdate(
-      passwordResetForm.form.value.password,
-      passwordResetForm.form.value.passwordConfirmation,
+      passwordResetForm.value.password,
+      passwordResetForm.value.passwordConfirmation,
       this.resetPasswordToken
     )
     .subscribe(

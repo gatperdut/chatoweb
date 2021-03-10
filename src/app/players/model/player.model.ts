@@ -7,14 +7,14 @@ export class Player implements PlayerData {
 
   constructor(
     public readonly id: number,
-    public readonly email: string,
-    public readonly nickname: string,
-    public readonly role: string,
-    public readonly image: string,
-    public readonly created_at: Date,
+    public email: string,
+    public nickname: string,
+    public role: string,
+    public image: string,
+    public created_at: Date,
     public readonly access_locked: boolean,
     public readonly confirmed: boolean,
-    public readonly current_character: any,
+    public current_character: any,
     credentialsToken: string,
     credentialsClient: string,
   ) {

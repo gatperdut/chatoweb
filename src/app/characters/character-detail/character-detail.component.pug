@@ -1,7 +1,7 @@
 .row([@fadeInAnimation]="")
   .col-12.col-md-4
     .card
-      .card-header.p-2.bg-dark.text-white
+      .card-header.p-2.bg-dark.text-white.text-center.text-1-line
         span.text-1-line(title="{{ character.name }}") {{ character.name }}
       .card-img([style.background-image]="'url(' + (character.image || './assets/images/players/placeholder.png') + ')'")
       .card-body
@@ -9,4 +9,16 @@
           i.fas.mr-1.fa-calendar-plus
           small(title="{{ character.created_at | date:'mediumDate':'GMT' }}") {{ character.created_at | date:'mediumDate':'GMT' }}
   .col-12.col-md-8
-    | {{ character | json }}
+    form.mb-0(#characterForm="ngForm")
+      .form-group.row
+        .col-sm-2.col-form-label.text-right Name
+        .col-sm-10
+          input.form-control.form-control-sm([(ngModel)]="character.name", name="name", type="text", required="", spellcheck="false")
+      .form-group.row
+        .col-2.col-form-label.text-right Short Desc.
+        .col-sm-10
+          input.form-control.form-control-sm([(ngModel)]="character.short_desc", name="short_desc", type="text", required="", spellcheck="false")
+      .form-group.row
+        .col-2.col-form-label.text-right Long Desc.
+        .col-sm-10
+          input.form-control.form-control-sm([(ngModel)]="character.long_desc", name="short_desc", type="text", required="", spellcheck="false")

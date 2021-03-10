@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { AsyncSubject, BehaviorSubject, Observable, of } from "rxjs";
 import { map, tap } from 'rxjs/operators';
 import { Player } from "src/app/players/model/player.model";
 import { environment } from "src/environments/environment";
@@ -18,6 +18,8 @@ export class AuthenticationService {
 
   public player: Player = null;
 
+  public readonly playerAutomaticSubject: AsyncSubject<Player> =new AsyncSubject();
+
   public readonly playerSubject: BehaviorSubject<Player> = new BehaviorSubject<Player>(null);
 
   constructor(
@@ -25,10 +27,6 @@ export class AuthenticationService {
     private router: Router
   ) {
 
-  }
-
-  public get isLoggedIn(): boolean {
-    return !!this.player;
   }
 
   public requestHeaders(): HttpHeaders {
@@ -88,6 +86,8 @@ export class AuthenticationService {
     const authenticationStorageRaw: string = localStorage.getItem('player');
 
     if (!authenticationStorageRaw) {
+      this.playerAutomaticSubject.next(null);
+      this.playerAutomaticSubject.complete();
       return of(null);
     }
 
@@ -103,11 +103,15 @@ export class AuthenticationService {
         (authenticationSigninResponse: AuthenticationSignin): Player => {
           const player: Player = this.craftPlayer(authenticationSigninResponse, authenticationStorage.credentialsToken, authenticationStorage.credentialsClient);
           this.handleAuthentication(player);
+          this.playerAutomaticSubject.next(player);
+          this.playerAutomaticSubject.complete();
           return player;
         },
         (httpErrorResponse: HttpErrorResponse): Observable<Player> => {
           localStorage.removeItem('player');
           this.router.navigate(['/']);
+          this.playerAutomaticSubject.next(null);
+          this.playerAutomaticSubject.complete();
           return of(null);
         }
       )

@@ -1,14 +1,14 @@
-button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="signinTemplate", triggers="manual", (click)="signinPopover.open()", autoClose="outside", #signinPopover="ngbPopover", [hidden]="!state.mode.is.signin()")
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="signinTemplate", triggers="manual", (click)="signinPopover.open()", autoClose="outside", #signinPopover="ngbPopover", [hidden]="loading || !state.mode.is.signin()")
   | Authenticate
-button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="signupTemplate", triggers="manual", (click)="signupPopover.open()", autoClose="outside", #signupPopover="ngbPopover", [hidden]="!state.mode.is.signup()")
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="signupTemplate", triggers="manual", (click)="signupPopover.open()", autoClose="outside", #signupPopover="ngbPopover", [hidden]="loading || !state.mode.is.signup()")
   | Authenticate
-button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="passwordResetTemplate", triggers="manual", (click)="passwordResetPopover.open()", autoClose="outside", #passwordResetPopover="ngbPopover", [hidden]="!state.mode.is.passwordReset()")
+button.btn.btn-outline-secondary(type="button", [openDelay]="500", [ngbPopover]="passwordResetTemplate", triggers="manual", (click)="passwordResetPopover.open()", autoClose="outside", #passwordResetPopover="ngbPopover", [hidden]="loading || !state.mode.is.passwordReset()")
   | Authenticate
-button.btn.btn-outline-primary(type="button", [openDelay]="500", [ngbPopover]="authenticatedTemplate", triggers="manual", (click)="authenticatedPopover.open()", autoClose="outside", #authenticatedPopover="ngbPopover", [hidden]="!state.mode.is.authenticated()")
+button.btn.btn-outline-primary(type="button", [openDelay]="500", [ngbPopover]="authenticatedTemplate", triggers="manual", (click)="authenticatedPopover.open()", autoClose="outside", #authenticatedPopover="ngbPopover", [hidden]="loading || !state.mode.is.authenticated()")
   | Your account
 
 ng-template(#signinTemplate="")
-  form.form.mb-0(#signinForm="ngForm", (ngSubmit)="onSignin(signinForm)")
+  form.mb-0(#signinForm="ngForm", (ngSubmit)="onSignin(signinForm)")
     .form-group
       .input-group
         .input-group-prepend
@@ -35,7 +35,7 @@ ng-template(#signinTemplate="")
       small.btn.btn-sm.btn-link.btn-sm((click)="switchMode(Mode.PasswordReset, true)") Forgot your password?
 
 ng-template(#signupTemplate="")
-  form.form.mb-0(#signupForm="ngForm", (ngSubmit)="onSignup(signupForm)")
+  form.mb-0(#signupForm="ngForm", (ngSubmit)="onSignup(signupForm)")
     .form-group
       .input-group
         .input-group-prepend
@@ -72,7 +72,7 @@ ng-template(#signupTemplate="")
       small.btn.btn-sm.btn-link.btn-xs((click)="switchMode(Mode.Signin, true)") Already have an account?
 
 ng-template(#passwordResetTemplate="")
-  form.form.mb-0(#passwordResetForm="ngForm", (ngSubmit)="onPasswordResetRequest(passwordResetForm)")
+  form.mb-0(#passwordResetForm="ngForm", (ngSubmit)="onPasswordResetRequest(passwordResetForm)")
     .form-group
       .input-group
         .input-group-prepend

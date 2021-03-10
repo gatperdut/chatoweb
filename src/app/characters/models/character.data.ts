@@ -2,28 +2,28 @@ export interface CharacterData {
 
   readonly id: number;
 
-  readonly name: string;
+  name: string;
 
-  readonly image: string;
+  image: string;
 
-  readonly short_desc: string;
+  short_desc: string;
 
-  readonly long_desc: string;
+  long_desc: string;
 
-  readonly full_desc: string;
+  full_desc: string;
 
-  readonly kwords: string[];
+  kwords: string[];
 
-  readonly player_id: number;
+  player_id: number;
 
-  readonly room_id: number;
+  room_id: number;
 
-  readonly npc: boolean;
+  npc: boolean;
 
-  readonly gladiator: boolean;
+  gladiator: boolean;
 
-  readonly active: boolean;
+  active: boolean;
 
-  readonly created_at: Date;
+  created_at: Date;
 
 }

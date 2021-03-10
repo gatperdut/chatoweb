@@ -33,6 +33,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
 
   public player: Player = null;
 
+  public loading: boolean = false;
+
   constructor(
     private authenticationService: AuthenticationService,
     private authenticationErrorService: AuthenticationErrorService
@@ -41,6 +43,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.playerSubscription = this.authenticationService.playerSubject.subscribe(
       (player: Player): void => {
         this.player = player;
@@ -54,6 +57,12 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
             this.switchMode(Mode.Signin, false);
           }
         }
+        setTimeout(
+          (): void => {
+            this.loading = false;
+          },
+          200
+        );
       }
     );
   }
@@ -113,8 +122,8 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
     this.state.signin.loading = true;
 
     this.authenticationService.signin(
-      signinForm.form.value.email,
-      signinForm.form.value.password
+      signinForm.value.email,
+      signinForm.value.password
     )
     .subscribe(
       (player: Player): void => {
@@ -133,10 +142,10 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
     this.state.signup.loading = true;
 
     this.authenticationService.signup(
-      signupForm.form.value.email,
-      signupForm.form.value.nickname,
-      signupForm.form.value.password,
-      signupForm.form.value.passwordConfirmation
+      signupForm.value.email,
+      signupForm.value.nickname,
+      signupForm.value.password,
+      signupForm.value.passwordConfirmation
     )
     .subscribe(
       (authenticationSignup: AuthenticationSignup): void => {
@@ -156,7 +165,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
     this.state.passwordReset.loading = true;
 
     this.authenticationService.passwordResetRequest(
-      passwordResetForm.form.value.email
+      passwordResetForm.value.email
     )
     .subscribe(
       (authenticationPasswordReset: AuthenticationPasswordReset): void => {

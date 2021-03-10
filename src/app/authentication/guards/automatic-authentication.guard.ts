@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { first, map } from "rxjs/operators";
 import { Player } from "src/app/players/model/player.model";
 import { AuthenticationService } from "../services/authentication.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate {
+export class AutomaticAuthenticationGuard implements CanActivate {
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -18,8 +18,9 @@ export class AuthenticationGuard implements CanActivate {
   }
 
   public canActivate(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): (boolean | UrlTree | Observable<boolean | UrlTree>) {
-    return this.authenticationService.playerSubject
+    return this.authenticationService.playerAutomaticSubject
     .pipe(
+      first(),
       map(
         (player: Player): (boolean | UrlTree) => {
           if (player) {

@@ -4,18 +4,18 @@ export class Character implements CharacterData {
 
   constructor(
     public readonly id: number,
-    public readonly name: string,
-    public readonly image: string,
-    public readonly short_desc: string,
-    public readonly long_desc: string,
-    public readonly full_desc: string,
-    public readonly kwords: string[],
-    public readonly player_id: number,
-    public readonly room_id: number,
-    public readonly npc: boolean,
-    public readonly gladiator: boolean,
-    public readonly active: boolean,
-    public readonly created_at: Date
+    public name: string,
+    public image: string,
+    public short_desc: string,
+    public long_desc: string,
+    public full_desc: string,
+    public kwords: string[],
+    public player_id: number,
+    public room_id: number,
+    public npc: boolean,
+    public gladiator: boolean,
+    public active: boolean,
+    public created_at: Date
   ) {
 
   }

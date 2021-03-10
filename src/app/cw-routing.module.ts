@@ -4,7 +4,7 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { ConfirmationComponent } from './authentication/confirmation/confirmation.component';
 import { AuthenticationGuard } from './authentication/guards/authentication.guard';
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
-import { AuthenticationResolver } from './authentication/resolvers/authentication.resolver';
+import { AutomaticAuthenticationGuard } from './authentication/guards/automatic-authentication.guard';
 import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
 import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
 import { CharactersComponent } from './characters/characters.component';
@@ -16,8 +16,8 @@ import { PlayersComponent } from './players/players.component';
 const routes: Routes = [
   {
     path: '',
-    resolve: [
-      AuthenticationResolver
+    canActivate: [
+      AutomaticAuthenticationGuard
     ],
     children: [
       {
