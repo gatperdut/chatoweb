@@ -5,6 +5,7 @@ export class Character implements CharacterData {
   constructor(
     public readonly id: number,
     public readonly name: string,
+    public readonly image: string,
     public readonly short_desc: string,
     public readonly long_desc: string,
     public readonly full_desc: string,
@@ -14,6 +15,7 @@ export class Character implements CharacterData {
     public readonly npc: boolean,
     public readonly gladiator: boolean,
     public readonly active: boolean,
+    public readonly created_at: Date
   ) {
 
   }

@@ -4,6 +4,8 @@ export interface CharacterData {
 
   readonly name: string;
 
+  readonly image: string;
+
   readonly short_desc: string;
 
   readonly long_desc: string;
@@ -21,5 +23,7 @@ export interface CharacterData {
   readonly gladiator: boolean;
 
   readonly active: boolean;
+
+  readonly created_at: Date;
 
 }

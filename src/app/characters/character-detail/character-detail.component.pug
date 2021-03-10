@@ -1,1 +1,12 @@
-| {{ character | json }}
+.row([@fadeInAnimation]="")
+  .col-12.col-md-4
+    .card
+      .card-header.p-2.bg-dark.text-white
+        span.text-1-line(title="{{ character.name }}") {{ character.name }}
+      .card-img([style.background-image]="'url(' + (character.image || './assets/images/players/placeholder.png') + ')'")
+      .card-body
+        .card-text.text-1-line
+          i.fas.mr-1.fa-calendar-plus
+          small(title="{{ character.created_at | date:'mediumDate':'GMT' }}") {{ character.created_at | date:'mediumDate':'GMT' }}
+  .col-12.col-md-8
+    | {{ character | json }}
