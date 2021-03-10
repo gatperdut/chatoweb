@@ -1,5 +1,13 @@
+export type _booleanHash = { [key: string]: boolean };
+
 export type PlayerQuery = {
 
-  nickname: string;
+  term: string;
+
+  roles: string[];
+
+  _roles: _booleanHash;
+
+  status: string;
 
 };

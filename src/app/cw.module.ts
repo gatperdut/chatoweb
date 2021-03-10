@@ -19,7 +19,9 @@ import { UnlockedComponent } from './authentication/unlocked/unlocked.component'
 import { AuthenticationInterceptor } from "./authentication/interceptors/authentication.interceptor";
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SystemComponent } from './sidebar/system/system.component';
-import { DelayedInputDirective } from './shared/delayed-input.directive';
+import { DelayedInputDirective } from './shared/directives/delayed-input.directive';
+import { PlayerCardComponent } from './players/player-card/player-card.component';
+import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { DelayedInputDirective } from './shared/delayed-input.directive';
     UnlockedComponent,
     SidebarComponent,
     SystemComponent,
-    DelayedInputDirective
+    DelayedInputDirective,
+    PlayerCardComponent,
+    CharacterDetailComponent
   ],
   imports: [
     BrowserModule,

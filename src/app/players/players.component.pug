@@ -1,34 +1,51 @@
-.row.mt-5
+.row
   .col-12.col-md-10.offset-md-1
-    .row
+    form.row.form(#queryPlayersForm="ngForm")
+      .col-12.col-md-6
+        .form-group
+          .input-group
+            .input-group-prepend
+              span.input-group-text
+                i.fas.fa-user
+            input.form-control.form-control-sm([(ngModel)]="playerQuery.term", name="term", placeholder="Search by nickname or email", cwDelayedInput, (delayedInput)="query()", type="text", required="", spellcheck="false")
       .col-12
-        form.form.mb-0(#queryPlayersForm="ngForm")
-          .form-group
-            .input-group
-              .input-group-prepend
-                span.input-group-text
-                  i.fas.fa-user
-              input.form-control.form-control-sm([(ngModel)]="playerQuery.nickname", name="nickname", placeholder="Search by nickname", cwDelayedInput, (delayedInput)="query()", type="text", required="", spellcheck="false")
+        .btn-toolbar
+          .btn-group.btn-group-toggle.mt-2.mr-2
+            label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel, title="Regular")
+              input(type="checkbox", ngbButton, [(ngModel)]="playerQuery._roles.regular", name="roles[]", (change)="updateRoles()")
+              i.fas.mr-1.fa-user
+              | Regular
+            label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel, title="Admin")
+              input(type="checkbox", ngbButton, [(ngModel)]="playerQuery._roles.admin", name="roles[]", (change)="updateRoles()")
+              i.fas.mr-1.fa-user-shield
+              | Admin
+            label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel, title="Owner")
+              input(type="checkbox", ngbButton, [(ngModel)]="playerQuery._roles.owner", name="roles[]", (change)="updateRoles()")
+              i.fas.mr-1.fa-crown
+              | Owner
+          .btn-group.btn-group-toggle.mt-2(ngbRadioGroup name="status", [(ngModel)]="playerQuery.status")
+            label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel)
+              input(ngbButton type="radio", [value]="null", (change)="query()")
+              i.fas.mr-1.fa-users
+              | All
+            label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel)
+              input(ngbButton type="radio", value="confirmed", (change)="query()")
+              i.fas.mr-1.fa-check
+              | Confirmed
+            label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel)
+              input(ngbButton type="radio", value="unconfirmed", (change)="query()")
+              i.fas.mr-1.fa-question
+              | Unconfirmed
+            label.label.btn.btn-sm.btn-primary.text-1-line(ngbButtonLabel)
+              input(ngbButton type="radio", value="locked", (change)="query()")
+              i.fas.mr-1.fa-lock
+              | Locked
     .row
-      .col-12.col-md-4.col-lg-3(*ngFor="let player of players")
-        .card
-          .card-header.p-2
-            .float-left.mr-1
-              i.fas.fa-question.unconfirmed(*ngIf="!player.confirmed", ngbTooltip="Unconfirmed account")
-              i.fas.fa-check.confirmed(*ngIf="player.confirmed", ngbTooltip="Confirmed account")
-              i.fas.fa-locked.locked-access(*ngIf="player.access_locked", ngbTooltip="Locked account")
-            .float-left.mr-1
-              i.fas.fa-user(*ngIf="player.roleIs.regular()", ngbTooltip="Regular player")
-              i.fas.fa-user-shield.admin(*ngIf="player.roleIs.admin()", ngbTooltip="Admin")
-              i.fas.fa-crown.owner(*ngIf="player.roleIs.owner()", ngbTooltip="Owner")
-            span.text-1-line(title="{{ player.nickname }}") {{ player.nickname }}
-          img.card-img([src]="player.image", onerror="this.src='./assets/images/players/placeholder.png'")
-          .card-body
-            .card-text.text-1-line
-              i.fas.fa-fw.fa-calendar-plus
-              small(title="{{ player.created_at | date:'mediumDate':'GMT' }}") {{ player.created_at | date:'mediumDate':'GMT' }}
-            .card-text.text-1-line
-              i.fas.fa-fw.fa-envelope
-              small
-                a(title="{{ player.email }}", href="mailto:{{ player.email }}") {{ player.email}}
-            h5.card-title More Info
+      .col-12.mt-3
+        .alert.alert-info.text-center(*ngIf="!loading && !players.length") No players found matching your criteria
+        .alert.alert-info.text-center(*ngIf="loading")
+          i.fas.fa-cog.fa-spin
+
+    .row
+      .col-12.col-md-4.col-lg-3.mt-3(*ngFor="let player of players")
+        cw-player-card.mt-2([player]="player")

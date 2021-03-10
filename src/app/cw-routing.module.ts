@@ -4,9 +4,10 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { ConfirmationComponent } from './authentication/confirmation/confirmation.component';
 import { AuthenticationGuard } from './authentication/guards/authentication.guard';
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
-import { AuthenticationResolver } from './authentication/resolvers/authentication.resolver';
 import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
+import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
 import { CharactersComponent } from './characters/characters.component';
+import { CharacterResolver } from './characters/resolvers/character.resolver';
 import { HomeComponent } from './home/home.component';
 import { ItemTemplatesComponent } from './item-templates/item-templates.component';
 import { PlayersComponent } from './players/players.component';
@@ -19,13 +20,23 @@ const routes: Routes = [
   },
   {
     path: 'characters',
-    component: CharactersComponent,
     canActivate: [
       AuthenticationGuard
     ],
-    // resolve: [
-    //   AuthenticationResolver
-    // ]
+    children: [
+      {
+        path: '',
+        component: CharactersComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: ':id',
+        component: CharacterDetailComponent,
+        resolve: {
+          character: CharacterResolver
+        }
+      }
+    ]
   },
   {
     path: 'item-templates',
@@ -36,10 +47,7 @@ const routes: Routes = [
     component: PlayersComponent,
     canActivate: [
       AuthenticationGuard
-    ],
-    // resolve: [
-    //   AuthenticationResolver
-    // ]
+    ]
   },
   {
     path: 'authentication',

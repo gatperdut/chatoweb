@@ -1,10 +1,10 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import * as _ from "underscore";
-import { PlayerData } from "../model/player-data.interface";
+import { PlayerData } from "../model/player.data";
 import { Player } from "../model/player.model";
 import { PlayerQuery } from "../types/player-query.type";
 
@@ -32,6 +32,7 @@ export class PlayerService {
           playerData.created_at,
           playerData.access_locked,
           playerData.confirmed,
+          playerData.current_character,
           null,
           null
         );
@@ -39,18 +40,29 @@ export class PlayerService {
     );
   }
 
-  public index(): Observable<Player[]> {
-    return this.httpClient.get<PlayerData[]>(
-      environment.cmBaseUrl + '/players'
-    )
-    .pipe(
-      map(this.craftPlayers)
-    );
-  }
+  public index(playerQuery: PlayerQuery): Observable<Player[]> {
+    let httpParams = new HttpParams();
 
-  public query(playerQuery: PlayerQuery): Observable<Player[]> {
+    if (playerQuery.term) {
+      httpParams = httpParams.append('term', playerQuery.term)
+    }
+
+    _.each(
+      playerQuery.roles,
+      (role: string) => {
+        httpParams = httpParams.append('roles[]', role);
+      }
+    );
+
+    if (playerQuery.status) {
+      httpParams = httpParams.append('status', playerQuery.status)
+    }
+
     return this.httpClient.get<PlayerData[]>(
-      environment.cmBaseUrl + '/players/query?nickname=' + playerQuery.nickname
+      environment.cmBaseUrl + '/players',
+      {
+        params: httpParams
+      }
     )
     .pipe(
       map(this.craftPlayers)

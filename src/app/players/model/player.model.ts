@@ -1,5 +1,5 @@
 import { Credentials } from "src/app/authentication/types/credentials.type";
-import { PlayerData } from "./player-data.interface";
+import { PlayerData } from "./player.data";
 
 export class Player implements PlayerData {
 
@@ -14,8 +14,9 @@ export class Player implements PlayerData {
     public readonly created_at: Date,
     public readonly access_locked: boolean,
     public readonly confirmed: boolean,
+    public readonly current_character: any,
     credentialsToken: string,
-    credentialsClient: string
+    credentialsClient: string,
   ) {
     if (credentialsToken && credentialsClient) {
       this.credentials = {

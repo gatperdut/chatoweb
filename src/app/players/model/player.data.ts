@@ -20,4 +20,6 @@ export interface PlayerData {
 
   readonly credentials: Credentials;
 
+  readonly current_character: any;
+
 }

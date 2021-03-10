@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angul
 import { Injectable } from "@angular/core";
 import { AsyncSubject, BehaviorSubject, Observable } from "rxjs";
 import { map, tap } from 'rxjs/operators';
-import { PlayerData } from "src/app/players/model/player-data.interface";
+import { PlayerData } from "src/app/players/model/player.data";
 import { Player } from "src/app/players/model/player.model";
 import { environment } from "src/environments/environment";
 import { AuthenticationSigninResponse } from "../types/authentication-signin-response.type";
@@ -73,6 +73,7 @@ export class AuthenticationService {
         new Date(authenticationSigninResponse.data.created_at),
         authenticationSigninResponse.data.access_locked,
         authenticationSigninResponse.data.confirmed,
+        null,
         credentialsToken,
         credentialsClient,
       );
