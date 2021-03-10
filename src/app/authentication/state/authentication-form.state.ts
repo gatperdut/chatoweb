@@ -12,7 +12,7 @@ export const formState = (): FormState => {
   } as FormState;
 };
 
-export const clearFormState = (formState: FormState) => {
+export const clearFormState = (formState: FormState): void => {
   formState.errors = null;
   formState.loading = false;
   formState.success = false;

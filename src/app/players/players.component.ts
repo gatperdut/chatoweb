@@ -47,7 +47,7 @@ export class PlayersComponent implements OnInit {
 
     _.each(
       this.playerRoleService.roles,
-      (role: string) => {
+      (role: string): void => {
         if (this.playerQuery._roles[role]) {
           this.playerQuery.roles.push(role);
         }
@@ -69,7 +69,7 @@ export class PlayersComponent implements OnInit {
         this.loading = false;
         this.players = players;
       },
-      (error: HttpErrorResponse) => {
+      (error: HttpErrorResponse): void => {
         this.loading = false;
       }
     )

@@ -7,6 +7,10 @@ import { Player } from 'src/app/players/model/player.model';
 import { AuthenticationErrorService } from '../services/authentication-error.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { clearFormState } from '../state/authentication-form.state';
+import { AuthenticationPasswordReset } from '../types/authentication-password-reset.type';
+import { AuthenticationSignin } from '../types/authentication-signin.type';
+import { AuthenticationSignout } from '../types/authentication-signout.type';
+import { AuthenticationSignup } from '../types/authentication-signup.type';
 import { AuthenticationWidgetState, Mode } from './state/authentication-widget.state';
 
 @Component({
@@ -37,7 +41,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.playerSubscription = this.authenticationService.playerSigninSubject.subscribe(
+    this.playerSubscription = this.authenticationService.playerSubject.subscribe(
       (player: Player): void => {
         this.player = player;
 
@@ -113,7 +117,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
       signinForm.form.value.password
     )
     .subscribe(
-      (playerData: any): void => {
+      (player: Player): void => {
         clearFormState(this.state.signin);
         signinForm.reset();
       },
@@ -135,7 +139,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
       signupForm.form.value.passwordConfirmation
     )
     .subscribe(
-      (playerData: any): void => {
+      (authenticationSignup: AuthenticationSignup): void => {
         this.state.signup.loading = false;
         this.state.signup.success = true;
         signupForm.reset();
@@ -155,7 +159,7 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
       passwordResetForm.form.value.email
     )
     .subscribe(
-      (playerData: any): void => {
+      (authenticationPasswordReset: AuthenticationPasswordReset): void => {
         this.state.passwordReset.loading = false;
         this.state.passwordReset.success = true;
         passwordResetForm.reset();
@@ -173,12 +177,12 @@ export class AuthenticationWidgetComponent implements OnInit, OnDestroy {
 
     this.authenticationService.signout()
     .subscribe(
-      (): void => {
+      (response: AuthenticationSignout): void => {
         this.state.signout.loading = false;
         this.state.signout.success = true;
         this.switchMode(Mode.Signin, false);
       },
-      (httpErrorResponse: HttpErrorResponse) => {
+      (httpErrorResponse: HttpErrorResponse): void => {
         this.state.signout.errors = this.authenticationErrorService.errorMessage(httpErrorResponse);;
         this.state.signout.loading = false;
       }

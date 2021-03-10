@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
-import { EMPTY, Observable, throwError } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import * as _ from "underscore";

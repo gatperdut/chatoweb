@@ -22,7 +22,7 @@ export class PlayerService {
   private craftPlayers(playersData: PlayerData[]): Player[] {
     return _.map(
       playersData,
-      (playerData: PlayerData) => {
+      (playerData: PlayerData): Player => {
         return new Player(
           playerData.id,
           playerData.email,
@@ -49,7 +49,7 @@ export class PlayerService {
 
     _.each(
       playerQuery.roles,
-      (role: string) => {
+      (role: string): void => {
         httpParams = httpParams.append('roles[]', role);
       }
     );

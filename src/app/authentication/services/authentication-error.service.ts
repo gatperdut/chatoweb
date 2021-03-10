@@ -18,7 +18,7 @@ export class AuthenticationErrorService {
     else if (_.isObject(httpErrorResponse.error.errors)) {
       const keys: string[] = _.filter(
         _.keys(httpErrorResponse.error.errors),
-        (key: string) => key != 'full_messages'
+        (key: string): boolean => key != 'full_messages'
       );
 
       return _.map(

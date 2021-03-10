@@ -1,25 +1,24 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AsyncSubject, BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, tap } from 'rxjs/operators';
-import { PlayerData } from "src/app/players/model/player.data";
 import { Player } from "src/app/players/model/player.model";
 import { environment } from "src/environments/environment";
-import { AuthenticationSigninResponse } from "../types/authentication-signin-response.type";
+import { AuthenticationSignin } from "../types/authentication-signin.type";
 import { AuthenticationStorage } from "../types/authentication-storage.type";
 import { Router } from "@angular/router";
-import { AuthenticationSignoutResponse } from "../types/authentication-signout-response.type";
+import { AuthenticationSignup } from "../types/authentication-signup.type";
+import { AuthenticationPasswordReset } from "../types/authentication-password-reset.type";
+import { AuthenticationSignout } from "../types/authentication-signout.type";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  private player: Player = null;
+  public player: Player = null;
 
-  public readonly playerAutomaticSigninSubject: AsyncSubject<Player> = new AsyncSubject<Player>();
-
-  public readonly playerSigninSubject: BehaviorSubject<Player> = new BehaviorSubject<Player>(null);
+  public readonly playerSubject: BehaviorSubject<Player> = new BehaviorSubject<Player>(null);
 
   constructor(
     private httpClient: HttpClient,
@@ -45,7 +44,7 @@ export class AuthenticationService {
   private handleAuthentication(player: Player): void {
     this.player = player;
 
-    this.playerSigninSubject.next(player);
+    this.playerSubject.next(player);
 
     const authenticationStorage: AuthenticationStorage = {
       email: player.email,
@@ -60,7 +59,7 @@ export class AuthenticationService {
   }
 
   private craftPlayer(
-    authenticationSigninResponse: AuthenticationSigninResponse,
+    authenticationSigninResponse: AuthenticationSignin,
     credentialsToken: string,
     credentialsClient: string
     ): Player {
@@ -79,46 +78,44 @@ export class AuthenticationService {
       );
   }
 
-  private validateToken(email: string, credentialsClient: string, credentialsToken: string): Observable<AuthenticationSigninResponse> {
-    return this.httpClient.get<AuthenticationSigninResponse>(
+  private validateToken(email: string, credentialsClient: string, credentialsToken: string): Observable<AuthenticationSignin> {
+    return this.httpClient.get<AuthenticationSignin>(
       environment.cmBaseUrl + '/authentication/validate_token?uid=' + email + '&access-token=' + encodeURIComponent(credentialsToken) + '&client=' + encodeURIComponent(credentialsClient)
     );
   }
 
-  public automaticSignin(): void {
+  public automaticSignin(): Observable<Player> {
     const authenticationStorageRaw: string = localStorage.getItem('player');
 
     if (!authenticationStorageRaw) {
-      this.playerAutomaticSigninSubject.next(null);
-      this.playerAutomaticSigninSubject.complete();
-      return;
+      return of(null);
     }
 
     const authenticationStorage: AuthenticationStorage = JSON.parse(authenticationStorageRaw);
 
-    this.validateToken(
+    return this.validateToken(
       authenticationStorage.email,
       authenticationStorage.credentialsClient,
       authenticationStorage.credentialsToken
     )
-    .subscribe(
-      (authenticationSigninResponse: AuthenticationSigninResponse) => {
-        const player: Player = this.craftPlayer(authenticationSigninResponse, authenticationStorage.credentialsToken, authenticationStorage.credentialsClient);
-        this.playerAutomaticSigninSubject.next(player);
-        this.playerAutomaticSigninSubject.complete();
-        this.handleAuthentication(player);
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this.playerAutomaticSigninSubject.next(null);
-        this.playerAutomaticSigninSubject.complete();
-        localStorage.removeItem('player');
-        this.router.navigate(['/']);
-      }
-    );
+    .pipe(
+      map(
+        (authenticationSigninResponse: AuthenticationSignin): Player => {
+          const player: Player = this.craftPlayer(authenticationSigninResponse, authenticationStorage.credentialsToken, authenticationStorage.credentialsClient);
+          this.handleAuthentication(player);
+          return player;
+        },
+        (httpErrorResponse: HttpErrorResponse): Observable<Player> => {
+          localStorage.removeItem('player');
+          this.router.navigate(['/']);
+          return of(null);
+        }
+      )
+    )
   };
 
-  public signin(email: string, password: string): Observable<PlayerData> {
-    return this.httpClient.post<AuthenticationSigninResponse>(
+  public signin(email: string, password: string): Observable<Player> {
+    return this.httpClient.post<AuthenticationSignin>(
       environment.cmBaseUrl + '/authentication/sign_in',
       {
         email: email,
@@ -130,7 +127,7 @@ export class AuthenticationService {
     )
     .pipe(
       map(
-        (httpResponse: HttpResponse<AuthenticationSigninResponse>): Player => {
+        (httpResponse: HttpResponse<AuthenticationSignin>): Player => {
           return this.craftPlayer(
             httpResponse.body,
             httpResponse.headers.get('access-token'),
@@ -142,8 +139,8 @@ export class AuthenticationService {
     );
   }
 
-  public signup(email: string, nickname: string, password: string, password_confirmation: string): Observable<any> {
-    return this.httpClient.post<any>(
+  public signup(email: string, nickname: string, password: string, password_confirmation: string): Observable<AuthenticationSignup> {
+    return this.httpClient.post<AuthenticationSignup>(
       environment.cmBaseUrl + '/authentication',
       {
         email: email,
@@ -151,11 +148,11 @@ export class AuthenticationService {
         password: password,
         password_confirmation: password_confirmation
       }
-    )
+    );
   }
 
-  public passwordResetRequest(email: string): Observable<any> {
-    return this.httpClient.post<any>(
+  public passwordResetRequest(email: string): Observable<AuthenticationPasswordReset> {
+    return this.httpClient.post<AuthenticationPasswordReset>(
       environment.cmBaseUrl + '/authentication/password',
       {
         email: email
@@ -174,13 +171,13 @@ export class AuthenticationService {
     );
   }
 
-  public signout(): Observable<AuthenticationSignoutResponse> {
-    return this.httpClient.delete<AuthenticationSignoutResponse>(
+  public signout(): Observable<AuthenticationSignout> {
+    return this.httpClient.delete<AuthenticationSignout>(
       environment.cmBaseUrl + '/authentication/sign_out'
     )
     .pipe(
       tap(
-        (authenticationSignoutResponse: AuthenticationSignoutResponse) => {
+        (authenticationSignoutResponse: AuthenticationSignout): void => {
           this.router.navigate(['/'])
           .then(
             (): void => {

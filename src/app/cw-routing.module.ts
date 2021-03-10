@@ -4,6 +4,7 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { ConfirmationComponent } from './authentication/confirmation/confirmation.component';
 import { AuthenticationGuard } from './authentication/guards/authentication.guard';
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
+import { AuthenticationResolver } from './authentication/resolvers/authentication.resolver';
 import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
 import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
 import { CharactersComponent } from './characters/characters.component';
@@ -15,61 +16,69 @@ import { PlayersComponent } from './players/players.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'characters',
-    canActivate: [
-      AuthenticationGuard
+    resolve: [
+      AuthenticationResolver
     ],
     children: [
       {
         path: '',
-        component: CharactersComponent,
+        component: HomeComponent,
         pathMatch: 'full'
       },
       {
-        path: ':id',
-        component: CharacterDetailComponent,
-        resolve: {
-          character: CharacterResolver
-        }
+        path: 'characters',
+        canActivate: [
+          AuthenticationGuard
+        ],
+        children: [
+          {
+            path: '',
+            component: CharactersComponent,
+            pathMatch: 'full'
+          },
+          {
+            path: ':id',
+            component: CharacterDetailComponent,
+            resolve: {
+              character: CharacterResolver
+            }
+          }
+        ]
+      },
+      {
+        path: 'item-templates',
+        component: ItemTemplatesComponent
+      },
+      {
+        path: 'players',
+        component: PlayersComponent,
+        canActivate: [
+          AuthenticationGuard
+        ]
+      },
+      {
+        path: 'authentication',
+        component: AuthenticationComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'signin',
+            pathMatch: 'full'
+          },
+          {
+            path: 'confirmation',
+            component: ConfirmationComponent
+          },
+          {
+            path: 'password-reset',
+            component: PasswordResetComponent
+          },
+          {
+            path: 'unlocked',
+            component: UnlockedComponent
+          },
+        ]
       }
-    ]
-  },
-  {
-    path: 'item-templates',
-    component: ItemTemplatesComponent
-  },
-  {
-    path: 'players',
-    component: PlayersComponent,
-    canActivate: [
-      AuthenticationGuard
-    ]
-  },
-  {
-    path: 'authentication',
-    component: AuthenticationComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'signin',
-        pathMatch: 'full'
-      },
-      {
-        path: 'confirmation',
-        component: ConfirmationComponent
-      },
-      {
-        path: 'password-reset',
-        component: PasswordResetComponent
-      },
-      {
-        path: 'unlocked',
-        component: UnlockedComponent
-      },
     ]
   }
 ];

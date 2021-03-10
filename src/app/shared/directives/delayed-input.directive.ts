@@ -25,7 +25,7 @@ export class DelayedInputDirective implements OnInit, OnDestroy {
       ),
       distinctUntilChanged(
         null,
-        (event: Event) => (event.target as HTMLInputElement).value
+        (event: Event): string => (event.target as HTMLInputElement).value
       ),
       takeUntil(this.destroy),
     )

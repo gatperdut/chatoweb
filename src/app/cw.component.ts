@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { AuthenticationService } from './authentication/services/authentication.service';
 import { SystemService } from './sidebar/system/services/system.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { SystemService } from './sidebar/system/services/system.service';
 export class CwComponent implements OnInit {
 
   constructor(
-    private authenticationService: AuthenticationService,
     private systemService: SystemService,
     ngbTooltipConfig: NgbTooltipConfig
   ) {
@@ -20,8 +18,6 @@ export class CwComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authenticationService.automaticSignin();
-
     this.systemService.fetch();
   }
 

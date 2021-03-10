@@ -24,7 +24,7 @@ export class PlayerRoleService {
 
     _.each.bind(this)(
       this.roles,
-      (role: string) => {
+      (role: string): void => {
         result[role] = false;
       }
     );

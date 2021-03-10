@@ -18,7 +18,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   public intercept(httpRequest: HttpRequest<any>, httpHandler: HttpHandler): Observable<HttpEvent<any>> {
-    return this.authenticationService.playerSigninSubject
+    return this.authenticationService.playerSubject
     .pipe(
       take(1),
       exhaustMap(
@@ -42,7 +42,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           return httpHandler.handle(_httpRequest)
           .pipe(
             tap(
-              () => {
+              (): void => {
 
               },
               (error: HttpResponseBase): void => {

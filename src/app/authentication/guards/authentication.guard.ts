@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Observable, Subscriber } from "rxjs";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 import { Player } from "src/app/players/model/player.model";
 import { AuthenticationService } from "../services/authentication.service";
 
@@ -18,24 +19,17 @@ export class AuthenticationGuard implements CanActivate {
 
   public canActivate(activatedRouteSnapshot: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): (boolean | UrlTree | Observable<boolean | UrlTree>) {
     if (this.authenticationService.isLoggedIn) {
-      return true;
+      return of(true);
     }
 
-    return new Observable<boolean | UrlTree>(
-      (observer: Subscriber<boolean | UrlTree>) => {
-        this.authenticationService.playerAutomaticSigninSubject.subscribe(
-          (player: Player): (boolean | UrlTree) => {
-            if (player) {
-              observer.next(true);
-              return true;
-            }
-
-            observer.next(false);
-            return this.router.createUrlTree(['/']);
-          }
-        )
-      }
-    )
+    return this.authenticationService.automaticSignin()
+    .pipe(
+      map(
+        (player: Player): (boolean | UrlTree) => {
+          return !!player;
+        }
+      )
+    );
   }
 
 }
