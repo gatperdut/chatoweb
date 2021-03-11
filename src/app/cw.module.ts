@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AuthenticationWidgetComponent } from "./authentication/authentication-widget/authentication-widget.component";
@@ -22,8 +23,7 @@ import { PlayersComponent } from "./players/players.component";
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 import { UnlockedComponent } from './authentication/unlocked/unlocked.component';
 import { AuthenticationInterceptor } from "./authentication/interceptors/authentication.interceptor";
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { SystemComponent } from './sidebar/system/system.component';
+import { SystemComponent } from './system/system.component';
 import { DelayedInputDirective } from './shared/directives/delayed-input.directive';
 import { PlayerCardComponent } from './players/player-card/player-card.component';
 import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
@@ -42,7 +42,6 @@ import { AuthenticationDialogComponent } from './authentication/authentication-d
     ConfirmationComponent,
     PasswordResetComponent,
     UnlockedComponent,
-    SidebarComponent,
     SystemComponent,
     DelayedInputDirective,
     PlayerCardComponent,
@@ -64,6 +63,7 @@ import { AuthenticationDialogComponent } from './authentication/authentication-d
     MatButtonModule,
     MatListModule,
     MatIconModule,
+    MatSidenavModule,
     // NgBootstrap
     NgbModule,
     // ChatoWeb

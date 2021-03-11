@@ -1,7 +1,7 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top(role="navigation")
   .container-fluid
     button.btn.btn-default.navbar-brand((click)="sidebarService.toggle()")
-      i.fas([ngClass]="{ 'fa-info': sidebarService.isClosed(), 'fa-times': sidebarService.isOpen() }")
+      i.fas.fa-info
     a.navbar-brand(routerLink="/") Home
     button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
       span.navbar-toggler-icon

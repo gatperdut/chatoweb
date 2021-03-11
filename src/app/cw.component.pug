@@ -1,9 +1,12 @@
 .text-center(*ngIf="loading")
   .i.fas.fa-10x.fa-cog.fa-spin
 
-.container-fluid.pt-4.pb-5(*ngIf="!loading")
-  .row
-    .col-md-12
-     cw-header
-  cw-sidebar
-  router-outlet
+mat-sidenav-container.sidebar-container([hasBackdrop]="true", *ngIf="!loading")
+  mat-sidenav.p-3(#sidebar="", mode="over")
+    cw-system
+  mat-sidenav-content
+    .container-fluid.pt-4.pb-5
+      .row
+        .col-md-12
+          cw-header
+      router-outlet

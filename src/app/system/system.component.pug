@@ -1,0 +1,22 @@
+.row.ml-0.mr-0(*ngIf="systemInfo")
+  .col-6
+    .card.p-1.text-center
+      .card-header.p-1 Ruby version
+      .card-body.pb-0.pt-1
+        em.card-text {{ systemInfo.ruby_version }}
+  .col-6
+    .card.p-1.text-center
+      .card-header.p-1 Rails version
+      .card-body.pb-0.pt-1
+        em.card-text {{ systemInfo.rails_version }}
+  .col-12
+    .card.p-1.mt-2.text-center
+      .card-header.p-1 GIT revision
+      .card-body.pb-0.pt-1
+        small
+          em.card-text.text-1-line {{ systemInfo.git_revision }}
+  .col-12
+    .card.p-1.mt-2.text-center
+      .card-body.pb-0.pt-1
+        small
+          em.card-text {{ systemInfo.time_string }}
