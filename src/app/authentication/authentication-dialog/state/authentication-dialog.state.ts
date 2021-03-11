@@ -1,4 +1,3 @@
-import { formatDiagnosticsWithColorAndContext } from "typescript";
 import { FormState, formState } from "../../state/authentication-form.state";
 
 export enum Mode {
@@ -8,7 +7,7 @@ export enum Mode {
   PasswordReset = 'PASSWORD_RESET'
 }
 
-export class AuthenticationWidgetState {
+export class AuthenticationDialogState {
 
   public readonly mode = {
     current: Mode.Signin as Mode,

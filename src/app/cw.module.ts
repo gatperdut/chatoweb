@@ -1,8 +1,13 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AuthenticationWidgetComponent } from "./authentication/authentication-widget/authentication-widget.component";
 import { AuthenticationComponent } from "./authentication/authentication.component";
@@ -22,6 +27,7 @@ import { SystemComponent } from './sidebar/system/system.component';
 import { DelayedInputDirective } from './shared/directives/delayed-input.directive';
 import { PlayerCardComponent } from './players/player-card/player-card.component';
 import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
+import { AuthenticationDialogComponent } from './authentication/authentication-dialog/authentication-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,14 +46,27 @@ import { CharacterDetailComponent } from './characters/character-detail/characte
     SystemComponent,
     DelayedInputDirective,
     PlayerCardComponent,
-    CharacterDetailComponent
+    CharacterDetailComponent,
+    AuthenticationDialogComponent
+  ],
+  entryComponents: [
+    AuthenticationDialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
+    // Material
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    // NgBootstrap
     NgbModule,
+    // ChatoWeb
     CwRoutingModule
   ],
   providers: [

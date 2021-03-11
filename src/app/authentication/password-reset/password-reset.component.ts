@@ -52,7 +52,7 @@ export class PasswordResetComponent implements OnInit {
       this.resetPasswordToken
     )
     .subscribe(
-      (data: any): void => {
+      (): void => {
         this.state.loading = false;
         this.state.success = true;
         passwordResetForm.reset();

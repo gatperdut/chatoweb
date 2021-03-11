@@ -23,11 +23,7 @@ export class AutomaticAuthenticationGuard implements CanActivate {
       first(),
       map(
         (player: Player): (boolean | UrlTree) => {
-          if (player) {
-            return true;
-          }
-
-          return this.router.createUrlTree(['/']);
+          return true;
         }
       )
     );
