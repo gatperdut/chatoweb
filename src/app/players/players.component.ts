@@ -7,6 +7,8 @@ import { PlayerService } from './services/player.service';
 import { PlayerRoleService } from './services/player-role.service';
 import { PlayerQuery } from './types/player-query.type';
 import { PlayerStatusService } from './services/player-status.service';
+import { GlobalErrorStateMatcher } from '../shared/forms/global.error-state-matcher';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'cw-players',
@@ -17,7 +19,7 @@ export class PlayersComponent implements OnInit {
 
   public players: Player[] = [];
 
-  public loading: boolean = false;
+  public loading: boolean = true;
 
   constructor(
     private playerService: PlayerService,
@@ -26,6 +28,21 @@ export class PlayersComponent implements OnInit {
   ) {
 
   }
+
+  public matcher = new GlobalErrorStateMatcher();
+
+  public playerQueryFormGroup = new FormGroup(
+    {
+      'term': new FormControl(
+        '',
+        []
+      ),
+      'roles[]': new FormControl(
+        '',
+        []
+      )
+    }
+  );
 
   public playerQuery: PlayerQuery = {
     term: '',

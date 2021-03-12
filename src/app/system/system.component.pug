@@ -1,22 +1,50 @@
-.row.ml-0.mr-0(*ngIf="systemInfo")
-  .col-6
-    .card.p-1.text-center
-      .card-header.p-1 Ruby version
-      .card-body.pb-0.pt-1
-        em.card-text {{ systemInfo.ruby_version }}
-  .col-6
-    .card.p-1.text-center
-      .card-header.p-1 Rails version
-      .card-body.pb-0.pt-1
-        em.card-text {{ systemInfo.rails_version }}
-  .col-12
-    .card.p-1.mt-2.text-center
-      .card-header.p-1 GIT revision
-      .card-body.pb-0.pt-1
-        small
-          em.card-text.text-1-line {{ systemInfo.git_revision }}
-  .col-12
-    .card.p-1.mt-2.text-center
-      .card-body.pb-0.pt-1
-        small
-          em.card-text {{ systemInfo.time_string }}
+.cw-system(*ngIf="systemInfo")
+  div(fxLayout="row wrap", fxLayoutAlign="flex start", fxLayoutGap="10px grid")
+    div(fxFlex="50%")
+      mat-card.mat-elevation-z5
+        mat-card-header(fxLayoutAlign="center")
+          mat-card-subtitle Ruby Version
+        mat-card-content(fxLayoutAlign="center")
+          em {{ systemInfo.ruby_version }}
+
+    div(fxFlex="50%")
+      mat-card.mat-elevation-z5
+        mat-card-header(fxLayoutAlign="center")
+          mat-card-subtitle Rails Version
+        mat-card-content(fxLayoutAlign="center")
+          em {{ systemInfo.rails_version }}
+
+    div(fxFlex="100%")
+      mat-card.mat-elevation-z5
+        mat-card-header(fxLayoutAlign="center")
+          mat-card-subtitle GIT revision
+        mat-card-content(fxLayoutAlign="center")
+          em.text-1-line {{ systemInfo.git_revision }}
+
+    div(fxFlex="100%")
+      mat-card.mat-elevation-z5
+        mat-card-header
+          mat-card-subtitle {{ systemInfo.time_string }}
+
+//- .row(*ngIf="systemInfo")
+//-   .col-6
+//-     .card.text-center
+//-       .card-header Ruby version
+//-       .card-body
+//-         em.card-text {{ systemInfo.ruby_version }}
+//-   .col-6
+//-     .card.text-center
+//-       .card-header Rails version
+//-       .card-body
+//-         em.card-text {{ systemInfo.rails_version }}
+//-   .col-12
+//-     .card.text-center
+//-       .card-header GIT revision
+//-       .card-body
+//-         small
+//-           em.card-text.text-1-line {{ systemInfo.git_revision }}
+//-   .col-12
+//-     .card.text-center
+//-       .card-body
+//-         small
+//-           em.card-text {{ systemInfo.time_string }}

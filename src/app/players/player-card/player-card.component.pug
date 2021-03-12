@@ -1,10 +1,10 @@
 .card([@fadeInAnimation]="")
-  .card-header.p-2.bg-dark.text-white
-    .float-left.mr-1
+  .card-header.bg-dark.text-white
+    .float-left
       i.fas.fa-question.unconfirmed.text-invalid(*ngIf="!player.confirmed", ngbTooltip="Unconfirmed account")
       i.fas.fa-check.confirmed.text-valid(*ngIf="player.confirmed", ngbTooltip="Confirmed account")
       i.fas.fa-locked.locked-access.text-invalid(*ngIf="player.access_locked", ngbTooltip="Locked account")
-    .float-left.mr-1
+    .float-left
       i.fas.fa-user(*ngIf="player.roleIs.regular()", ngbTooltip="Regular player")
       i.fas.fa-user-shield.admin(*ngIf="player.roleIs.admin()", ngbTooltip="Admin")
       i.fas.fa-crown.owner(*ngIf="player.roleIs.owner()", ngbTooltip="Owner")
@@ -12,10 +12,10 @@
   .card-img([style.background-image]="'url(' + (player.image || './assets/images/players/placeholder.png') + ')'")
   .card-body
     .card-text.text-1-line
-      i.fas.mr-1.fa-calendar-plus
+      i.fas.fa-calendar-plus
       small(title="{{ player.created_at | date:'mediumDate':'GMT' }}") {{ player.created_at | date:'mediumDate':'GMT' }}
     .card-text.text-1-line
-      i.fas.mr-1.fa-envelope
+      i.fas.fa-envelope
       small
         a(title="{{ player.email }}", href="mailto:{{ player.email }}") {{ player.email}}
   ul.list-group.list-group-flush

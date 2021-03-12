@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { pipe, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from './authentication/services/authentication.service';
 import { Player } from './players/model/player.model';
 import { SidebarService } from './services/sidebar.service';
@@ -11,8 +9,7 @@ import { SystemService } from './system/services/system.service';
 @Component({
   selector: 'cw-root',
   templateUrl: './cw.component.html',
-  styleUrls: ['./cw.component.scss'],
-  providers: [NgbTooltipConfig]
+  styleUrls: ['./cw.component.scss']
 })
 export class CwComponent implements OnInit, OnDestroy {
   @ViewChild('sidebar') private sidebar: MatSidenav;
@@ -26,10 +23,9 @@ export class CwComponent implements OnInit, OnDestroy {
   constructor(
     private systemService: SystemService,
     private authenticationService: AuthenticationService,
-    ngbTooltipConfig: NgbTooltipConfig,
     private sidebarService: SidebarService
   ) {
-    ngbTooltipConfig.openDelay = 300;
+
   }
 
   ngOnInit(): void {
