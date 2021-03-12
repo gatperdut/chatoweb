@@ -1,12 +1,15 @@
-.card-img {
-  background-size: cover;
-  height: 150px;
-}
-
 .owner {
   color: goldenrod;
 }
 
 .admin {
   color: darkorchid;
+}
+
+img {
+  height: 200px;
+  background-size: cover;
+}
+a:link {
+  text-decoration: none;
 }

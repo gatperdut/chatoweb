@@ -40,6 +40,10 @@ export class PlayersComponent implements OnInit {
       'roles[]': new FormControl(
         '',
         []
+      ),
+      'status': new FormControl(
+        '',
+        []
       )
     }
   );

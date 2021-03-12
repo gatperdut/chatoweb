@@ -9,27 +9,27 @@
       mat-button-toggle-group(formControlName="roles[]", multiple="")
         mat-button-toggle(value="regular",  color="primary")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-user")
-          | Regular
+          small Regular
         mat-button-toggle(value="admin")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-user-shield")
-          | Admin
+          small Admin
         mat-button-toggle(value="owner")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-crown")
-          | Owner
+          small Owner
 
       mat-button-toggle-group(formControlName="status")
         mat-button-toggle(value="all", color="primary")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-users")
-          | All
+          small All
         mat-button-toggle(value="confirmed", color="primary")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-check")
-          | Confirmed
+          small Confirmed
         mat-button-toggle(value="unconfirmed", color="primary")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-question")
-          | Unconfirmed
+          small Unconfirmed
         mat-button-toggle(value="locked", color="primary")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-lock")
-          | Locked
+          small Locked
 
   div(fxLayout="column", fxLayoutAlign="space-evenly center")
     .alert.alert-info(*ngIf="!loading && !players.length") No players found matching your criteria

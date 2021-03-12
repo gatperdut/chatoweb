@@ -4,3 +4,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.text-valid {
+  color: green;
+}
+
+.text-warning {
+  color: yellow;
+}
+
+.text-invalid {
+  color: red;
+}

@@ -1,27 +1,33 @@
-.card([@fadeInAnimation]="")
-  .card-header.bg-dark.text-white
-    .float-left
-      i.fas.fa-question.unconfirmed.text-invalid(*ngIf="!player.confirmed", ngbTooltip="Unconfirmed account")
-      i.fas.fa-check.confirmed.text-valid(*ngIf="player.confirmed", ngbTooltip="Confirmed account")
-      i.fas.fa-locked.locked-access.text-invalid(*ngIf="player.access_locked", ngbTooltip="Locked account")
-    .float-left
-      i.fas.fa-user(*ngIf="player.roleIs.regular()", ngbTooltip="Regular player")
-      i.fas.fa-user-shield.admin(*ngIf="player.roleIs.admin()", ngbTooltip="Admin")
-      i.fas.fa-crown.owner(*ngIf="player.roleIs.owner()", ngbTooltip="Owner")
-    span.text-1-line(title="{{ player.nickname }}") {{ player.nickname }}
-  .card-img([style.background-image]="'url(' + (player.image || './assets/images/players/placeholder.png') + ')'")
-  .card-body
-    .card-text.text-1-line
-      i.fas.fa-calendar-plus
+mat-card.mat-elevation-z5([@fadeInAnimation]="")
+  mat-card-subtitle(fxLayout="row", fxLayoutAlign="space-between center")
+    mat-icon.text-warning(title="Pending confirmation", fontSet="fas", fontIcon="fa-question", *ngIf="!player.confirmed")
+    mat-icon.text-valid(title="Confirmed", fontSet="fas", fontIcon="fa-check", *ngIf="player.confirmed")
+    mat-icon.text-invalid(title="Access locked", fontSet="fas", fontIcon="fa-locked", *ngIf="player.access_locked")
+    .text-1-line(title="{{ player.nickname }}") {{ player.nickname }}
+    mat-icon(title="Regular player", fontSet="fas", fontIcon="fa-user", *ngIf="player.roleIs.regular()")
+    mat-icon.admin(title="Admin", fontSet="fas", fontIcon="fa-user-shield", *ngIf="player.roleIs.admin()")
+    mat-icon.owner(title="Owner", fontSet="fas", fontIcon="fa-crown", *ngIf="player.roleIs.owner()")
+  img(mat-card-image, [style.background-image]="'url(' + (player.image || './assets/images/players/placeholder.png') + ')'")
+  mat-card-content
+    .text-1-line
+      mat-icon(fontSet="fas", fontIcon="fa-calendar-plus")
       small(title="{{ player.created_at | date:'mediumDate':'GMT' }}") {{ player.created_at | date:'mediumDate':'GMT' }}
-    .card-text.text-1-line
-      i.fas.fa-envelope
-      small
-        a(title="{{ player.email }}", href="mailto:{{ player.email }}") {{ player.email}}
-  ul.list-group.list-group-flush
-    li.list-group-item.text-center(*ngIf="!player.current_character")
-      small.font-italic(*ngIf="!player.current_character") No active character
-    li.btn.list-group-item.d-flex.justify-content-between.w-100.bg-dark.text-white(*ngIf="player.current_character", [routerLink]="['/characters', player.current_character.id]")
-      small.text-1-line {{ player.current_character.name }}
-      small
-        i.fas.fa-arrow-alt-circle-right
+    .text-1-line
+      mat-icon(fontSet="fas", fontIcon="fa-envelope")
+      a(fxFlex, title="{{ player.email }}", href="mailto:{{ player.email }}")
+        small.text-1-line(title="{{ player.email }}") {{ player.email}}
+  mat-card-actions(fxLayoutGap="10px grid")
+    div
+      a(disabled, fxFlex="", mat-stroked-button="", *ngIf="!player.current_character") No active character
+    div
+      a(color="primary", fxFlex="", mat-stroked-button="", *ngIf="player.current_character", [routerLink]="['/characters', player.current_character.id]")
+        span(fxLayoutAlign="space-between center")
+          .text-1-line(title="{{ player.current_character.name }}") {{ player.current_character.name}}
+          span
+            mat-icon(fontSet="fas", fontIcon="fa-arrow-alt-circle-right")
+    div
+      a(color="primary", fxFlex="", mat-stroked-button="", [routerLink]="['/characters']")
+        span(fxLayoutAlign="space-between center")
+          .text-1-line See all characters
+          span
+            mat-icon(fontSet="fas", fontIcon="fa-arrow-alt-circle-right")
