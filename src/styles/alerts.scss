@@ -1,0 +1,16 @@
+.alert {
+  padding: 15px;
+  border-radius: 10px;
+
+  border: 1px solid #9e9998;
+
+  &.info {
+    background-image: linear-gradient(to left, #aad8eb, #8ab8cb) !important;
+  }
+
+  &.danger {
+    background-image: linear-gradient(to left, #be957dc0, #b94d35) !important;
+  }
+}
+
+

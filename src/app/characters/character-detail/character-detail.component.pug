@@ -1,7 +1,7 @@
 .row([@fadeInAnimation]="")
   .col-12.col-md-4
     .card
-      .card-header.bg-dark.text-white.text-center.text-1-line
+      .card-header.bg-dark.text-white.text-1-line
         span.text-1-line(title="{{ character.name }}") {{ character.name }}
       .card-img([style.background-image]="'url(' + (character.image || './assets/images/players/placeholder.png') + ')'")
       .card-body

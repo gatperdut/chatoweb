@@ -1,12 +1,12 @@
-mat-card.mat-elevation-z5([@fadeInAnimation]="")
+mat-card.cw-gradient.mat-elevation-z5([@fadeInAnimation]="")
   mat-card-subtitle(fxLayout="row", fxLayoutAlign="space-between center")
     mat-icon.text-warning(title="Pending confirmation", fontSet="fas", fontIcon="fa-question", *ngIf="!player.confirmed")
     mat-icon.text-valid(title="Confirmed", fontSet="fas", fontIcon="fa-check", *ngIf="player.confirmed")
     mat-icon.text-invalid(title="Access locked", fontSet="fas", fontIcon="fa-locked", *ngIf="player.access_locked")
     .text-1-line(title="{{ player.nickname }}") {{ player.nickname }}
     mat-icon(title="Regular player", fontSet="fas", fontIcon="fa-user", *ngIf="player.roleIs.regular()")
-    mat-icon.admin(title="Admin", fontSet="fas", fontIcon="fa-user-shield", *ngIf="player.roleIs.admin()")
-    mat-icon.owner(title="Owner", fontSet="fas", fontIcon="fa-crown", *ngIf="player.roleIs.owner()")
+    mat-icon.role-admin(title="Admin", fontSet="fas", fontIcon="fa-user-shield", *ngIf="player.roleIs.admin()")
+    mat-icon.role-owner(title="Owner", fontSet="fas", fontIcon="fa-crown", *ngIf="player.roleIs.owner()")
   img(mat-card-image, [style.background-image]="'url(' + (player.image || './assets/images/players/placeholder.png') + ')'")
   mat-card-content
     .text-1-line

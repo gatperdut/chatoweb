@@ -1,9 +1,10 @@
-.text-center(*ngIf="loading")
+(*ngIf="loading")
   .i.fas.fa-10x.fa-cog.fa-spin
 
 mat-sidenav-container([hasBackdrop]="true", *ngIf="!loading")
-  mat-sidenav(#sidebar="", mode="over")
+  mat-sidenav.cw-gradient(#sidebar="", mode="over")
     cw-system
   mat-sidenav-content
       cw-header
-      router-outlet
+      .p-3
+        router-outlet

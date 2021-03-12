@@ -3,11 +3,11 @@
     div(fxLayout="row wrap", fxLayoutAlign="start center", fxLayoutGap="25px")
       mat-form-field
         mat-hint Search by nickname or email
-        input(type="text", matInput, formControlName="term", [errorStateMatcher]="matcher", spellcheck="false", cwDelayedInput, (delayedInput)="query()")
+        input(type="text", matInput, formControlName="term", spellcheck="false", cwDelayedInput, (delayedInput)="query()")
         mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-user")
 
-      mat-button-toggle-group(formControlName="roles[]", multiple="")
-        mat-button-toggle(value="regular",  color="primary")
+      mat-button-toggle-group(formControlName="roles", multiple, (change)="query()")
+        mat-button-toggle(value="regular")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-user")
           small Regular
         mat-button-toggle(value="admin")
@@ -17,8 +17,8 @@
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-crown")
           small Owner
 
-      mat-button-toggle-group(formControlName="status")
-        mat-button-toggle(value="all", color="primary")
+      mat-button-toggle-group(formControlName="status", (change)="query()")
+        mat-button-toggle(value="all")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-users")
           small All
         mat-button-toggle(value="confirmed", color="primary")
@@ -31,10 +31,10 @@
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-lock")
           small Locked
 
-  div(fxLayout="column", fxLayoutAlign="space-evenly center")
-    .alert.alert-info(*ngIf="!loading && !players.length") No players found matching your criteria
+  .mt-3(fxLayout="column", fxLayoutAlign="center center")
+    .alert.info(*ngIf="!loading && !players.length") No players found matching your criteria
     i.fas.fa-10x.fa-cog.fa-spin(*ngIf="loading")
 
-  div(fxLayout="row wrap", fxLayoutAlign="start center", fxLayoutGap="15px grid")
+  .mt-3(fxLayout="row wrap", fxLayoutAlign="start center", fxLayoutGap="15px grid")
     div(fxFlex.lt-sm="50%", fxFlex.lt-md="33%", fxFlex.lt-lg="25%", fxFlex.lt-xl="20%", *ngFor="let player of players")
       cw-player-card([player]="player")

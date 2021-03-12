@@ -17,9 +17,9 @@ div(*ngIf="state.mode.is.signin()")
         mat-hint Your account will be locked after 3 failed attempts.
         mat-error(*ngIf="signinFormGroup.controls.password.hasError('required')")
           | Provide your password
-      div(fxLayout="row", *ngIf="state.signin.errors")
-        .alert.alert-danger.text-center(*ngFor="let error of state.signin.errors") {{ error }}
-      div(fxLayout="row", fxLayoutAlign="space-evenly center")
+      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.signin.errors")
+        .alert.danger(*ngFor="let error of state.signin.errors") {{ error }}
+      .mt-2(fxLayout="row", fxLayoutAlign="space-evenly center")
         a(mat-button="", (click)="switchMode(Mode.Signup)") Don't have an account?
         a(mat-button="", (click)="switchMode(Mode.PasswordReset)") Forgot your password?
     mat-dialog-actions(align="end")
@@ -63,9 +63,10 @@ div(*ngIf="state.mode.is.signup()")
           | This field is required
         mat-error(*ngIf="!signupFormGroup.controls.passwordConfirmation.hasError('required') && signupFormGroup.controls.passwordConfirmation.hasError('fieldsMismatched')")
           | Passwords are mismatched
-      div(*ngIf="state.signup.errors")
-        .alert.alert-danger.text-center(*ngFor="let error of state.signup.errors") {{ error }}
-      .alert.alert-primary.text-center(*ngIf="state.signup.success") Check your email
+      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.signup.errors")
+        .alert.danger(*ngFor="let error of state.signup.errors") {{ error }}
+      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.signup.success")
+        .alert.info Check your email
       div(fxLayout="row", fxLayoutAlign="space-evenly center")
         a(mat-button="", (click)="switchMode(Mode.Signin)") Already have an account?
     mat-dialog-actions(align="end")
@@ -87,10 +88,11 @@ div(*ngIf="state.mode.is.passwordReset()")
           | Provide a valid email address
         mat-error(*ngIf="passwordResetFormGroup.controls.email.hasError('required')")
           | Email is required
-      div(*ngIf="state.passwordReset.errors")
-        .alert.alert-danger.text-center(*ngFor="let error of state.passwordReset.errors") {{ error }}
-      .alert.alert-primary.text-center(*ngIf="state.passwordReset.success") Check your email
-      div(fxLayout="row", fxLayoutAlign="space-evenly center")
+      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.passwordReset.errors")
+        .alert.danger(*ngFor="let error of state.passwordReset.errors") {{ error }}
+      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.passwordReset.success")
+        .alert.info Check your email
+      .mt-2(fxLayout="row", fxLayoutAlign="space-evenly center")
         a(mat-button="", (click)="switchMode(Mode.Signin)") Click here to sign in
         a(mat-button="", (click)="switchMode(Mode.Signup)") ... or here to register
     mat-dialog-actions(align="end")
@@ -104,8 +106,8 @@ div(*ngIf="state.mode.is.authenticated()")
   div(*ngIf="player")
     h4(mat-dialog-title="") {{ player.nickname }}
     mat-dialog-content(flexLayout="column")
-      div(*ngIf="state.signout.errors")
-        .alert.alert-danger.text-center(*ngFor="let error of state.signout.errors") {{ error }}
+      .mt-2(fxLayout="row", fxLayoutAlign="space-evenly center", *ngIf="state.signout.errors")
+        .alert.danger(*ngFor="let error of state.signout.errors") {{ error }}
     mat-dialog-actions(align="end")
       button(mat-dialog-close="", mat-button="", color="basic") Close
       button(type="button", mat-raised-button="", color="warn", [disabled]="state.signout.loading", (click)="onSignout()")

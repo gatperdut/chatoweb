@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Player } from './model/player.model';
@@ -7,8 +7,7 @@ import { PlayerService } from './services/player.service';
 import { PlayerRoleService } from './services/player-role.service';
 import { PlayerQuery } from './types/player-query.type';
 import { PlayerStatusService } from './services/player-status.service';
-import { GlobalErrorStateMatcher } from '../shared/forms/global.error-state-matcher';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 
 @Component({
   selector: 'cw-players',
@@ -29,59 +28,33 @@ export class PlayersComponent implements OnInit {
 
   }
 
-  public matcher = new GlobalErrorStateMatcher();
-
   public playerQueryFormGroup = new FormGroup(
     {
-      'term': new FormControl(
-        '',
+      term: new FormControl(
+        'sdfadsf',
         []
       ),
-      'roles[]': new FormControl(
-        '',
+      roles: new FormControl(
+        [],
         []
       ),
-      'status': new FormControl(
-        '',
-        []
+      status: new FormControl(
+        'all',
+        [
+          Validators.required
+        ]
       )
     }
   );
 
-  public playerQuery: PlayerQuery = {
-    term: '',
-    roles: [],
-    _roles: {
-      regular: false,
-      admin: false,
-      owner: false
-    },
-    status: ''
-  };
-
   ngOnInit(): void {
-    this.query();
-  }
-
-  public updateRoles(): void {
-    this.playerQuery.roles = [];
-
-    _.each(
-      this.playerRoleService.roles,
-      (role: string): void => {
-        if (this.playerQuery._roles[role]) {
-          this.playerQuery.roles.push(role);
-        }
-      }
-    );
-
     this.query();
   }
 
   public query(): void {
     this.loading = true;
 
-    this.playerService.index(this.playerQuery)
+    this.playerService.index(<PlayerQuery>this.playerQueryFormGroup.value)
     .pipe(
       first()
     )
