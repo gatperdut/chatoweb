@@ -34,5 +34,26 @@
               | {{ kword }}
               mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
             input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="add($event)")
-        div(formGroupName="attribute_set")
-          mat-slider([max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="str")
+
+        div(formGroupName="attribute_set", fxLayout="row wrap", fxLayoutAlign="start start")
+          div(fxLayout="column")
+            mat-label.pl-2 Strength
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="str")
+          div(fxLayout="column")
+            mat-label.pl-2 Constitution
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="con")
+          div(fxLayout="column")
+            mat-label.pl-2 Agility
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="agi")
+          div(fxLayout="column")
+            mat-label.pl-2 Dexterity
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="dex")
+          div(fxLayout="column")
+            mat-label.pl-2 Intelligence
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="int")
+          div(fxLayout="column")
+            mat-label.pl-2 Willpower
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="wil")
+          div(fxLayout="column")
+            mat-label.pl-2 Power
+            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="pow")

@@ -2,14 +2,14 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable, OnInit } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
-import { SystemInfo } from "../types/system-info.type";
+import { Constants } from "./types/constants.type";
 
 @Injectable({
   providedIn: 'root'
 })
-export class SystemService implements OnInit {
+export class ConstantsService implements OnInit {
 
-  public systemInfoSubject: BehaviorSubject<SystemInfo> = new BehaviorSubject<SystemInfo>(null);
+  public constantsSubject: BehaviorSubject<Constants> = new BehaviorSubject<Constants>(null);
 
   constructor(
     private httpClient: HttpClient
@@ -21,12 +21,12 @@ export class SystemService implements OnInit {
   }
 
   public fetch(): void {
-    this.httpClient.get<SystemInfo>(
-      environment.cmBaseUrl + '/system/info'
+    this.httpClient.get<Constants>(
+      environment.cmBaseUrl + '/constants'
     )
     .subscribe(
-      (systemInfo: SystemInfo): void => {
-        this.systemInfoSubject.next(systemInfo);
+      (constants: Constants): void => {
+        this.constantsSubject.next(constants);
       }
     );
   }

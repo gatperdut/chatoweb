@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthenticationService } from './authentication/services/authentication.service';
 import { Player } from './players/model/player.model';
 import { SidebarService } from './services/sidebar.service';
+import { ConstantsService } from './shared/constants/constants.service';
 import { SystemService } from './system/services/system.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class CwComponent implements OnInit, OnDestroy {
 
   constructor(
     private systemService: SystemService,
+    private constantsService: ConstantsService,
     private authenticationService: AuthenticationService,
     private sidebarService: SidebarService
   ) {
@@ -46,6 +48,8 @@ export class CwComponent implements OnInit, OnDestroy {
     );
 
     this.systemService.fetch();
+
+    this.constantsService.fetch();
   }
 
   ngOnDestroy():void {
