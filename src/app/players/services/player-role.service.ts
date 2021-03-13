@@ -19,17 +19,4 @@ export class PlayerRoleService {
 
   }
 
-  public rolesHash(): _booleanHash {
-    const result: _booleanHash = {};
-
-    _.each.bind(this)(
-      this.roles,
-      (role: string): void => {
-        result[role] = false;
-      }
-    );
-
-    return result;
-  }
-
 }

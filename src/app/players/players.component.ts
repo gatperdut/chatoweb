@@ -21,9 +21,7 @@ export class PlayersComponent implements OnInit {
   public loading: boolean = true;
 
   constructor(
-    private playerService: PlayerService,
-    private playerRoleService: PlayerRoleService,
-    private playerStatusService: PlayerStatusService
+    private playerService: PlayerService
   ) {
 
   }
@@ -31,7 +29,7 @@ export class PlayersComponent implements OnInit {
   public playerQueryFormGroup = new FormGroup(
     {
       term: new FormControl(
-        'sdfadsf',
+        '',
         []
       ),
       roles: new FormControl(

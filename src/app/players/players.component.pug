@@ -1,12 +1,12 @@
 .players
   form([formGroup]="playerQueryFormGroup")
-    div(fxLayout="row wrap", fxLayoutAlign="start center", fxLayoutGap="25px")
-      mat-form-field
+    div(fxLayout="row wrap", fxLayoutAlign="center start", fxLayoutGap="25px")
+      mat-form-field.mt-2
         mat-hint Search by nickname or email
         input(type="text", matInput, formControlName="term", spellcheck="false", cwDelayedInput, (delayedInput)="query()")
         mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-user")
 
-      mat-button-toggle-group(formControlName="roles", multiple, (change)="query()")
+      mat-button-toggle-group.mt-2(formControlName="roles", multiple, (change)="query()")
         mat-button-toggle(value="regular")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-user")
           small Regular
@@ -17,7 +17,7 @@
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-crown")
           small Owner
 
-      mat-button-toggle-group(formControlName="status", (change)="query()")
+      mat-button-toggle-group.mt-2(formControlName="status", (change)="query()")
         mat-button-toggle(value="all")
           mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-users")
           small All

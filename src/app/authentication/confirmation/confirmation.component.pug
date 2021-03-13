@@ -1,9 +1,3 @@
-.row
-  .col-12.col-md-6.col-lg-4.offset-md-3.offset-lg-4
-    .card(*ngIf="accountConfirmationSuccess")
-      .card-header
-        | Welcome to ChatoMud
-      .card-body
-        h5.card-title Your account has been confirmed
-        p.card-text You can sign in on the top right corner.
-    .alert.danger(fxLayout="row", fxLayoutAlign="center center", *ngIf="!accountConfirmationSuccess") Something went wrong with the account confirmation
+div(fxLayout="column", fxLayoutAlign="start center")
+  .alert.danger(*ngIf="!accountConfirmationSuccess") Something went wrong with the account confirmation.
+  .alert.info(*ngIf="accountConfirmationSuccess") Your account in ChatoMud has been confirmed - sign in in the top right corner.

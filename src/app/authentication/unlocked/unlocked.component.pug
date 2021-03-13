@@ -1,9 +1,3 @@
-.row
-  .col-12.col-md-6.col-lg-4.offset-md-3.offset-lg-4
-    .card(*ngIf="unlock")
-      .card-header
-        | Welcome back to ChatoMud
-      .card-body
-        h5.card-title Your account has been unlocked
-        p.card-text Try signing in again.
-    .alert.alert-danger(*ngIf="!unlock") Something went wrong while unlocking your account.
+div(fxLayout="column", fxLayoutAlign="start center")
+  .alert.danger(*ngIf="!unlock") Something went wrong while unlocking your account
+  .alert.info(*ngIf="unlock") Your account in ChatoMud has been unlocked - try signin in again.

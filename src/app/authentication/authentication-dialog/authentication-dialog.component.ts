@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { GlobalErrorStateMatcher } from 'src/app/shared/forms/global.error-state-matcher';
 import { Router } from '@angular/router';
+import { mustMatch } from 'src/app/shared/forms/must-match.validator';
 
 @Component({
   selector: 'cw-authentication-dialog',
@@ -27,6 +28,8 @@ export class AuthenticationDialogComponent implements OnInit, OnDestroy {
   public player: Player;
 
   public playerSubscription: Subscription;
+
+  public matcher = new GlobalErrorStateMatcher();
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -84,8 +87,6 @@ export class AuthenticationDialogComponent implements OnInit, OnDestroy {
     }
   );
 
-  public matcher = new GlobalErrorStateMatcher();
-
   public onSignin(): void {
     clearFormState(this.state.signin);
     this.state.signin.loading = true;
@@ -105,20 +106,6 @@ export class AuthenticationDialogComponent implements OnInit, OnDestroy {
         this.state.signin.loading = false;
       }
     );
-  }
-
-  private mustMatch(field: string): ValidatorFn {
-    return (abstractControl: AbstractControl): (ValidationErrors | null) => {
-      if (!abstractControl.parent) {
-        return null;
-      }
-
-      const matchingAbstractControl: AbstractControl = abstractControl.parent.get(field);
-
-      const match: boolean = abstractControl.value === matchingAbstractControl.value;
-
-      return match ? null : { fieldsMismatched: true };
-    }
   }
 
   public signupFormGroup = new FormGroup(
@@ -147,7 +134,7 @@ export class AuthenticationDialogComponent implements OnInit, OnDestroy {
         '',
         [
           Validators.required,
-          this.mustMatch('password')
+          mustMatch('password')
         ]
       )
     }

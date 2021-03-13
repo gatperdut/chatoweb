@@ -2,7 +2,7 @@ div(*ngIf="state.mode.is.signin()")
   form([formGroup]="signinFormGroup", (ngSubmit)="onSignin()")
     h4(mat-dialog-title="") Sign in
     mat-dialog-content(fxLayout="column")
-      mat-form-field(fxFlex="")
+      mat-form-field
         mat-label Email
         input(type="email", matInput, formControlName="email", [errorStateMatcher]="matcher", spellcheck="false")
         mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-envelope")
@@ -10,18 +10,19 @@ div(*ngIf="state.mode.is.signin()")
           | This field is required
         mat-error(*ngIf="signinFormGroup.controls.email.hasError('email') && !signinFormGroup.controls.email.hasError('required')")
           | Provide a valid email address
-      mat-form-field(fxFlex="")
+      mat-form-field
         mat-label Password
         input(type="password", matInput, formControlName="password", [errorStateMatcher]="matcher")
         mat-icon(matSuffix="", fontSet="fas", fontIcon="fa-lock")
         mat-hint Your account will be locked after 3 failed attempts.
         mat-error(*ngIf="signinFormGroup.controls.password.hasError('required')")
           | Provide your password
-      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.signin.errors")
-        .alert.danger(*ngFor="let error of state.signin.errors") {{ error }}
-      .mt-2(fxLayout="row", fxLayoutAlign="space-evenly center")
-        a(mat-button="", (click)="switchMode(Mode.Signup)") Don't have an account?
-        a(mat-button="", (click)="switchMode(Mode.PasswordReset)") Forgot your password?
+      div(fxLayout="column", fxLayoutAlign="start center")
+        div(*ngIf="state.signin.errors")
+          .alert.danger.mt-2(*ngFor="let error of state.signin.errors") {{ error }}
+        .mt-2
+          a(fxFill, mat-button="", (click)="switchMode(Mode.Signup)") Don't have an account?
+          a(fxFill, mat-button="", (click)="switchMode(Mode.PasswordReset)") Forgot your password?
     mat-dialog-actions(align="end")
       button(mat-dialog-close="", mat-button="", color="basic") Close
       button(type="submit", mat-raised-button="", color="primary", [disabled]="signinFormGroup.invalid || state.signin.loading")
@@ -63,12 +64,13 @@ div(*ngIf="state.mode.is.signup()")
           | This field is required
         mat-error(*ngIf="!signupFormGroup.controls.passwordConfirmation.hasError('required') && signupFormGroup.controls.passwordConfirmation.hasError('fieldsMismatched')")
           | Passwords are mismatched
-      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.signup.errors")
-        .alert.danger(*ngFor="let error of state.signup.errors") {{ error }}
-      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.signup.success")
-        .alert.info Check your email
-      div(fxLayout="row", fxLayoutAlign="space-evenly center")
-        a(mat-button="", (click)="switchMode(Mode.Signin)") Already have an account?
+      div(fxLayout="column", fxLayoutAlign="start center")
+        div(*ngIf="state.signup.errors")
+          .alert.danger.mt-2(*ngFor="let error of state.signup.errors") {{ error }}
+        .mt-2(*ngIf="state.signup.success")
+          .alert.info Check your email
+        .mt-2
+          a(fxFill, mat-button="", (click)="switchMode(Mode.Signin)") Already have an account?
     mat-dialog-actions(align="end")
       button(mat-dialog-close="", mat-button="", color="basic") Close
       button(type="submit", mat-raised-button="", color="primary", [disabled]="signupFormGroup.invalid || state.signup.loading")
@@ -88,13 +90,14 @@ div(*ngIf="state.mode.is.passwordReset()")
           | Provide a valid email address
         mat-error(*ngIf="passwordResetFormGroup.controls.email.hasError('required')")
           | Email is required
-      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.passwordReset.errors")
-        .alert.danger(*ngFor="let error of state.passwordReset.errors") {{ error }}
-      .mt-2(fxLayout="row", fxLayoutAlign="center center", *ngIf="state.passwordReset.success")
-        .alert.info Check your email
-      .mt-2(fxLayout="row", fxLayoutAlign="space-evenly center")
-        a(mat-button="", (click)="switchMode(Mode.Signin)") Click here to sign in
-        a(mat-button="", (click)="switchMode(Mode.Signup)") ... or here to register
+      div(fxLayout="column", fxLayoutAlign="start center")
+        div(*ngIf="state.passwordReset.errors")
+          .alert.danger.mt-2(*ngFor="let error of state.passwordReset.errors") {{ error }}
+        .mt-2(*ngIf="state.passwordReset.success")
+          .alert.info Check your email
+        .mt-2
+          a(fxFill, mat-button="", (click)="switchMode(Mode.Signin)") Click here to sign in
+          a(fxFill, mat-button="", (click)="switchMode(Mode.Signup)") ... or here to register
     mat-dialog-actions(align="end")
       button(mat-dialog-close="", mat-button="", color="basic") Close
       button(type="submit", mat-raised-button="", color="primary", [disabled]="passwordResetFormGroup.invalid || state.passwordReset.loading")
