@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { AuthenticationService } from './authentication/services/authentication.service';
 import { Player } from './players/model/player.model';
 import { SidebarService } from './services/sidebar.service';
@@ -19,8 +19,6 @@ export class CwComponent implements OnInit, OnDestroy {
 
   private sidebarSubscription: Subscription;
 
-  private automaticSigninSubscription: Subscription;
-
   constructor(
     private systemService: SystemService,
     private constantsService: ConstantsService,
@@ -32,9 +30,15 @@ export class CwComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = true;
-    this.automaticSigninSubscription = this.authenticationService.automaticSignin()
-    .subscribe(
-      (player: Player): void => {
+
+    forkJoin(
+      [
+        this.authenticationService.automaticSignin(),
+        this.systemService.fetch(),
+        this.constantsService.fetch()
+      ]
+    ).subscribe(
+      (): void => {
         this.loading = false;
       }
     );
@@ -46,15 +50,9 @@ export class CwComponent implements OnInit, OnDestroy {
         }
       }
     );
-
-    this.systemService.fetch();
-
-    this.constantsService.fetch();
   }
 
   ngOnDestroy():void {
-    this.automaticSigninSubscription.unsubscribe();
-
     this.sidebarSubscription.unsubscribe();
   }
 

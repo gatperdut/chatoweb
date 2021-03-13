@@ -8,11 +8,9 @@ import { SystemInfo } from './types/system-info.type';
   templateUrl: './system.component.html',
   styleUrls: ['./system.component.scss']
 })
-export class SystemComponent implements OnInit, OnDestroy {
+export class SystemComponent implements OnInit {
 
-  private systemInfoSubscription: Subscription;
-
-  public systemInfo: SystemInfo = null;
+  public systemInfo: SystemInfo;
 
   constructor(
     private systemService: SystemService
@@ -21,15 +19,7 @@ export class SystemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.systemInfoSubscription = this.systemService.systemInfoSubject.subscribe(
-      (systemInfo: SystemInfo): void => {
-        this.systemInfo = systemInfo;
-      }
-    )
-  }
-
-  ngOnDestroy(): void {
-    this.systemInfoSubscription.unsubscribe();
+    this.systemInfo = this.systemService.systemInfo;
   }
 
 }

@@ -28,4 +28,14 @@ export class AttributeSetService {
     );
   }
 
+  public attributeName: { [key: string]: string } = {
+    str: 'Strength',
+    con: 'Constitution',
+    agi: 'Agility',
+    dex: 'Dexterity',
+    int: 'Intelligence',
+    wil: 'Willpower',
+    pow: 'Power'
+  }
+
 }

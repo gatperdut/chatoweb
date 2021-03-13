@@ -4,7 +4,11 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from 'src/app/shared/animations/fade-in.animation';
 import { chipSeparatorKeysCodes } from 'src/app/shared/chips/chips.constants';
+import { ConstantsService } from 'src/app/shared/constants/constants.service';
+import * as _ from 'underscore';
+import { AttributeSetData } from '../models/attribute-set.data';
 import { Character } from '../models/character.model';
+import { AttributeSetService } from '../services/attribute-set.service';
 
 @Component({
   selector: 'cw-character-detail',
@@ -23,7 +27,9 @@ export class CharacterDetailComponent implements OnInit {
   public chipSeparatorKeysCodes = chipSeparatorKeysCodes;
 
   constructor(
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public constantsService: ConstantsService,
+    public attributeSetService: AttributeSetService
   ) {
 
   }
@@ -35,68 +41,41 @@ export class CharacterDetailComponent implements OnInit {
       {
         name: new FormControl(
           this.character.name,
-          [
-            Validators.required
-          ]
+          [Validators.required]
         ),
         short_desc: new FormControl(
           this.character.short_desc,
-          [
-            Validators.required
-          ]
+          [Validators.required]
         ),
         long_desc: new FormControl(
           this.character.long_desc,
-          [
-            Validators.required
-          ]
+          [Validators.required]
         ),
         full_desc: new FormControl(
           this.character.full_desc,
-          [
-            Validators.required
-          ]
+          [Validators.required]
         ),
         kwords: new FormControl(
           this.character.kwords,
-          [
-            Validators.minLength(1)
-          ]
+          [Validators.minLength(1)]
         ),
-        attribute_set: new FormGroup(
-          {
-            str: new FormControl(
-              this.character.attribute_set.str,
-              []
-            ),
-            con: new FormControl(
-              this.character.attribute_set.con,
-              []
-            ),
-            agi: new FormControl(
-              this.character.attribute_set.agi,
-              []
-            ),
-            dex: new FormControl(
-              this.character.attribute_set.dex,
-              []
-            ),
-            int: new FormControl(
-              this.character.attribute_set.int,
-              []
-            ),
-            wil: new FormControl(
-              this.character.attribute_set.wil,
-              []
-            ),
-            pow: new FormControl(
-              this.character.attribute_set.pow,
-              []
-            )
-          }
-        )
+        attribute_set: new FormGroup({})
       }
     );
+
+    _.each(
+      this.constantsService.constants.attributes.list,
+      (attribute: string): void => {
+        const formControl = new FormControl(
+          this.character.attribute_set[attribute as keyof AttributeSetData],
+          [
+            Validators.required
+          ]
+        );
+
+        (<FormGroup>this.characterFormGroup.controls.attribute_set).controls[attribute] = formControl;
+      }
+    )
   }
 
   public add(event: MatChipInputEvent): void {

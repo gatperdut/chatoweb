@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Constants } from "./types/constants.type";
 
@@ -9,7 +9,7 @@ import { Constants } from "./types/constants.type";
 })
 export class ConstantsService implements OnInit {
 
-  public constantsSubject: BehaviorSubject<Constants> = new BehaviorSubject<Constants>(null);
+  public constants: Constants;
 
   constructor(
     private httpClient: HttpClient
@@ -20,15 +20,18 @@ export class ConstantsService implements OnInit {
   ngOnInit(): void {
   }
 
-  public fetch(): void {
-    this.httpClient.get<Constants>(
+  public fetch(): Observable<Constants> {
+    const observable: Observable<Constants> = this.httpClient.get<Constants>(
       environment.cmBaseUrl + '/constants'
-    )
-    .subscribe(
+    );
+
+    observable.subscribe(
       (constants: Constants): void => {
-        this.constantsSubject.next(constants);
+        this.constants = constants;;
       }
     );
+
+    return observable;
   }
 
 }
