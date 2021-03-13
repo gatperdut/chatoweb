@@ -8,7 +8,7 @@ mat-card.cw-gradient.mat-elevation-z5([@fadeInAnimation]="")
     mat-icon.role-admin(title="Admin", fontSet="fas", fontIcon="fa-user-shield", *ngIf="player.roleIs.admin()")
     mat-icon.role-owner(title="Owner", fontSet="fas", fontIcon="fa-crown", *ngIf="player.roleIs.owner()")
   img(mat-card-image, [style.background-image]="'url(' + (player.image || './assets/images/players/placeholder.png') + ')'")
-  mat-card-content
+  mat-card-content.mb-0
     .text-1-line
       mat-icon(fontSet="fas", fontIcon="fa-calendar-plus")
       small(title="{{ player.created_at | date:'mediumDate':'GMT' }}") {{ player.created_at | date:'mediumDate':'GMT' }}
@@ -16,17 +16,17 @@ mat-card.cw-gradient.mat-elevation-z5([@fadeInAnimation]="")
       mat-icon(fontSet="fas", fontIcon="fa-envelope")
       a(fxFlex, title="{{ player.email }}", href="mailto:{{ player.email }}")
         small.text-1-line(title="{{ player.email }}") {{ player.email}}
-  mat-card-actions(fxLayoutGap="10px grid")
+  mat-card-actions.pt-0(fxLayoutGap="15px grid")
     div
-      a(disabled, fxFlex="", mat-stroked-button="", *ngIf="!player.current_character") No active character
+      a(disabled, fxFlex, mat-stroked-button, *ngIf="!player.current_character") No active character
     div
-      a(color="primary", fxFlex="", mat-stroked-button="", *ngIf="player.current_character", [routerLink]="['/characters', player.current_character.id]")
+      a(color="primary", fxFill, mat-stroked-button, *ngIf="player.current_character", [routerLink]="['/characters', player.current_character.id]")
         span(fxLayoutAlign="space-between center")
           .text-1-line(title="{{ player.current_character.name }}") {{ player.current_character.name}}
           span
             mat-icon(fontSet="fas", fontIcon="fa-arrow-alt-circle-right")
     div
-      a(color="primary", fxFlex="", mat-stroked-button="", [routerLink]="['/characters']")
+      a(color="primary", fxFill, mat-stroked-button, [routerLink]="['/characters']")
         span(fxLayoutAlign="space-between center")
           .text-1-line See all characters
           span

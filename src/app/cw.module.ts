@@ -4,12 +4,14 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
@@ -68,14 +70,15 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
+    MatChipsModule,
     MatDialogModule,
+    MatIconModule,
     MatInputModule,
     MatListModule,
-    MatIconModule,
-    MatToolbarModule,
     MatMenuModule,
     MatSidenavModule,
-
+    MatSliderModule,
+    MatToolbarModule,
     // ChatoWeb
     CwRoutingModule
   ],

@@ -1,15 +1,15 @@
 mat-toolbar(fxLayout="row", fxLayoutAlign="start center", color="primary")
-  button(mat-icon-button="", (click)="sidebarService.toggle()")
+  button(mat-icon-button, (click)="sidebarService.toggle()")
     mat-icon(fontSet="fas", fontIcon="fa-info")
-  button(mat-button="", routerLink="/", "fxHide.xs"="")
+  button(mat-button, routerLink="/", "fxHide.xs")
     | Home
-  button(mat-button="", routerLink="/players", "fxHide.xs"="")
+  button(mat-button, routerLink="/players", "fxHide.xs")
     | Players
-  button(mat-button="", routerLink="/characters", "fxHide.xs"="")
+  button(mat-button, routerLink="/characters", "fxHide.xs")
     | Characters
-  button(mat-icon-button="", [matMenuTriggerFor]="sidebarMenu", fxHide="", "fxShow.xs"="")
+  button(mat-icon-button, [matMenuTriggerFor]="sidebarMenu", fxHide, "fxShow.xs")
     mat-icon(fontSet="fas", fontIcon="fa-bars")
-  span(fxFlex="")
+  span(fxFlex)
   cw-authentication-widget
   mat-menu(#sidebarMenu="matMenu")
     ng-container

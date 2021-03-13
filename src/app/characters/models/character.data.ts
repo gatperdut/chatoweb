@@ -1,6 +1,10 @@
+import { AttributeSetData } from "./attribute-set.data";
+
 export interface CharacterData {
 
   readonly id: number;
+
+  readonly player_id: number;
 
   name: string;
 
@@ -14,8 +18,6 @@ export interface CharacterData {
 
   kwords: string[];
 
-  player_id: number;
-
   room_id: number;
 
   npc: boolean;
@@ -25,5 +27,7 @@ export interface CharacterData {
   active: boolean;
 
   created_at: Date;
+
+  attribute_set: AttributeSetData;
 
 }

@@ -1,24 +1,38 @@
-.row([@fadeInAnimation]="")
-  .col-12.col-md-4
-    .card
-      .card-header.bg-dark.text-white.text-1-line
-        span.text-1-line(title="{{ character.name }}") {{ character.name }}
-      .card-img([style.background-image]="'url(' + (character.image || './assets/images/players/placeholder.png') + ')'")
-      .card-body
-        .card-text.text-1-line
-          i.fas.fa-calendar-plus
-          small(title="{{ character.created_at | date:'mediumDate':'GMT' }}") {{ character.created_at | date:'mediumDate':'GMT' }}
-  .col-12.col-md-8
-    form(#characterForm="ngForm")
-      .form-group.row
-        .col-sm-2.col-form-label.text-right Name
-        .col-sm-10
-          input.form-control.form-control-sm([(ngModel)]="character.name", name="name", type="text", required="", spellcheck="false")
-      .form-group.row
-        .col-2.col-form-label.text-right Short Desc.
-        .col-sm-10
-          input.form-control.form-control-sm([(ngModel)]="character.short_desc", name="short_desc", type="text", required="", spellcheck="false")
-      .form-group.row
-        .col-2.col-form-label.text-right Long Desc.
-        .col-sm-10
-          input.form-control.form-control-sm([(ngModel)]="character.long_desc", name="short_desc", type="text", required="", spellcheck="false")
+.character-detail([@fadeInAnimation]="")
+  form([formGroup]="characterFormGroup", fxLayout="row")
+    div(fxFlex.gt-sm="70%", fxFlexOffset.gt-sm="15%", fxFlex="90%", fxFlexOffset="5%")
+      div(fxLayout="row wrap", fxLayoutAlign="center start", fxLayoutGap="15px grid")
+        div(fxFlex.gt-sm="45", fxFlex.lt-md="100")
+          mat-card.cw-gradient.mat-elevation-z5
+            mat-card-title(fxLayout="row", fxLayoutAlign="space-between center")
+              .text-1-line(title="{{ character.name }}") {{ character.name }}
+            img(mat-card-image, [style.background-image]="'url(' + (character.image || './assets/images/players/placeholder.png') + ')'")
+            mat-card-content.mb-0
+              .text-1-line
+                mat-icon(fontSet="fas", fontIcon="fa-calendar-plus")
+                small(title="{{ character.created_at | date:'mediumDate':'GMT' }}") {{ character.created_at | date:'mediumDate':'GMT' }}
+        div(fxFlex.gt-sm="5", fxFlex.lt-md="0")
+        div(fxFlex.gt-sm="50", fxFlex.lt-md="100")
+          form([formGroup]="characterFormGroup", fxLayout="column", fxLayoutAlign="start stretch")
+            mat-form-field
+              mat-hint Character's name
+              input(type="text", matInput, formControlName="name", spellcheck="false")
+            mat-form-field
+              mat-hint Character's short description
+              input(type="text", matInput, formControlName="short_desc", spellcheck="false")
+            mat-form-field
+              mat-hint Character's long description
+              input(type="text", matInput, formControlName="long_desc", spellcheck="false")
+            mat-form-field
+              mat-hint Character's full description
+              input(type="text", matInput, formControlName="full_desc", spellcheck="false")
+
+        mat-form-field(fxFill)
+          mat-label Character's keywords
+          mat-chip-list(#kwordsChipList="", formControlName="kwords")
+            mat-chip(*ngFor="let kword of characterFormGroup.controls.kwords.value", (removed)="remove(kword)")
+              | {{ kword }}
+              mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
+            input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="add($event)")
+        div(formGroupName="attribute_set")
+          mat-slider([max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", formControlName="str")

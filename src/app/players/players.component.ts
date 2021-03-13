@@ -1,13 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Player } from './model/player.model';
-import { PlayerService } from './services/player.service';
-import { PlayerRoleService } from './services/player-role.service';
+import { PlayerActionsService } from './services/player-actions.service';
 import { PlayerQuery } from './types/player-query.type';
-import { PlayerStatusService } from './services/player-status.service';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'cw-players',
@@ -21,7 +19,7 @@ export class PlayersComponent implements OnInit {
   public loading: boolean = true;
 
   constructor(
-    private playerService: PlayerService
+    private playerActionsService: PlayerActionsService
   ) {
 
   }
@@ -52,7 +50,7 @@ export class PlayersComponent implements OnInit {
   public query(): void {
     this.loading = true;
 
-    this.playerService.index(<PlayerQuery>this.playerQueryFormGroup.value)
+    this.playerActionsService.index(<PlayerQuery>this.playerQueryFormGroup.value)
     .pipe(
       first()
     )

@@ -7,6 +7,7 @@ import { environment } from "src/environments/environment";
 import * as _ from "underscore";
 import { Character } from "../models/character.model";
 import { CharacterData } from '../models/character.data';
+import { CharacterService } from "../services/character.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class CharacterResolver implements Resolve<Character> {
 
   constructor(
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private characterService: CharacterService
   ) {
 
   }
@@ -32,23 +34,7 @@ export class CharacterResolver implements Resolve<Character> {
     )
     .pipe(
       map(
-        (characterData: CharacterData): Character => {
-          return new Character(
-            characterData.id,
-            characterData.name,
-            characterData.image,
-            characterData.short_desc,
-            characterData.long_desc,
-            characterData.full_desc,
-            characterData.kwords,
-            characterData.player_id,
-            characterData.room_id,
-            characterData.npc,
-            characterData.gladiator,
-            characterData.active,
-            characterData.created_at
-          );
-        },
+        this.characterService.craftCharacter.bind(this.characterService),
         (httpErrorResponse: HttpErrorResponse): Observable<Character> => {
           this.router.navigate(['/']);
           return throwError(httpErrorResponse);
