@@ -18,17 +18,4 @@ export class AttributeSet implements AttributeSetData {
 
   }
 
-  public average(attributeNames: string[]): number {
-    let total = 0.0;
-
-    _.each(
-      attributeNames,
-      (attributeName: string): void => {
-        total += this[attributeName as keyof AttributeSetData]
-      }
-    );
-
-    return Math.round(total / attributeNames.length);
-  }
-
 }

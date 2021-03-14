@@ -1,5 +1,5 @@
 import { AttributeSetData } from "./attribute-set.data";
-import { SkillSet } from "./skill-set.model";
+import { SkillSetData } from "./skill-set.data";
 
 export interface CharacterData {
 
@@ -31,6 +31,6 @@ export interface CharacterData {
 
   attribute_set: AttributeSetData;
 
-  skill_set: SkillSet;
+  skill_set: SkillSetData;
 
 }

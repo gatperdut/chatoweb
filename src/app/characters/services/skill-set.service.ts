@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { ConstantsService } from "src/app/shared/constants/constants.service";
+import { SkillCategory, SkillCategoryRank } from "src/app/shared/constants/types/skill-category-constants.type";
 import * as _ from "underscore";
-import { Character } from "../models/character.model";
+import { CharacterData } from "../models/character.data";
 import { SkillSetData } from "../models/skill-set.data";
 import { SkillSet } from "../models/skill-set.model";
+import { AttributeSetService } from "./attribute-set.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ import { SkillSet } from "../models/skill-set.model";
 export class SkillSetService {
 
   constructor(
-    private constantsService: ConstantsService
+    private constantsService: ConstantsService,
+    private attributeSetService: AttributeSetService
   ) {
 
   }
@@ -67,14 +70,14 @@ export class SkillSetService {
     );
   }
 
-  public skillCategoryRate(character: Character, skillCategoryName: string) {
+  public skillCategoryRate(characterData: CharacterData, skillCategoryName: string) {
     const dependencies: string[] = _.findWhere(
       this.constantsService.constants.skill_categories.all,
       { name: skillCategoryName}
     )
     .dependencies;
 
-    const average = character.attribute_set.average(dependencies);
+    const average = this.attributeSetService.average(characterData.attribute_set, dependencies);
 
     switch(true) {
       case (average <= 15): {
@@ -102,7 +105,17 @@ export class SkillSetService {
   }
 
   public skillCategoryBonus(characterData: CharacterData, skillCategoryName: string): number {
-    return 88;
+    const skillCategoryRateName = this.skillCategoryRate(characterData, skillCategoryName);
+
+    const skillCategoryRank: number = characterData.skill_set[skillCategoryName as keyof SkillSetData];
+
+    const constantsSkillCategoryRanks: SkillCategoryRank[] = this.constantsService.constants.skill_categories.ranks[skillCategoryRateName]
+
+    return _.findWhere(
+      constantsSkillCategoryRanks,
+      { value: skillCategoryRank }
+    )
+    .bonus;
   }
 
 }

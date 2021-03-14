@@ -40,6 +40,19 @@ export class AttributeSetService {
     pow: 'Power'
   }
 
+  public average(attributeSetData: AttributeSetData, attributeNames: string[]): number {
+    let total = 0.0;
+
+    _.each(
+      attributeNames,
+      (attributeName: string): void => {
+        total += attributeSetData[attributeName as keyof AttributeSetData]
+      }
+    );
+
+    return Math.round(total / attributeNames.length);
+  }
+
   public index(value: number): number {
     let index: number = _.findIndex(
       this.constantsService.constants.attributes.bonus,

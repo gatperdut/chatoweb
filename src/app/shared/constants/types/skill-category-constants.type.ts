@@ -10,7 +10,7 @@ export type SkillCategory = {
 };
 
 // TODO: Move to a model.
-export type CategoryRank = {
+export type SkillCategoryRank = {
 
   readonly id: number;
 
@@ -28,6 +28,6 @@ export type SkillCategoryConstants = {
 
   readonly names: string[];
 
-  readonly ranks: { [key: string]: CategoryRank };
+  readonly ranks: { [key: string]: SkillCategoryRank[] };
 
 };
