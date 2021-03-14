@@ -38,6 +38,7 @@ import { AuthenticationDialogComponent } from './authentication/authentication-d
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CharacterAttributesComponent } from './characters/character-detail/character-attributes/character-attributes.component';
 import { SignPipe } from "./shared/pipes/sign.pipe";
+import { CharacterSkillsComponent } from './characters/character-detail/character-skills/character-skills.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { SignPipe } from "./shared/pipes/sign.pipe";
     // Directives
     DelayedInputDirective,
     // Pipes
-    SignPipe
+    SignPipe,
+    CharacterSkillsComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent

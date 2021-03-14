@@ -28,6 +28,8 @@ export type SkillConstants = {
 
   readonly all: Skill[];
 
+  readonly names: string[];
+
   readonly labels: string[];
 
   readonly ranks: { [key: string]: Rank };

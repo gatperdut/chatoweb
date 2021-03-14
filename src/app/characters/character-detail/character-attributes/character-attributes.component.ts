@@ -39,6 +39,7 @@ export class CharacterAttributesComponent implements OnInit {
             Validators.required
           ]
         );
+
         this.attributeSetFormGroupTypecast.addControl(attribute, formControl);
       }
     )

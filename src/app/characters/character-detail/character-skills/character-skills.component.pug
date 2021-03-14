@@ -1,0 +1,9 @@
+.p-3([formGroup]="skillSetFormGroupTypecast", fxLayout="row wrap", fxLayoutAlign="start start", fxLayoutGap="45px 40px grid")
+  div(fxLayout="column", *ngFor="let skill of constantsService.constants.skills.names")
+    mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
+      span {{ skill }}
+      span([matBadge]="characterFormGroup.value.skill_set[skill]")
+    mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", [formControlName]="skill")
+    //- mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
+    //-   em {{ attributeSetService.label(characterFormGroup.value.attribute_set[attribute]) }}
+    //-   span(matBadgeColor="accent", [matBadge]="attributeSetService.bonus(characterFormGroup.value.attribute_set[attribute]) | sign")

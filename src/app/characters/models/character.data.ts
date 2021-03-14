@@ -1,4 +1,5 @@
 import { AttributeSetData } from "./attribute-set.data";
+import { SkillSet } from "./skill-set.model";
 
 export interface CharacterData {
 
@@ -29,5 +30,7 @@ export interface CharacterData {
   created_at: Date;
 
   attribute_set: AttributeSetData;
+
+  skill_set: SkillSet;
 
 }

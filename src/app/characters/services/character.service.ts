@@ -4,6 +4,8 @@ import { Character } from "../models/character.model";
 import { CharacterData } from "../models/character.data";
 import { AttributeSet } from "../models/attribute-set.model";
 import { AttributeSetService } from "./attribute-set.service";
+import { SkillSetService } from "./skill-set.service";
+import { SkillSet } from "../models/skill-set.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +13,16 @@ import { AttributeSetService } from "./attribute-set.service";
 export class CharacterService {
 
   constructor(
-    private attributeSetService: AttributeSetService
+    private attributeSetService: AttributeSetService,
+    private skillSetService: SkillSetService
   ) {
 
   }
 
   public craftCharacter(characterData: CharacterData): Character {
     const attributeSet: AttributeSet = this.attributeSetService.craftAttributeSet(characterData.attribute_set);
+
+    const skillSet: SkillSet = this.skillSetService.craftSkillSet(characterData.skill_set);
 
     return new Character(
       characterData.id,
@@ -33,7 +38,8 @@ export class CharacterService {
       characterData.gladiator,
       characterData.active,
       characterData.created_at,
-      attributeSet
+      attributeSet,
+      skillSet
     );
   }
 

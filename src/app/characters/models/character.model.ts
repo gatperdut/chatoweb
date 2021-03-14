@@ -1,5 +1,6 @@
 import { AttributeSet } from './attribute-set.model';
 import { CharacterData } from './character.data'
+import { SkillSet } from './skill-set.model';
 
 export class Character implements CharacterData {
 
@@ -17,9 +18,10 @@ export class Character implements CharacterData {
     public gladiator: boolean,
     public active: boolean,
     public created_at: Date,
-    public attribute_set: AttributeSet
+    public attribute_set: AttributeSet,
+    public skill_set: SkillSet
   ) {
-
+    console.log(this.skill_set);
   }
 
 }

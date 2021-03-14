@@ -39,7 +39,6 @@
           mat-tab(label="Attributes")
             cw-character-attributes([character]="character", [characterFormGroup]="characterFormGroup")
           mat-tab(label="Skills")
-            div(fxLayout="row")
-              .p-3 SKILLS HERE
+            cw-character-skills([character]="character", [characterFormGroup]="characterFormGroup")
 
         | {{ characterFormGroup.value | json }}
