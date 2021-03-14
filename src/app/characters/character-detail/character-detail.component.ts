@@ -61,6 +61,10 @@ export class CharacterDetailComponent implements OnInit {
     );
   }
 
+  public update(): void {
+    console.log('UPDATE!');
+  }
+
   public add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value || '';

@@ -11,6 +11,16 @@
               .text-1-line
                 mat-icon(fontSet="fas", fontIcon="fa-calendar-plus")
                 small(title="{{ character.created_at | date:'mediumDate':'GMT' }}") {{ character.created_at | date:'mediumDate':'GMT' }}
+              .text-1-line(*ngIf="character.active")
+                mat-icon(fontSet="fas", fontIcon="fa-check")
+                small Active
+              .text-1-line(*ngIf="!character.active")
+                mat-icon(fontSet="fas", fontIcon="fa-times")
+                small Inactive
+            mat-card-actions
+              button(type="button", mat-button, color="primary", fxFill, mat-stroked-button, [disabled]="characterFormGroup.pristine", (click)="update()")
+                | Update
+
         div(fxFlex.gt-sm="5", fxFlex.lt-md="0")
         div(fxFlex.gt-sm="50", fxFlex.lt-md="100")
           form([formGroup]="characterFormGroup", fxLayout="column", fxLayoutAlign="start stretch")
@@ -35,10 +45,10 @@
               mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
             input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="add($event)")
 
-        mat-tab-group(fxFill, dynamicHeight, animationDuration="0")
-          mat-tab(label="Skills")
-            cw-character-skills([character]="character", [characterFormGroup]="characterFormGroup")
+        mat-tab-group(fxFill, dynamicHeight)
           mat-tab(label="Attributes")
             cw-character-attributes([character]="character", [characterFormGroup]="characterFormGroup")
+          mat-tab(label="Skills")
+            cw-character-skills([character]="character", [characterFormGroup]="characterFormGroup")
 
         | {{ characterFormGroup.value | json }}

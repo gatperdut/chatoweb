@@ -5,20 +5,23 @@
       h3 {{ skill_category_name }}
       div(fxLayout="column", fxLayoutAlign="start")
         mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between start")
-          mat-icon(title="{{ skillSetService.skillCategoryRate(characterFormGroup.value, skill_category_name) }}", matSuffix, fontSet="fas", [fontIcon]="skillCategoryIcon[skillSetService.skillCategoryRate(character, skill_category_name)]")
+          mat-icon(title="{{ skillSetService.skillCategoryRate(characterFormGroup.value, skill_category_name) }}", matSuffix, fontSet="fas", [fontIcon]="rateIcon[skillSetService.skillCategoryRate(characterFormGroup.value, skill_category_name)]")
           span([matBadge]="characterFormGroup.value.skill_set[skill_category_name]")
         mat-slider.pl-0(color="accent", [max]="30", [min]="0", [step]="1", [thumbLabel]="true", [tickInterval]="10", [formControlName]="skill_category_name")
         mat-label.pl-2(fxLayout="row", fxLayoutAlign="end start")
           mat-label Total:
           span(matBadgeColor="accent", [matBadge]="skillSetService.skillCategoryBonus(characterFormGroup.value, skill_category_name)")
+
     mat-divider
     div(fxLayout="row wrap", fxLayoutAlign="start start", fxLayoutGap="45px 20px grid")
       div(fxLayout="column", *ngFor="let skill_name of constantsService.constants.skills.names[skill_category_name]")
         mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
-          span {{ skill_name }}
+          div(fxLayout="row", fxLayoutAlign="start")
+            mat-icon(title="{{ skillSetService.skillRate(characterFormGroup.value, skill_name) }}", matSuffix, fontSet="fas", [fontIcon]="rateIcon[skillSetService.skillRate(characterFormGroup.value, skill_name)]")
+            span([class.text-greyed]="skillSetService.skillBonus(characterFormGroup.value, skill_name) < 10") {{ skill_name }}
           span([matBadge]="characterFormGroup.value.skill_set[skill_name]")
         mat-slider.pl-0(color="primary", [max]="30", [min]="0", [step]="1", [thumbLabel]="true", [tickInterval]="10", [formControlName]="skill_name")
-        //- mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
-        //-   em {{ skillSetService.skillLabel(characterFormGroup.value.skill_set[skill_name]) }}
-        //-   span(matBadgeColor="accent", [matBadge]="skillSetService.skillBonus(characterFormGroup.value, skill_name)")
+        mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
+          em {{ skillSetService.skillLabel(characterFormGroup.value, skill_name) }}
+          span(matBadgeColor="accent", [matBadge]="skillSetService.skillBonus(characterFormGroup.value, skill_name)")
     mat-divider.thick-divider

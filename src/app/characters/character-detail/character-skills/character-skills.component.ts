@@ -47,7 +47,7 @@ export class CharacterSkillsComponent implements OnInit {
     );
   }
 
-  public skillCategoryIcon: { [key: string]: string} = {
+  public rateIcon: { [key: string]: string} = {
     limited:       'fa-arrow-circle-down',
     below_average: 'fa-arrow-down',
     standard:      'fa-adjust',
