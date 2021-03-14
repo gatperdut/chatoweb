@@ -4,6 +4,7 @@ import { ConstantsService } from 'src/app/shared/constants/constants.service';
 import * as _ from 'underscore';
 import { Character } from '../../models/character.model';
 import { SkillSetData } from '../../models/skill-set.data';
+import { SkillSetService } from '../../services/skill-set.service';
 
 @Component({
   selector: 'cw-character-skills',
@@ -20,14 +21,19 @@ export class CharacterSkillsComponent implements OnInit {
   }
 
   constructor(
-    public constantsService: ConstantsService
+    public constantsService: ConstantsService,
+    public skillSetService: SkillSetService
   ) {
-
   }
 
   ngOnInit(): void {
+    const mergedList: string[] = _.union(
+      this.constantsService.constants.skills.names.all,
+      this.constantsService.constants.skill_categories.names
+    );
+
     _.each(
-      this.constantsService.constants.skills.names,
+      mergedList,
       (skill: string): void => {
         const formControl = new FormControl(
           this.character.skill_set[skill as keyof SkillSetData],
@@ -38,7 +44,14 @@ export class CharacterSkillsComponent implements OnInit {
 
         this.skillSetFormGroupTypecast.addControl(skill, formControl);
       }
-    )
+    );
   }
 
+  public skillCategoryIcon: { [key: string]: string} = {
+    limited:       'fa-arrow-circle-down',
+    below_average: 'fa-arrow-down',
+    standard:      'fa-adjust',
+    above_average: 'fa-arrow-up',
+    plus:          'fa-arrow-circle-up'
+  };
 }

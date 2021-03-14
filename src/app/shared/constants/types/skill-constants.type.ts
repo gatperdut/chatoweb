@@ -26,9 +26,9 @@ export type Rank = {
 
 export type SkillConstants = {
 
-  readonly all: Skill[];
+  readonly list: { [key: string]: Skill[] };
 
-  readonly names: string[];
+  readonly names: { [key: string]: string[] }
 
   readonly labels: string[];
 

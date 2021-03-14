@@ -36,9 +36,9 @@
             input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="add($event)")
 
         mat-tab-group(fxFill, dynamicHeight, animationDuration="0")
-          mat-tab(label="Attributes")
-            cw-character-attributes([character]="character", [characterFormGroup]="characterFormGroup")
           mat-tab(label="Skills")
             cw-character-skills([character]="character", [characterFormGroup]="characterFormGroup")
+          mat-tab(label="Attributes")
+            cw-character-attributes([character]="character", [characterFormGroup]="characterFormGroup")
 
         | {{ characterFormGroup.value | json }}

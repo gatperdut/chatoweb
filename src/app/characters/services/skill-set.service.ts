@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ConstantsService } from "src/app/shared/constants/constants.service";
+import * as _ from "underscore";
+import { Character } from "../models/character.model";
 import { SkillSetData } from "../models/skill-set.data";
 import { SkillSet } from "../models/skill-set.model";
 
@@ -63,6 +65,44 @@ export class SkillSetService {
       skillSetData.forging,
       skillSetData.metalworking,
     );
+  }
+
+  public skillCategoryRate(character: Character, skillCategoryName: string) {
+    const dependencies: string[] = _.findWhere(
+      this.constantsService.constants.skill_categories.all,
+      { name: skillCategoryName}
+    )
+    .dependencies;
+
+    const average = character.attribute_set.average(dependencies);
+
+    switch(true) {
+      case (average <= 15): {
+        return 'limited';
+      }
+      case (average <= 35): {
+        return 'below_average';
+      }
+      case (average <= 65): {
+        return 'standard';
+      }
+      case (average <= 85): {
+        return 'above_average';
+      }
+      case (average <= 100): {
+        return 'plus';
+      }
+    }
+
+    throw new Error('Unknown attributes average value.');
+  }
+
+  public skillCategoryLabel(characterData: CharacterData, skillCategoryName: string): string {
+    return 'superhuman';
+  }
+
+  public skillCategoryBonus(characterData: CharacterData, skillCategoryName: string): number {
+    return 88;
   }
 
 }
