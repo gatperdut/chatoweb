@@ -5,10 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from 'src/app/shared/animations/fade-in.animation';
 import { chipSeparatorKeysCodes } from 'src/app/shared/chips/chips.constants';
 import { ConstantsService } from 'src/app/shared/constants/constants.service';
-import * as _ from 'underscore';
-import { AttributeSetData } from '../models/attribute-set.data';
 import { Character } from '../models/character.model';
-import { AttributeSetService } from '../services/attribute-set.service';
 
 @Component({
   selector: 'cw-character-detail',
@@ -28,8 +25,7 @@ export class CharacterDetailComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    public constantsService: ConstantsService,
-    public attributeSetService: AttributeSetService
+    public constantsService: ConstantsService
   ) {
 
   }
@@ -62,20 +58,6 @@ export class CharacterDetailComponent implements OnInit {
         attribute_set: new FormGroup({})
       }
     );
-
-    _.each(
-      this.constantsService.constants.attributes.list,
-      (attribute: string): void => {
-        const formControl = new FormControl(
-          this.character.attribute_set[attribute as keyof AttributeSetData],
-          [
-            Validators.required
-          ]
-        );
-
-        (<FormGroup>this.characterFormGroup.controls.attribute_set).controls[attribute] = formControl;
-      }
-    )
   }
 
   public add(event: MatChipInputEvent): void {

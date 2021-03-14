@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthenticationWidgetComponent } from "./authentication/authentication-widget/authentication-widget.component";
 import { AuthenticationComponent } from "./authentication/authentication.component";
@@ -35,9 +36,12 @@ import { PlayerCardComponent } from './players/player-card/player-card.component
 import { CharacterDetailComponent } from './characters/character-detail/character-detail.component';
 import { AuthenticationDialogComponent } from './authentication/authentication-dialog/authentication-dialog.component';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { CharacterAttributesComponent } from './characters/character-detail/character-attributes/character-attributes.component';
+import { SignPipe } from "./shared/pipes/sign.pipe";
 
 @NgModule({
   declarations: [
+    // Components
     CwComponent,
     HeaderComponent,
     CharactersComponent,
@@ -50,10 +54,14 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     PasswordResetComponent,
     UnlockedComponent,
     SystemComponent,
-    DelayedInputDirective,
     PlayerCardComponent,
     CharacterDetailComponent,
-    AuthenticationDialogComponent
+    AuthenticationDialogComponent,
+    CharacterAttributesComponent,
+    // Directives
+    DelayedInputDirective,
+    // Pipes
+    SignPipe
   ],
   entryComponents: [
     AuthenticationDialogComponent
@@ -80,6 +88,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatMenuModule,
     MatSidenavModule,
     MatSliderModule,
+    MatTabsModule,
     MatToolbarModule,
     // ChatoWeb
     CwRoutingModule

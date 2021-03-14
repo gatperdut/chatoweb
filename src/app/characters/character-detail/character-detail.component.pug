@@ -1,7 +1,7 @@
 .character-detail([@fadeInAnimation]="")
   form([formGroup]="characterFormGroup", fxLayout="row")
     div(fxFlex.gt-sm="70%", fxFlexOffset.gt-sm="15%", fxFlex="90%", fxFlexOffset="5%")
-      div(fxLayout="row wrap", fxLayoutAlign="center start", fxLayoutGap="15px grid")
+      div(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="15px grid")
         div(fxFlex.gt-sm="45", fxFlex.lt-md="100")
           mat-card.cw-gradient.mat-elevation-z5
             mat-card-title(fxLayout="row", fxLayoutAlign="space-between center")
@@ -35,10 +35,11 @@
               mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
             input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="add($event)")
 
-        div(formGroupName="attribute_set", fxLayout="row wrap", fxLayoutAlign="start start")
-          div(fxLayout="column", *ngFor="let attribute of constantsService.constants.attributes.list")
-            mat-label.pl-2
-              span {{ attributeSetService.attributeName[attribute] }}
-                span([matBadge]="characterFormGroup.controls.attribute_set.value[attribute]")
-            mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", [formControlName]="attribute")
+        mat-tab-group(fxFill, dynamicHeight)
+          mat-tab(label="Attributes")
+            cw-character-attributes([character]="character", [characterFormGroup]="characterFormGroup")
+          mat-tab(label="Skills")
+            div(fxLayout="row")
+              .p-3 SKILLS HERE
+
         | {{ characterFormGroup.value | json }}

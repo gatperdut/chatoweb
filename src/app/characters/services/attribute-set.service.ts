@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
-import * as _ from "underscore";
 import { AttributeSet } from "../models/attribute-set.model";
 import { AttributeSetData } from "../models/attribute-set.data";
+import { ConstantsService } from "src/app/shared/constants/constants.service";
+import * as _ from "underscore";
+import { AttributeBonus } from "src/app/shared/constants/types/attribute-constants.type";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { AttributeSetData } from "../models/attribute-set.data";
 export class AttributeSetService {
 
   constructor(
-
+    private constantsService: ConstantsService
   ) {
 
   }
@@ -28,7 +30,7 @@ export class AttributeSetService {
     );
   }
 
-  public attributeName: { [key: string]: string } = {
+  public name: { [key: string]: string } = {
     str: 'Strength',
     con: 'Constitution',
     agi: 'Agility',
@@ -36,6 +38,33 @@ export class AttributeSetService {
     int: 'Intelligence',
     wil: 'Willpower',
     pow: 'Power'
+  }
+
+  public index(value: number): number {
+    let index: number = _.findIndex(
+      this.constantsService.constants.attributes.bonus,
+      (attributeBonus: AttributeBonus): boolean => {
+        return attributeBonus.limit >= value;
+      }
+    );
+
+    if (index < 0) {
+      index = this.constantsService.constants.attributes.bonus.length - 1;
+    }
+
+    return index;
+  }
+
+  public label(value: number): string {
+    let index: number = this.index(value);
+
+    return this.constantsService.constants.attributes.bonus[index].label;
+  }
+
+  public bonus(value: number): number {
+    let index: number = this.index(value);
+
+    return this.constantsService.constants.attributes.bonus[index].bonus;
   }
 
 }

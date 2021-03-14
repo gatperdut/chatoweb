@@ -1,0 +1,9 @@
+.p-3([formGroup]="attributeSetFormGroupTypecast", fxLayout="row wrap", fxLayoutAlign="start start", fxLayoutGap="45px 40px grid")
+  div(fxLayout="column", *ngFor="let attribute of constantsService.constants.attributes.list")
+    mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
+      span {{ attributeSetService.name[attribute] }}
+      span([matBadge]="characterFormGroup.value.attribute_set[attribute]")
+    mat-slider.pl-0(color="primary", [max]="100", [min]="1", [step]="1", [thumbLabel]="true", [tickInterval]="10", [formControlName]="attribute")
+    mat-label.pl-2(fxLayout="row", fxLayoutAlign="space-between")
+      em {{ attributeSetService.label(characterFormGroup.value.attribute_set[attribute]) }}
+      span(matBadgeColor="accent", [matBadge]="attributeSetService.bonus(characterFormGroup.value.attribute_set[attribute]) | sign")
