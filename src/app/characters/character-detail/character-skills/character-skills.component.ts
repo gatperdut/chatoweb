@@ -26,8 +26,6 @@ export class CharacterSkillsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.characterFormGroup.addControl('skill_set', new FormGroup({}));
-
     _.each(
       this.constantsService.constants.skills.names,
       (skill: string): void => {

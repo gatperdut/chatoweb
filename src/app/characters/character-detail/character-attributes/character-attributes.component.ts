@@ -28,8 +28,6 @@ export class CharacterAttributesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.characterFormGroup.addControl('attribute_set', new FormGroup({}));
-
     _.each(
       this.constantsService.constants.attributes.list,
       (attribute: string): void => {

@@ -55,7 +55,8 @@ export class CharacterDetailComponent implements OnInit {
           this.character.kwords,
           [Validators.minLength(1)]
         ),
-        attribute_set: new FormGroup({})
+        attribute_set: new FormGroup({}),
+        skill_set: new FormGroup({})
       }
     );
   }
