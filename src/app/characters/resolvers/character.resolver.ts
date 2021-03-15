@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
 import { Observable, throwError } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import * as _ from "underscore";
 import { Character } from "../models/character.model";

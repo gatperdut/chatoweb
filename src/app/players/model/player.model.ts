@@ -16,7 +16,7 @@ export class Player implements PlayerData {
     public readonly confirmed: boolean,
     public current_character: any,
     credentialsToken: string,
-    credentialsClient: string,
+    credentialsClient: string
   ) {
     if (credentialsToken && credentialsClient) {
       this.credentials = {

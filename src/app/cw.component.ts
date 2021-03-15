@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { forkJoin, Subscription } from 'rxjs';
 import { AuthenticationService } from './authentication/services/authentication.service';
-import { Player } from './players/model/player.model';
 import { SidebarService } from './services/sidebar.service';
-import { ConstantsService } from './shared/constants/constants.service';
+import { ConstantsService } from './shared/constants/services/constants.service';
 import { SystemService } from './system/services/system.service';
 
 @Component({

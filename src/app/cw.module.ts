@@ -39,6 +39,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { CharacterAttributesComponent } from './characters/character-detail/character-attributes/character-attributes.component';
 import { SignPipe } from "./shared/pipes/sign.pipe";
 import { CharacterSkillsComponent } from './characters/character-detail/character-skills/character-skills.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { CharacterSkillsComponent } from './characters/character-detail/characte
     DelayedInputDirective,
     // Pipes
     SignPipe,
-    CharacterSkillsComponent
+    CharacterSkillsComponent,
+    MapComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent

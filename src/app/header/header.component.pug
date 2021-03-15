@@ -7,6 +7,10 @@ mat-toolbar(fxLayout="row", fxLayoutAlign="start center", color="primary")
     | Players
   button(mat-button, routerLink="/characters", "fxHide.xs")
     | Characters
+  button(mat-button, routerLink="/map", "fxHide.xs")
+    | Map
+  button(mat-button, routerLink="/item-templates", "fxHide.xs")
+    | Item templates
   button(mat-icon-button, [matMenuTriggerFor]="sidebarMenu", fxHide, "fxShow.xs")
     mat-icon(fontSet="fas", fontIcon="fa-bars")
   span(fxFlex)
@@ -20,3 +24,5 @@ mat-toolbar(fxLayout="row", fxLayoutAlign="start center", color="primary")
       button(mat-menu-item, routerLink="/characters") Characters
     ng-container
       button(mat-menu-item, routerLink="/item-templates") Item templates
+    ng-container
+      button(mat-menu-item, routerLink="/map") Map

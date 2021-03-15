@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConstantsService } from 'src/app/shared/constants/constants.service';
+import { ConstantsService } from 'src/app/shared/constants/services/constants.service';
 import * as _ from 'underscore';
 import { AttributeSetData } from '../../models/attribute-set.data';
 import { Character } from '../../models/character.model';

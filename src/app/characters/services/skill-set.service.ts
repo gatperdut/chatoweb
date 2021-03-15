@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ConstantsService } from "src/app/shared/constants/constants.service";
+import { ConstantsService } from "src/app/shared/constants/services/constants.service";
 import { SkillCategory, SkillCategoryRank } from "src/app/shared/constants/types/skill-category-constants.type";
 import { SkillRank } from "src/app/shared/constants/types/skill-constants.type";
 import * as _ from "underscore";

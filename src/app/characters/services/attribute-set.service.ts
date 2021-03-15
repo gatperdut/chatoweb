@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AttributeSet } from "../models/attribute-set.model";
 import { AttributeSetData } from "../models/attribute-set.data";
-import { ConstantsService } from "src/app/shared/constants/constants.service";
+import { ConstantsService } from "src/app/shared/constants/services/constants.service";
 import * as _ from "underscore";
 import { AttributeBonus } from "src/app/shared/constants/types/attribute-constants.type";
 
