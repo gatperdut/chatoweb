@@ -23,11 +23,10 @@
     "@angular/platform-browser-dynamic": "~11.1.2",
     "@angular/router": "~11.1.2",
     "@fortawesome/fontawesome-free": "^5.15.2",
-    "@types/sigmajs": "^1.0.27",
     "rxjs": "~6.6.0",
-    "sigma": "^1.2.1",
     "tslib": "^2.0.0",
     "underscore": "^1.12.0",
+    "vis": "^4.21.0-EOL",
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
@@ -36,6 +35,7 @@
     "@angular/compiler-cli": "~11.1.2",
     "@types/node": "^12.11.1",
     "@types/underscore": "^1.11.0",
+    "@types/vis": "^4.21.21",
     "codelyzer": "^6.0.0",
     "pug-cli": "^1.0.0-alpha6",
     "ts-node": "~8.3.0",

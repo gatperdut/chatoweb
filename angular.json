@@ -61,8 +61,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/underscore/underscore-min.js",
-              "node_modules/sigma/build/sigma.min.js"
+              "node_modules/underscore/underscore-min.js"
             ]
           },
           "configurations": {

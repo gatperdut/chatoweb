@@ -1,6 +1,6 @@
 import { MapVector } from "./map-vector.type";
 
-export type MapIncrementStringIndex = 'n' | 'e' | 's' | 'w';
+export type MapIncrementStringIndex = 'n' | 'e' | 's' | 'w' | 'u' | 'd';
 
 export type MapIncrement = {
 
@@ -11,5 +11,9 @@ export type MapIncrement = {
   readonly s: MapVector;
 
   readonly w: MapVector;
+
+  readonly u: MapVector;
+
+  readonly d: MapVector;
 
 }

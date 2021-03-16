@@ -4,4 +4,6 @@ export type MapVector = {
 
   readonly y: number;
 
+  readonly z: number;
+
 }

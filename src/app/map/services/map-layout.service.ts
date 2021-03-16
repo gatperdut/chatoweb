@@ -1,9 +1,13 @@
 import { Injectable } from "@angular/core";
 import * as _ from "underscore";
+import { DataSet, Edge } from 'vis';
 import { Directions } from "../constants/directions.constant";
 import { MapIncrements } from "../constants/map-increments.constant";
+import { CwData } from "../models/cw-data.interface";
+import { CwNode } from "../models/cw-node.interface";
 import { RoomStringIndex } from "../models/room.data";
 import { Room } from "../models/room.model";
+import { World } from "../models/world.model";
 import { MapIncrementStringIndex } from "../types/map-increment.type";
 import { MapVector } from "../types/map-vector.type";
 
@@ -24,27 +28,34 @@ export class MapLayoutService {
     );
   }
 
-  private findRoomInGraph(nodes: SigmaJs.Node[], id: string): SigmaJs.Node {
-    return _.findWhere(
-      nodes,
-      { id: id }
-    );
+  private newVisData(): CwData {
+    return {
+      nodes: new DataSet<CwNode>([]),
+      edges: new DataSet<Edge>([])
+    };
   }
 
-  private processRoom(graphData: SigmaJs.GraphData, rooms: Room[], room: Room, x = 0, y = 0): void {
+  private processRoom(world: World, rooms: Room[], room: Room, x: number, y: number, z: number): void {
 
-    if (this.findRoomInGraph(graphData.nodes, room.id.toString())) {
+    if (!world[z]) {
+      world[z] = this.newVisData();
+    }
+
+    if (world[z].nodes.getIds().includes(room.id.toString())) {
       return;
     }
 
-    const node: SigmaJs.Node = {
+    const node: CwNode = {
       id: room.id.toString(),
       label: room.title,
       x: x,
-      y: y
+      y: y,
+      z: z,
+      size: 0.5,
+      color: '#FF0000'
     };
 
-    graphData.nodes.push(node);
+    world[z].nodes.add(node);
 
     _.each(
       Directions,
@@ -57,44 +68,31 @@ export class MapLayoutService {
           return;
         }
 
-        const edge: SigmaJs.Edge = {
+        const edge: vis.Edge = {
           id: room.id.toString() + '_' + nextRoom.id.toString(),
-          source: room.id.toString(),
-          target: nextRoom.id.toString()
+          from: room.id.toString(),
+          to: nextRoom.id.toString()
         };
 
-        graphData.edges.push(edge);
+        world[z].edges.add(edge);
 
         const mapVector: MapVector = MapIncrements[direction as MapIncrementStringIndex];
 
         const newX: number = node.x + mapVector.x;
         const newY: number = node.y + mapVector.y;
+        const newZ: number = node.z = mapVector.z;
 
-        this.processRoom(graphData, rooms, nextRoom, newX, newY);
+        this.processRoom(world, rooms, nextRoom, newX, newY, newZ);
       }
     );
   }
 
-  public process(rooms: Room[]): SigmaJs.GraphData {
-    const graphData: SigmaJs.GraphData = {
-      nodes: [] as SigmaJs.Node[],
-      edges: [
-        {
-          id: 'e1',
-          source: '1',
-          target: '2'
-        }
-      ] as SigmaJs.Edge[]
-    };
+  public process(rooms: Room[]): World {
+    const world: World = new World();
 
-    _.each(
-      rooms,
-      (room: Room): void => {
-        this.processRoom(graphData, rooms, room, null, null);
-      }
-    );
+    this.processRoom(world, rooms, rooms[0], 0, 0, 0);
 
-    return graphData;
+    return world;
   }
 
 
