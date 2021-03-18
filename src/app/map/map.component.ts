@@ -1,3 +1,4 @@
+import { D } from '@angular/cdk/keycodes';
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as d3 from 'd3';
@@ -6,7 +7,7 @@ import { Room } from './models/room.model';
 import { World } from './models/world.model';
 import { MapLayoutService } from './services/map-layout.service';
 import { MapViewerService } from './services/map-viewer.service';
-import { MapRendererService } from './services/map-renderer.service';
+import { MapRendererService } from './services/renderers/map-renderer.service';
 
 @Component({
   selector: 'cw-map',
@@ -55,7 +56,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-
     this.container = d3.select('#mapContainer');
 
     this.svg = this.mapRendererService.render(this.container, this.world, this.z);

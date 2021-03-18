@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { World } from "../models/world.model";
-import { Node } from '../models/node.model';
+import { World } from "../../models/world.model";
+import { Node } from '../../models/node.model';
 import { ZoomBehavior } from "d3";
 import * as d3 from "d3";
+import { RoomsRendererService } from "./rooms-renderer.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ import * as d3 from "d3";
 export class MapRendererService {
 
   constructor(
-
-    ) {
+    private roomsRendererService: RoomsRendererService
+  ) {
 
   }
 
@@ -22,43 +23,23 @@ export class MapRendererService {
       'zoom',
       (event: any) => {
         svg
-        .selectAll("circle")
+        .selectAll(".room,.room-title")
         .attr('transform', event.transform);
       }
     );
   }
 
   public render(container: any, world: World, z: number): any {
-    const svg: any = container.append("svg")
-    .attr('width', 800)
-    .attr('height', 800)
-    .style('background-color', 'red')
+    const svg: any = container.append("svg");
 
-    var circle: any = svg
-    .selectAll('circle')
+    const rectsContainer: any = svg
+    .selectAll('.room')
     .data(
       world[z].nodes
     )
-    .enter()
-    .append("circle")
-    .attr(
-      "cy",
-      (node: Node, i: number) => {
-        return node.y
-      }
-    )
-    .attr(
-      "cx",
-      (node: Node, i: number) => {
-        return node.x
-      }
-    )
-    .attr(
-      "r",
-      function(node: Node) {
-        return 50
-      }
-    );
+    .enter();
+
+    this.roomsRendererService.render(rectsContainer);
 
     const zoom: ZoomBehavior<Element, unknown> = this.zoom(svg);
 
