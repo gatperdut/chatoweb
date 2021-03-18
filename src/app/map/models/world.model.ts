@@ -1,14 +1,30 @@
-import { CwData } from "./cw-data.interface";
-import { WorldData } from "./world.data";
+import { Level } from "./level.model";
 
-export class World implements WorldData {
+export class World {
 
-  [z: number]: CwData;
+  [z: number]: Level;
 
   constructor(
-
+    public zMax: number = 0,
+    public zMin: number = 0
   ) {
 
+  }
+
+  public handleZ(z: number): void {
+    if (this[z]) {
+      return;
+    }
+
+    this[z] = new Level(z);
+
+    if (z > this.zMax) {
+      this.zMax = z;
+    }
+
+    if (z < this.zMin) {
+      this.zMin = z;
+    }
   }
 
 }

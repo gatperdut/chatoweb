@@ -1,3 +1,9 @@
-#visContainer {
+#mapContainer {
   background-color: lightgrey;
+}
+
+cw-map-controls {
+  position: absolute;
+  top: calc(64px + 20px);
+  right: 20px;
 }

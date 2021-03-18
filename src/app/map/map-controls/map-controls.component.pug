@@ -1,0 +1,6 @@
+.map-controls(fxLayout="column", fxLayoutAlign="start center", fxLayoutGap="20px")
+  button(mat-icon-button, mat-button, color="primary", (click)="mapViewerService.up()", [disabled]="!mapViewerService.canUp(world)")
+    mat-icon(fontSet="fas", fontIcon="fa-arrow-up")
+  span([matBadge]="z", matBadgeColor="accent")
+  button(mat-icon-button, mat-button, color="primary", (click)="mapViewerService.down()", [disabled]="!mapViewerService.canDown(world)")
+    mat-icon(fontSet="fas", fontIcon="fa-arrow-down")

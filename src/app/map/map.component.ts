@@ -1,25 +1,32 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import * as d3 from 'd3';
+import { Subscription } from 'rxjs';
 import { Room } from './models/room.model';
-import { MapLayoutService } from './services/map-layout.service';
-import { Network, Data } from 'vis';
 import { World } from './models/world.model';
+import { MapLayoutService } from './services/map-layout.service';
+import { MapViewerService } from './services/map-viewer.service';
+import { MapRendererService } from './services/map-renderer.service';
 
 @Component({
   selector: 'cw-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  public rooms: Room[];
 
   private throttler: ReturnType<typeof setTimeout>;
 
-  @ViewChild('visContainer') visContainer: ElementRef;
+  public world: World;
 
-  private resize(): void {
-    this.visContainer.nativeElement.style.height = (window.innerHeight - 64) + 'px';
-    this.throttler = null;
-  }
+  public z: number = 0;
+
+  private svg: any;
+
+  private zSubscription: Subscription;
+
+  private container: any;
 
   @HostListener('window:resize')
   onResize(): void {
@@ -32,40 +39,47 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private network: Network;
-
-  private world: World;
-
-  public rooms: Room[];
-
   constructor(
     private activatedRoute: ActivatedRoute,
-    private mapLayoutService: MapLayoutService
+    private mapViewerService: MapViewerService,
+    private mapLayoutService: MapLayoutService,
+    private mapRendererService: MapRendererService
   ) {
 
   }
 
   ngOnInit(): void {
     this.rooms = this.activatedRoute.snapshot.data['rooms'];
-  }
-
-  ngAfterViewInit() {
-    const container = this.visContainer.nativeElement;
 
     this.world = this.mapLayoutService.process(this.rooms);
+  }
 
-    var options = {
-      nodes: {
-        shape: 'box',
-        fixed: true,
-        widthConstraint: 200,
-        heightConstraint: 200
-      }
-    };
+  ngAfterViewInit(): void {
+
+    this.container = d3.select('#mapContainer');
+
+    this.svg = this.mapRendererService.render(this.container, this.world, this.z);
 
     this.resize();
 
-    this.network = new Network(container, this.world[0], options);
+    this.zSubscription = this.mapViewerService.zSubject.subscribe(
+      (z: number): void => {
+        this.z = z;
+      }
+    );
+  }
+
+  private resize(): void {
+    this.svg
+    .attr('width', window.innerWidth)
+    .attr('height', window.innerHeight - 68);
+
+    this.throttler = null;
+  }
+
+
+  ngOnDestroy(): void {
+    this.zSubscription.unsubscribe();
   }
 
 }

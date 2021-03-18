@@ -40,6 +40,7 @@ import { CharacterAttributesComponent } from './characters/character-detail/char
 import { SignPipe } from "./shared/pipes/sign.pipe";
 import { CharacterSkillsComponent } from './characters/character-detail/character-skills/character-skills.component';
 import { MapComponent } from './map/map.component';
+import { MapControlsComponent } from './map/map-controls/map-controls.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MapComponent } from './map/map.component';
     // Pipes
     SignPipe,
     CharacterSkillsComponent,
-    MapComponent
+    MapComponent,
+    MapControlsComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent
