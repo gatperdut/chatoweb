@@ -22,10 +22,7 @@ export class MapLayoutService {
   }
 
   private findRoom(rooms: Room[], id: number): Room {
-    return _.findWhere(
-      rooms,
-      { id: id}
-    );
+    return _.findWhere(rooms, { id: id });
   }
 
   private processRoom(world: World, rooms: Room[], room: Room, x: number, y: number, z: number): void {
@@ -35,7 +32,7 @@ export class MapLayoutService {
       return;
     }
 
-    const node: Node = new Node(room.id, room.id + '\n' + room.title, x, y, z)
+    const node: Node = new Node(room.id, room.title, x, y, z)
 
     world[z].nodes.push(node);
 

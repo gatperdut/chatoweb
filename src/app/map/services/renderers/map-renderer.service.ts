@@ -16,36 +16,10 @@ export class MapRendererService {
 
   }
 
-  private zoom(svg: any): ZoomBehavior<Element, unknown> {
-    return d3.zoom()
-    .scaleExtent([1/4, 1])
-    .on(
-      'zoom',
-      (event: any) => {
-        svg
-        .selectAll(".room,.room-title")
-        .attr('transform', event.transform);
-      }
-    );
-  }
 
-  public render(container: any, world: World, z: number): any {
-    const svg: any = container.append("svg");
 
-    const rectsContainer: any = svg
-    .selectAll('.room')
-    .data(
-      world[z].nodes
-    )
-    .enter();
-
-    this.roomsRendererService.render(rectsContainer);
-
-    const zoom: ZoomBehavior<Element, unknown> = this.zoom(svg);
-
-    svg.call(zoom);
-
-    return svg;
+  public render(svg: any, world: World, z: number): void {
+    this.roomsRendererService.render(svg, world, z);
   }
 
 }

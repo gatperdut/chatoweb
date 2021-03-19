@@ -8,6 +8,7 @@ import { World } from './models/world.model';
 import { MapLayoutService } from './services/map-layout.service';
 import { MapViewerService } from './services/map-viewer.service';
 import { MapRendererService } from './services/renderers/map-renderer.service';
+import { RoomsRendererService } from './services/renderers/rooms-renderer.service';
 
 @Component({
   selector: 'cw-map',
@@ -21,7 +22,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public world: World;
 
-  public z: number = 0;
+  public z: number;
 
   private svg: any;
 
@@ -44,7 +45,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private mapViewerService: MapViewerService,
     private mapLayoutService: MapLayoutService,
-    private mapRendererService: MapRendererService
+    private mapRendererService: MapRendererService,
+    private roomsRendererService: RoomsRendererService
   ) {
 
   }
@@ -58,13 +60,17 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.container = d3.select('#mapContainer');
 
-    this.svg = this.mapRendererService.render(this.container, this.world, this.z);
+    this.svg = this.container.append("svg");
 
+    // this.mapRendererService.render(this.g, this.world, this.z);
+
+    this.roomsRendererService.zoom(this.svg);
     this.resize();
 
     this.zSubscription = this.mapViewerService.zSubject.subscribe(
       (z: number): void => {
         this.z = z;
+        this.mapRendererService.render(this.svg, this.world, this.z);
       }
     );
   }
