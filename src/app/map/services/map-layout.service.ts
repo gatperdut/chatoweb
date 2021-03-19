@@ -28,7 +28,7 @@ export class MapLayoutService {
   private processRoom(world: World, rooms: Room[], room: Room, x: number, y: number, z: number): void {
     world.handleZ(z);
 
-    if (world[z].containsNode(room.id)) {
+    if (world.containsNode(room.id)) {
       return;
     }
 

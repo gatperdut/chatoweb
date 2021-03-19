@@ -43,8 +43,7 @@ export class RoomsRendererService {
     .attr("width", (node: Node) => ROOM_SIZE)
     .attr("height", (node: Node) => ROOM_SIZE)
     .attr('stroke', 'black')
-    .attr('fill', '#69a3b2')
-    .attr('transform', this.transform);
+    .attr('fill', '#69a3b2');
   }
 
   private roomTitle(fos: any): void {
@@ -54,15 +53,14 @@ export class RoomsRendererService {
     .attr('width', 150)
     .attr('height', 75)
     .style('padding', 5)
-    .style('background-color', '#498392')
-    .attr('transform', this.transform);
+    .style('background-color', '#498392');
 
-    // fos.select('xhtml:div')
-    // .attr("text-anchor", "middle")
-    // .style('height', '65px')
-    // .style('overflow', 'hidden')
-    // .style('text-align', 'center')
-    // .html((node: Node) => node.id + '\n' + node.title)
+    fos.select('div')
+    .attr("text-anchor", "middle")
+    .style('height', '65px')
+    .style('overflow', 'hidden')
+    .style('text-align', 'center')
+    .html((node: Node) => node.id + '\n' + node.title)
   }
 
   public render(svg: any, world: World, z: number): void {
@@ -74,29 +72,39 @@ export class RoomsRendererService {
   private enter(svg: any, world: World, z: number): void {
     const enter = svg.selectAll('rect').data(world[z].nodes, (node: Node) => node.id).enter();
 
-    const rects = enter
-    .append('rect')
-    .attr('class', 'room');
+    const g = enter
+    .append('g')
+    .attr('class', 'room')
+    .attr('transform', this.transform);
+
+    const rects = g
+    .append('rect');
 
     this.roomBackground(rects);
 
-    const fos = enter
+    const fos = g
     .append('foreignObject');
 
     this.roomTitle(fos);
+
+    fos.append('xhtml:div')
   }
 
   private update(svg: any, world: World, z: number): void {
-    const updateRooms = svg.selectAll('rect').data(world[z].nodes, (node: Node) => node.id);
-    this.roomBackground(updateRooms);
+    const updateRooms = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id);
+    updateRooms.attr('transform', this.transform);
 
-    const updateFos = svg.selectAll('foreignObject').data(world[z].nodes, (node: Node) => node.id);
-    this.roomTitle(updateFos);
+    this.roomBackground(updateRooms.selectAll('rect'));
+
+    const updateFos = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id);
+    updateFos.attr('transform', this.transform);
+
+    this.roomTitle(updateFos.selectAll('foreignObject'));
   }
 
   private exit(svg: any, world: World, z: number): void {
-    svg.selectAll('rect').data(world[z].nodes, (node: Node) => node.id).exit().remove();
-    svg.selectAll('foreignObject').data(world[z].nodes, (node: Node) => node.id).exit().remove();
+    svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id).exit().remove();
+    // svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id).exit().remove();
   }
 
 }

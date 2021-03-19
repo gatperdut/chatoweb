@@ -27,4 +27,14 @@ export class World {
     }
   }
 
+  public containsNode(id: number): boolean {
+    for (let z: number = this.zMin; z <= this.zMax; z++) {
+      if (this[z].containsNode(id)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
