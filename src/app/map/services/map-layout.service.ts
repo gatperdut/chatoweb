@@ -1,13 +1,10 @@
 import { Injectable } from "@angular/core";
 import * as _ from "underscore";
-import { Directions, directionToOrientation, DirectionToOrientationStringIndex } from "../constants/directions.constant";
-import { MapIncrements } from "../constants/map-increments.constant";
+import { Directions, DirectionStringIndex, directionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, Orientation } from "../constants/map.constants";
 import { RoomStringIndex } from "../models/room.data";
 import { Room } from "../models/room.model";
 import { Node } from "../models/node.model";
 import { World } from "../models/world.model";
-import { MapIncrementStringIndex } from "../types/map-increment.type";
-import { MapVector } from "../types/map-vector.type";
 import { Link } from "../models/link.model";
 
 @Injectable({
@@ -25,27 +22,27 @@ export class MapLayoutService {
     return _.findWhere(rooms, { id: id });
   }
 
-  private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, direction: string, x: number, y: number, z: number): void {
+  private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, orientation: Orientation, x: number, y: number, z: number): void {
     world.handleZ(z);
+
+    const node: Node = new Node(room, x, y, z);
+
+    if (previousNode) {
+      const link: Link = new Link(
+        previousNode.room.id.toString() + '_' + node.room.id.toString(),
+        previousNode,
+        node,
+        orientation
+      );
+
+      world[z].links.push(link);
+    }
 
     if (world.containsNode(room.id)) {
       return;
     }
 
-    const node: Node = new Node(room, x, y, z);
-
     world[z].nodes.push(node);
-
-    if (previousNode) {
-      const link: Link = new Link(
-        node.room.id.toString + '_' + previousNode.room.id.toString(),
-        node,
-        previousNode,
-        directionToOrientation[direction as DirectionToOrientationStringIndex]
-      );
-
-      world[z].links.push(link);
-    }
 
     _.each(
       Directions,
@@ -64,7 +61,7 @@ export class MapLayoutService {
         const newY: number = node.y + mapVector.y;
         const newZ: number = node.z = mapVector.z;
 
-        this.processNodes(world, rooms, nextRoom, node, direction, newX, newY, newZ);
+        this.processNodes(world, rooms, nextRoom, node, directionToOrientation[direction as DirectionStringIndex], newX, newY, newZ);
       }
     );
   }

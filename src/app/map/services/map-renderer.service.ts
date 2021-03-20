@@ -1,12 +1,9 @@
-import { WrappedNodeExpr } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import * as d3 from "d3";
-import { svg } from "d3-fetch";
+import { coplanarOrientations, RoomSide } from "../constants/map.constants";
 import { Link } from "../models/link.model";
 import { Node } from '../models/node.model';
 import { World } from "../models/world.model";
-
-export const ROOM_SIZE: number = 150;
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +18,26 @@ export class MapRendererService {
 
   private transform: any;
 
-  public zoom(svg: any) {
+  private linkCurve: any = d3.line().curve(d3.curveNatural);
+
+  public markers(svg: any): void {
+    svg.append("svg:defs")
+    .selectAll("marker")
+    .data(["end"])
+    .enter()
+    .append("svg:marker")
+    .attr("id", "arrowhead")
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 10)
+    .attr("refY", 0)
+    .attr("markerWidth", 10)
+    .attr("markerHeight", 10)
+    .attr("orient", "auto")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+  }
+
+  public zoom(svg: any): void {
     svg.call(
       d3.zoom()
       .scaleExtent([1/4, 1])
@@ -31,8 +47,8 @@ export class MapRendererService {
           this.transform = event.transform;
           svg
           .selectAll([
-            '.room',
-            '.arrow'
+            '.node',
+            '.link'
           ])
           .attr('transform', this.transform);
         }
@@ -44,8 +60,8 @@ export class MapRendererService {
     rects
     .attr("x", (node: Node, i: number) => node.x)
     .attr("y", (node: Node, i: number) => node.y)
-    .attr("width", (node: Node) => ROOM_SIZE)
-    .attr("height", (node: Node) => ROOM_SIZE)
+    .attr("width", (node: Node) => RoomSide)
+    .attr("height", (node: Node) => RoomSide)
     .attr('stroke', 'black')
     .attr('fill', '#69a3b2');
   }
@@ -73,55 +89,63 @@ export class MapRendererService {
     this.title(title);
   }
 
+  private linkArrow(linkArrow: any): void {
+    linkArrow
+    .attr('d', (link: Link) => this.linkCurve(link.points))
+    .attr('stroke', 'black')
+    .attr('fill', 'none')
+    .attr("marker-end", "url(#arrowhead)");
+  }
+
   public render(svg: any, world: World, z: number): void {
     this.enterRooms(svg, world, z);
     this.updateRooms(svg, world, z);
     this.exitRooms(svg, world, z);
 
     this.enterLinks(svg, world, z);
+    this.updateLinks(svg, world, z);
+    this.exitLinks(svg, world, z);
+  }
+
+  private coplanarLinks(links: Link[]): Link[] {
+    return links.filter(
+      (link: Link): boolean => {
+        return coplanarOrientations.includes(link.orientation)
+      }
+    );
   }
 
   private enterLinks(svg: any, world: World, z: number): void {
-    const linkEnter = svg.selectAll('.link').data(world[z].links, (link: Link) => link.id).enter();
+    const linkEnter = svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id).enter();
 
-    const curve = d3.line().curve(d3.curveNatural);
-    const points = [[150, 75], [225, 50], [300, 75]];
+    const link = linkEnter
+    .append('g')
+    .attr('class', 'link')
+    .attr('transform', this.transform);
 
-      const g = svg.append('g')
-      .attr('class', 'arrow')
+    const linkArrow = link.append('path')
+    .attr('class', 'arrow');
+    this.linkArrow(linkArrow);
+  }
 
-      g.append("svg:defs")
-      .selectAll("marker")
-      .data(["end"])
-      .enter()
-      .append("svg:marker")
-      .attr("id", "arrow")
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 10)
-      .attr("refY", 0)
-      .attr("markerWidth", 10)
-      .attr("markerHeight", 10)
-      .attr("orient", "auto")
-      .append("svg:path")
-      .attr("d", "M0,-5L10,0L0,5");
+  private updateLinks(svg: any, world: World, z: number): void {
+    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id)
+    linkUpdate.attr('transform', this.transform);
 
-      // add the links and the arrows
-      g.append('path')
-      .data(world[z].links)
-      // @ts-ignore
-      .attr('d', curve(points))
-      .attr('stroke', 'black')
-      .attr('fill', 'none')
-      .attr("marker-end", "url(#arrow)");
+    const linkArrow = linkUpdate.selectAll('.arrow');
+    this.linkArrow(linkArrow);
+  }
 
+  private exitLinks(svg: any, world: World, z: number): void {
+    svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id).exit().remove();
   }
 
   private enterRooms(svg: any, world: World, z: number): void {
-    const roomEnter = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.room.id).enter();
+    const roomEnter = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id).enter();
 
     const room = roomEnter
     .append('g')
-    .attr('class', 'room')
+    .attr('class', 'node')
     .attr('transform', this.transform);
 
     const roomContainer = room
@@ -131,7 +155,7 @@ export class MapRendererService {
 
     const titleContainer = room
     .append('foreignObject')
-    .attr('class', 'title-container')
+    .attr('class', 'title-container');
     this.titleContainer(titleContainer);
 
     const title = titleContainer
@@ -140,10 +164,10 @@ export class MapRendererService {
   }
 
   private updateRooms(svg: any, world: World, z: number): void {
-    const roomUpdate = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.room.id);
+    const roomUpdate = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id);
     roomUpdate.attr('transform', this.transform);
 
-    const roomContainer = roomUpdate.selectAll('.room-container')
+    const roomContainer = roomUpdate.selectAll('.room-container');
     this.roomContainer(roomContainer);
 
     const titleContainer = roomUpdate.selectAll('.title-container');
@@ -151,7 +175,7 @@ export class MapRendererService {
   }
 
   private exitRooms(svg: any, world: World, z: number): void {
-    svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.room.id).exit().remove();
+    svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id).exit().remove();
   }
 
 }

@@ -60,6 +60,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.svg = this.container.append("svg");
 
+    this.mapRendererService.markers(this.svg);
+
     this.mapRendererService.zoom(this.svg);
     this.resize();
 
