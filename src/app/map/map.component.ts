@@ -7,8 +7,7 @@ import { Room } from './models/room.model';
 import { World } from './models/world.model';
 import { MapLayoutService } from './services/map-layout.service';
 import { MapViewerService } from './services/map-viewer.service';
-import { MapRendererService } from './services/renderers/map-renderer.service';
-import { RoomsRendererService } from './services/renderers/rooms-renderer.service';
+import { MapRendererService } from './services/map-renderer.service';
 
 @Component({
   selector: 'cw-map',
@@ -45,8 +44,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private mapViewerService: MapViewerService,
     private mapLayoutService: MapLayoutService,
-    private mapRendererService: MapRendererService,
-    private roomsRendererService: RoomsRendererService
+    private mapRendererService: MapRendererService
   ) {
 
   }
@@ -64,7 +62,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // this.mapRendererService.render(this.g, this.world, this.z);
 
-    this.roomsRendererService.zoom(this.svg);
+    this.mapRendererService.zoom(this.svg);
     this.resize();
 
     this.zSubscription = this.mapViewerService.zSubject.subscribe(
