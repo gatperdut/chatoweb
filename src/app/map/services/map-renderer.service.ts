@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import * as d3 from "d3";
-import { coplanarOrientations, RoomSide } from "../constants/map.constants";
+import { coplanarOrientations, NodeSide } from "../constants/map.constants";
 import { Link } from "../models/link.model";
 import { Node } from '../models/node.model';
 import { World } from "../models/world.model";
+import { MapAnimatorService } from "./map-animator.service";
+import { MapViewerService } from "./map-viewer.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +13,11 @@ import { World } from "../models/world.model";
 export class MapRendererService {
 
   constructor(
-
+    private mapViewerService: MapViewerService,
+    private mapAnimatorService: MapAnimatorService
   ) {
 
   }
-
-  private transform: any;
 
   private linkCurve: any = d3.line().curve(d3.curveNatural);
 
@@ -37,31 +38,37 @@ export class MapRendererService {
     .attr("d", "M0,-5L10,0L0,5");
   }
 
-  public zoom(svg: any): void {
+  public zoom(svg: any, world: World): void {
     svg.call(
       d3.zoom()
       .scaleExtent([1/4, 1])
       .on(
         'zoom',
         (event: any) => {
-          this.transform = event.transform;
+          world.transform = event.transform;
           svg
           .selectAll([
             '.node',
             '.link'
           ])
-          .attr('transform', this.transform);
+          .attr('transform', world.transform);
         }
       )
     );
   }
 
-  private roomContainer(rects: any): void {
-    rects
+  private room(room: any): void {
+    room
+    .style('filter', 'drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7)')
+    .style('opacity', 0).transition().duration(500).ease(d3.easeLinear).style('opacity', 1);
+  }
+
+  private roomContainer(roomContainer: any): void {
+    roomContainer
     .attr("x", (node: Node, i: number) => node.x)
     .attr("y", (node: Node, i: number) => node.y)
-    .attr("width", (node: Node) => RoomSide)
-    .attr("height", (node: Node) => RoomSide)
+    .attr("width", (node: Node) => NodeSide)
+    .attr("height", (node: Node) => NodeSide)
     .attr('stroke', 'black')
     .attr('fill', '#69a3b2');
   }
@@ -81,8 +88,10 @@ export class MapRendererService {
     .attr("y", (node: Node, i: number) => node.y)
     .attr('width', 150)
     .attr('height', 75)
-    .style('padding', 5)
-    .style('background-color', '#498392');
+    .style('border', '1px solid black')
+    .style('border-bottom', 'none')
+    .style('background-color', '#498392')
+    .style('padding', 5);
 
     const title = titleContainer.select('.title');
 
@@ -98,6 +107,8 @@ export class MapRendererService {
   }
 
   public render(svg: any, world: World, z: number): void {
+    svg.on('click', () => { this.mapViewerService.selectNode(null); this.mapAnimatorService.selectNode(svg, null)});
+
     this.enterRooms(svg, world, z);
     this.updateRooms(svg, world, z);
     this.exitRooms(svg, world, z);
@@ -121,7 +132,7 @@ export class MapRendererService {
     const link = linkEnter
     .append('g')
     .attr('class', 'link')
-    .attr('transform', this.transform);
+    .attr('transform', world.transform);
 
     const linkArrow = link.append('path')
     .attr('class', 'arrow');
@@ -130,7 +141,7 @@ export class MapRendererService {
 
   private updateLinks(svg: any, world: World, z: number): void {
     const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id)
-    linkUpdate.attr('transform', this.transform);
+    linkUpdate.attr('transform', world.transform);
 
     const linkArrow = linkUpdate.selectAll('.arrow');
     this.linkArrow(linkArrow);
@@ -146,7 +157,10 @@ export class MapRendererService {
     const room = roomEnter
     .append('g')
     .attr('class', 'node')
-    .attr('transform', this.transform);
+    .attr('id', (node: Node) => 'node_' + node.room.id.toString())
+    .attr('transform', world.transform)
+    .on('click', (event: any, node: Node) => { event.stopPropagation(); this.mapViewerService.selectNode(node); this.mapAnimatorService.selectNode(svg, node) });
+    this.room(room);
 
     const roomContainer = room
     .append('rect')
@@ -165,7 +179,7 @@ export class MapRendererService {
 
   private updateRooms(svg: any, world: World, z: number): void {
     const roomUpdate = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id);
-    roomUpdate.attr('transform', this.transform);
+    roomUpdate.attr('transform', world.transform);
 
     const roomContainer = roomUpdate.selectAll('.room-container');
     this.roomContainer(roomContainer);
@@ -175,7 +189,7 @@ export class MapRendererService {
   }
 
   private exitRooms(svg: any, world: World, z: number): void {
-    svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id).exit().remove();
+    svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id).exit().transition().duration(500).ease(d3.easeLinear).style('opacity', 0).remove();
   }
 
 }

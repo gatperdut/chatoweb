@@ -3,11 +3,12 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, 
 import { ActivatedRoute } from '@angular/router';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
-import { Room } from './models/room.model';
 import { World } from './models/world.model';
 import { MapLayoutService } from './services/map-layout.service';
 import { MapViewerService } from './services/map-viewer.service';
 import { MapRendererService } from './services/map-renderer.service';
+import { MapAnimatorService } from './services/map-animator.service';
+import { Room } from '../rooms/models/room.model';
 
 @Component({
   selector: 'cw-map',
@@ -44,7 +45,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private mapViewerService: MapViewerService,
     private mapLayoutService: MapLayoutService,
-    private mapRendererService: MapRendererService
+    private mapRendererService: MapRendererService,
+    private mapAnimatorService: MapAnimatorService
   ) {
 
   }
@@ -62,7 +64,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.mapRendererService.markers(this.svg);
 
-    this.mapRendererService.zoom(this.svg);
+    this.mapRendererService.zoom(this.svg, this.world);
     this.resize();
 
     this.zSubscription = this.mapViewerService.zSubject.subscribe(
@@ -84,6 +86,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.zSubscription.unsubscribe();
+
+    this.mapAnimatorService.unselectNodes(this.svg);
   }
 
 }

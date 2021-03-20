@@ -13,7 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { ItemTemplatesComponent } from './item-templates/item-templates.component';
 import { PlayersComponent } from './players/players.component';
 import { MapComponent } from './map/map.component';
-import { RoomsResolver } from './map/resolvers/rooms.resolver';
+import { RoomsResolver } from './rooms/resolvers/rooms.resolver';
 
 const routes: Routes = [
   {

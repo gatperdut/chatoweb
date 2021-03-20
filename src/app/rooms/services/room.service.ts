@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as _ from "underscore";
-import { RoomData } from "../models/room.data";
+import { RoomData } from "../../rooms/models/room.data";
 import { Room } from "../models/room.model";
 
 @Injectable({

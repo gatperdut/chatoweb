@@ -4,6 +4,8 @@ export class World {
 
   [z: number]: Level;
 
+  public transform: any;
+
   constructor(
     public zMax: number = 0,
     public zMin: number = 0

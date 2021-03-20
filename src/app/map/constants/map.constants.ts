@@ -1,12 +1,12 @@
-export const RoomOffset: number = 300;
+export const NodeOffset: number = 300;
 
-export const RoomSide: number = 150;
+export const NodeSide: number = 150;
 
-export const RoomHalfSide: number = RoomSide / 2;
+export const NodeHalfSide: number = NodeSide / 2;
 
 export const LinkOffset: number = 20;
 
-export const LinkMidpoint: number = (RoomOffset - RoomSide) / 2;
+export const LinkMidpoint: number = (NodeOffset - NodeSide) / 2;
 
 export type MapVector = {
   readonly x: number;
@@ -28,21 +28,21 @@ export type MapIncrement = {
 export const MapIncrements: MapIncrement = {
   n: {
     x: 0,
-    y: -RoomOffset,
+    y: -NodeOffset,
     z: 0
   },
   e: {
-    x: RoomOffset,
+    x: NodeOffset,
     y: 0,
     z: 0
   },
   s: {
     x: 0,
-    y: RoomOffset,
+    y: NodeOffset,
     z: 0
   },
   w: {
-    x: -RoomOffset,
+    x: -NodeOffset,
     y: 0,
     z: 0
   },

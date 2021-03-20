@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import * as _ from "underscore";
 import { Directions, DirectionStringIndex, directionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, Orientation } from "../constants/map.constants";
-import { RoomStringIndex } from "../models/room.data";
-import { Room } from "../models/room.model";
+import { RoomStringIndex } from "../../rooms/models/room.data";
 import { Node } from "../models/node.model";
 import { World } from "../models/world.model";
 import { Link } from "../models/link.model";
+import { Room } from "src/app/rooms/models/room.model";
 
 @Injectable({
   providedIn: 'root'

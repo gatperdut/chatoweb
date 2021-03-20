@@ -1,4 +1,4 @@
-import { LinkMidpoint, LinkOffset, Orientation, RoomHalfSide, RoomSide } from '../constants/map.constants';
+import { LinkMidpoint, LinkOffset, Orientation, NodeHalfSide, NodeSide } from '../constants/map.constants';
 import { Node } from './node.model';
 
 export class Link {
@@ -14,30 +14,30 @@ export class Link {
     switch (this.orientation) {
       case Orientation.North:
         this.points = [
-          [source.x + RoomHalfSide, source.y],
-          [source.x + RoomHalfSide - LinkOffset, source.y - LinkMidpoint],
-          [target.x + RoomHalfSide, target.y + RoomSide]
+          [source.x + NodeHalfSide, source.y],
+          [source.x + NodeHalfSide - LinkOffset, source.y - LinkMidpoint],
+          [target.x + NodeHalfSide, target.y + NodeSide]
         ];
         break;
       case Orientation.East:
         this.points = [
-          [source.x + RoomSide, source.y + RoomHalfSide],
-          [source.x + RoomSide + LinkMidpoint, source.y + RoomHalfSide - LinkOffset],
-          [target.x, target.y + RoomHalfSide]
+          [source.x + NodeSide, source.y + NodeHalfSide],
+          [source.x + NodeSide + LinkMidpoint, source.y + NodeHalfSide - LinkOffset],
+          [target.x, target.y + NodeHalfSide]
         ];
         break;
       case Orientation.South:
         this.points = [
-          [source.x + RoomHalfSide, source.y + RoomSide],
-          [source.x + RoomHalfSide + LinkOffset, source.y + RoomSide + LinkMidpoint],
-          [target.x + RoomHalfSide, target.y]
+          [source.x + NodeHalfSide, source.y + NodeSide],
+          [source.x + NodeHalfSide + LinkOffset, source.y + NodeSide + LinkMidpoint],
+          [target.x + NodeHalfSide, target.y]
         ];
         break;
       case Orientation.West:
         this.points = [
-          [source.x, source.y + RoomHalfSide],
-          [source.x - LinkMidpoint, source.y + RoomHalfSide + LinkOffset],
-          [target.x + RoomSide, target.y + RoomHalfSide]
+          [source.x, source.y + NodeHalfSide],
+          [source.x - LinkMidpoint, source.y + NodeHalfSide + LinkOffset],
+          [target.x + NodeSide, target.y + NodeHalfSide]
         ];
         break;
     }

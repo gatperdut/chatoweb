@@ -1,4 +1,4 @@
-import { Room } from "./room.model";
+import { Room } from "src/app/rooms/models/room.model";
 
 export class Node {
 

@@ -1,0 +1,11 @@
+.room-controls(*ngIf="node", fxLayout="column", fxLayoutAlign="start center", fxLayoutGap="20px")
+  button(mat-stroked-button, color="primary", (click)="editRoom()", [disabled]="false")
+    mat-icon(fontSet="fas", inline="true", fontIcon="fa-edit")
+    | &nbsp; Edit
+  div(fxLayout="row", fxLayoutAlign="start center", fxLayoutGap="20px")
+    button(mat-stroked-button, color="primary", [disabled]="false")
+      mat-icon(fontSet="fas", inline="true", fontIcon="fa-plus")
+      | &nbsp; Room North
+    button(mat-stroked-button, color="primary", [disabled]="false")
+      mat-icon(fontSet="fas", inline="true", fontIcon="fa-plus")
+      | &nbsp; Room East

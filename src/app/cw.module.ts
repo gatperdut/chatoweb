@@ -41,6 +41,8 @@ import { SignPipe } from "./shared/pipes/sign.pipe";
 import { CharacterSkillsComponent } from './characters/character-detail/character-skills/character-skills.component';
 import { MapComponent } from './map/map.component';
 import { MapControlsComponent } from './map/map-controls/map-controls.component';
+import { RoomControlsComponent } from './map/room-controls/room-controls.component';
+import { RoomEditorComponent } from './rooms/room-editor/room-editor.component';
 
 @NgModule({
   declarations: [
@@ -67,10 +69,13 @@ import { MapControlsComponent } from './map/map-controls/map-controls.component'
     SignPipe,
     CharacterSkillsComponent,
     MapComponent,
-    MapControlsComponent
+    MapControlsComponent,
+    RoomControlsComponent,
+    RoomEditorComponent
   ],
   entryComponents: [
-    AuthenticationDialogComponent
+    AuthenticationDialogComponent,
+    RoomEditorComponent
   ],
   imports: [
     // Angular
