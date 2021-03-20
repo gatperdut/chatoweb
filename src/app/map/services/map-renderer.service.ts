@@ -2,6 +2,7 @@ import { WrappedNodeExpr } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import * as d3 from "d3";
 import { svg } from "d3-fetch";
+import { Link } from "../models/link.model";
 import { Node } from '../models/node.model';
 import { World } from "../models/world.model";
 
@@ -29,7 +30,10 @@ export class MapRendererService {
         (event: any) => {
           this.transform = event.transform;
           svg
-          .selectAll(".room")
+          .selectAll([
+            '.room',
+            '.arrow'
+          ])
           .attr('transform', this.transform);
         }
       )
@@ -52,7 +56,7 @@ export class MapRendererService {
     .style('height', '65px')
     .style('overflow', 'hidden')
     .style('text-align', 'center')
-    .html((node: Node) => node.id + '\n' + node.title)
+    .html((node: Node) => node.room.id + '\n' + node.room.title)
   }
 
   private titleContainer(titleContainer: any): void {
@@ -70,13 +74,50 @@ export class MapRendererService {
   }
 
   public render(svg: any, world: World, z: number): void {
-    this.enter(svg, world, z);
-    this.update(svg, world, z);
-    this.exit(svg, world, z);
+    this.enterRooms(svg, world, z);
+    this.updateRooms(svg, world, z);
+    this.exitRooms(svg, world, z);
+
+    this.enterLinks(svg, world, z);
   }
 
-  private enter(svg: any, world: World, z: number): void {
-    const roomEnter = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id).enter();
+  private enterLinks(svg: any, world: World, z: number): void {
+    const linkEnter = svg.selectAll('.link').data(world[z].links, (link: Link) => link.id).enter();
+
+    const curve = d3.line().curve(d3.curveNatural);
+    const points = [[150, 75], [225, 50], [300, 75]];
+
+      const g = svg.append('g')
+      .attr('class', 'arrow')
+
+      g.append("svg:defs")
+      .selectAll("marker")
+      .data(["end"])
+      .enter()
+      .append("svg:marker")
+      .attr("id", "arrow")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 10)
+      .attr("refY", 0)
+      .attr("markerWidth", 10)
+      .attr("markerHeight", 10)
+      .attr("orient", "auto")
+      .append("svg:path")
+      .attr("d", "M0,-5L10,0L0,5");
+
+      // add the links and the arrows
+      g.append('path')
+      .data(world[z].links)
+      // @ts-ignore
+      .attr('d', curve(points))
+      .attr('stroke', 'black')
+      .attr('fill', 'none')
+      .attr("marker-end", "url(#arrow)");
+
+  }
+
+  private enterRooms(svg: any, world: World, z: number): void {
+    const roomEnter = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.room.id).enter();
 
     const room = roomEnter
     .append('g')
@@ -98,8 +139,8 @@ export class MapRendererService {
     .attr('class', 'title');
   }
 
-  private update(svg: any, world: World, z: number): void {
-    const roomUpdate = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id);
+  private updateRooms(svg: any, world: World, z: number): void {
+    const roomUpdate = svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.room.id);
     roomUpdate.attr('transform', this.transform);
 
     const roomContainer = roomUpdate.selectAll('.room-container')
@@ -109,8 +150,8 @@ export class MapRendererService {
     this.titleContainer(titleContainer);
   }
 
-  private exit(svg: any, world: World, z: number): void {
-    svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.id).exit().remove();
+  private exitRooms(svg: any, world: World, z: number): void {
+    svg.selectAll('.room').data(world[z].nodes, (node: Node) => node.room.id).exit().remove();
   }
 
 }

@@ -1,8 +1,9 @@
+import { Room } from "./room.model";
+
 export class Node {
 
   constructor(
-    public id: number,
-    public title: string,
+    public room: Room,
     public x: number,
     public y: number,
     public z: number

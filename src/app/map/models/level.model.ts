@@ -1,5 +1,5 @@
 import { Node } from './node.model';
-import { Edge } from './edge.model';
+import { Link as Link } from './link.model';
 import * as _ from 'underscore';
 
 export class Level {
@@ -7,13 +7,18 @@ export class Level {
   constructor(
     public z: number,
     public nodes: Node[] = [],
-    public edges: Edge[] = []
+    public links: Link[] = []
   ) {
 
   }
 
   public containsNode(id: number): boolean {
-    return _.pluck(this.nodes, 'id').includes(id);
+    return _.map(
+      this.nodes,
+      (node: Node): number => {
+        return node.room.id
+      }
+    ).includes(id);
   }
 
 }
