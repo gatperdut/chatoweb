@@ -1,4 +1,4 @@
-import { RoomData } from "./room.data";
+import { RoomData, RoomStringIndex } from "./room.data";
 
 export class Room implements RoomData {
 
@@ -26,6 +26,10 @@ export class Room implements RoomData {
     public dd_id: number
   ) {
 
+  }
+
+  public adjacentRoomId(direction: string): number {
+    return this[direction + 'r_id' as RoomStringIndex];
   }
 
 }

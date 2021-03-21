@@ -47,7 +47,7 @@ export class MapLayoutService {
     _.each(
       Directions,
       (direction: string): void => {
-        const nextRoomId: number = room[direction + 'r_id' as RoomStringIndex];
+        const nextRoomId: number = room.adjacentRoomId(direction as RoomStringIndex);
 
         const nextRoom: Room = this.findRoom(rooms, nextRoomId);
 
