@@ -1,0 +1,16 @@
+form.room-detail([formGroup]="roomFormGroup", (ngSubmit)="onSubmit()")
+  h2(mat-dialog-title) Room details
+  mat-dialog-content
+    div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px")
+      mat-form-field
+        mat-hint Room's title
+        input(type="text", matInput, formControlName="title", spellcheck="false")
+      mat-form-field
+        mat-hint Room's description
+        textarea(type="text", matInput, formControlName="description", spellcheck="false")
+  mat-dialog-actions(align="end")
+    button(mat-dialog-close, mat-button, color="basic") Close
+    button(type="submit", mat-raised-button, color="primary", [disabled]="roomFormGroup.invalid || state.loading")
+      span(*ngIf="!state.loading") Update
+      span(*ngIf="state.loading")
+        i.fas.fa-cog.fa-spin

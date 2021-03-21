@@ -30,4 +30,13 @@ export class RoomActionsService {
     );
   }
 
+  public update(room: Room): Observable<RoomData> {
+    return this.httpClient.put<RoomData>(
+      environment.cmBaseUrl + '/rooms/' + room.id,
+      {
+        room: room
+      }
+    );
+  }
+
 }

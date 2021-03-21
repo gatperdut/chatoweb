@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MapViewerService } from '../services/map-viewer.service';
 import { Node } from '../models/node.model';
-import { RoomEditorComponent } from 'src/app/rooms/room-editor/room-editor.component';
+import { RoomDetailComponent } from 'src/app/rooms/room-detail/room-detail.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -36,7 +36,7 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
   }
 
   public editRoom(): void {
-    const dialogRef = this.matDialog.open(RoomEditorComponent);
+    const dialogRef = this.matDialog.open(RoomDetailComponent, { width: '500px', data: { room: this.node.room } });
   }
 
 }

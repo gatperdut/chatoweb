@@ -42,7 +42,7 @@ import { CharacterSkillsComponent } from './characters/character-detail/characte
 import { MapComponent } from './map/map.component';
 import { MapControlsComponent } from './map/map-controls/map-controls.component';
 import { RoomControlsComponent } from './map/room-controls/room-controls.component';
-import { RoomEditorComponent } from './rooms/room-editor/room-editor.component';
+import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
 
 @NgModule({
   declarations: [
@@ -71,11 +71,11 @@ import { RoomEditorComponent } from './rooms/room-editor/room-editor.component';
     MapComponent,
     MapControlsComponent,
     RoomControlsComponent,
-    RoomEditorComponent
+    RoomDetailComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent,
-    RoomEditorComponent
+    RoomDetailComponent
   ],
   imports: [
     // Angular
