@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AsyncSubject, BehaviorSubject, Observable, of } from "rxjs";
-import { map, tap } from 'rxjs/operators';
+import { AsyncSubject, BehaviorSubject, Observable, of, throwError } from "rxjs";
+import { catchError, map, tap } from 'rxjs/operators';
 import { Player } from "src/app/players/model/player.model";
 import { environment } from "src/environments/environment";
 import { AuthenticationStorage } from "../types/authentication-storage.type";
@@ -61,6 +61,7 @@ export class AuthenticationService {
       return new Player(
         authenticationSigninResponse.id,
         authenticationSigninResponse.email,
+        authenticationSigninResponse.action_cable_uid,
         authenticationSigninResponse.nickname,
         authenticationSigninResponse.role,
         authenticationSigninResponse.image,
@@ -96,6 +97,16 @@ export class AuthenticationService {
       authenticationStorage.credentialsToken
     )
     .pipe(
+      catchError(
+        (httpErrorResponse: HttpErrorResponse): Observable<AuthenticationPlayer> => {
+          localStorage.removeItem('player');
+          this.playerAutomaticSubject.next(null);
+          this.playerAutomaticSubject.complete();
+          this.router.navigate(['/']);
+          window.location.reload();
+          return throwError('Invalid token.')
+        }
+      ),
       map(
         (authenticationPlayer: AuthenticationPlayer): Player => {
           const player: Player = this.craftPlayer(authenticationPlayer, authenticationStorage.credentialsToken, authenticationStorage.credentialsClient);
@@ -103,13 +114,6 @@ export class AuthenticationService {
           this.playerAutomaticSubject.next(player);
           this.playerAutomaticSubject.complete();
           return player;
-        },
-        (httpErrorResponse: HttpErrorResponse): Observable<Player> => {
-          localStorage.removeItem('player');
-          this.router.navigate(['/']);
-          this.playerAutomaticSubject.next(null);
-          this.playerAutomaticSubject.complete();
-          return of(null);
         }
       )
     )

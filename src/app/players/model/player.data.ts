@@ -6,6 +6,8 @@ export interface PlayerData {
 
   email: string;
 
+  action_cable_uid: string;
+
   nickname: string;
 
   role: string;

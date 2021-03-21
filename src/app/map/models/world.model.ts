@@ -1,4 +1,6 @@
+import { Room } from "src/app/rooms/models/room.model";
 import { Level } from "./level.model";
+import { Node } from './node.model'
 
 export class World {
 
@@ -29,14 +31,31 @@ export class World {
     }
   }
 
-  public containsNode(id: number): boolean {
+  public findNode(id: number): Node {
+    let node: Node = null;
+
     for (let z: number = this.zMin; z <= this.zMax; z++) {
-      if (this[z].containsNode(id)) {
-        return true;
+      node = this[z].findNode(id);
+      if (node) {
+        break;
       }
     }
 
-    return false;
+    return node;
+  }
+
+  public containsNode(id: number): boolean {
+    return !!this.findNode(id);
+  }
+
+  public replaceRoom(room: Room): void {
+    const node: Node = this.findNode(room.id);
+
+    if (!node) {
+      return;
+    }
+
+    node.room = room;
   }
 
 }

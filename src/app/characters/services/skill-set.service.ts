@@ -108,7 +108,7 @@ export class SkillSetService {
   public skillRate(characterData: CharacterData, skillName: string): string {
     const dependencies: string[] = _.findWhere(
       this.constantsService.constants.skills.list.all,
-      { name: skillName}
+      { name: skillName }
     )
     .dependencies;
 

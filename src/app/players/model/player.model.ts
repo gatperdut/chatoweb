@@ -8,6 +8,7 @@ export class Player implements PlayerData {
   constructor(
     public readonly id: number,
     public email: string,
+    public action_cable_uid: string,
     public nickname: string,
     public role: string,
     public image: string,

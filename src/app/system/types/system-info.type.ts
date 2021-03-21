@@ -6,10 +6,6 @@ export type SystemInfo = {
 
   rails_version: string,
 
-  redis_channel: string,
-
-  socket_io_uri: string,
-
   time_string: string
 
 };

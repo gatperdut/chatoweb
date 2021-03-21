@@ -23,7 +23,7 @@ export class CharacterResolver implements Resolve<Character> {
   }
 
   resolve(activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): (Observable<Character> | Character) {
-    const id:number = parseInt(activatedRouteSnapshot.params['id']);
+    const id: number = parseInt(activatedRouteSnapshot.params['id']);
 
     if (_.isNaN(id)) {
       return throwError('Invalid character id');

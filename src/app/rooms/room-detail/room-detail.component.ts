@@ -51,7 +51,7 @@ export class RoomDetailComponent implements OnInit {
     this.state.loading = true;
     this.roomActionsService.update(this.roomFormGroup.value).subscribe(
       (roomData: RoomData): void => {
-        console.log(roomData);
+        // console.log(roomData);
       },
       (httpErrorResponse: HttpErrorResponse): void => {
         console.log(httpErrorResponse);

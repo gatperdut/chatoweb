@@ -49,6 +49,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 if (error instanceof HttpErrorResponse) {
                   if (_.include([401, 403], error.status)) {
                     this.router.navigate(['/']);
+
                   }
                 }
               }

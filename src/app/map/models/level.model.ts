@@ -12,13 +12,17 @@ export class Level {
 
   }
 
-  public containsNode(id: number): boolean {
-    return _.map(
+  public findNode(id: number): Node {
+    return _.find(
       this.nodes,
-      (node: Node): number => {
-        return node.room.id
+      (node: Node): boolean => {
+        return node.room.id === id;
       }
-    ).includes(id);
+    );
+  }
+
+  public containsNode(id: number): boolean {
+    return !!this.findNode(id);
   }
 
 }

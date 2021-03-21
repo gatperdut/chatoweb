@@ -4,6 +4,8 @@ export type AuthenticationPlayer = {
 
   readonly email: string;
 
+  readonly action_cable_uid: string;
+
   readonly nickname: string;
 
   readonly image: string;

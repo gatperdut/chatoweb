@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { forkJoin, Subscription } from 'rxjs';
 import { AuthenticationService } from './authentication/services/authentication.service';
 import { SidebarService } from './services/sidebar.service';
+import { WebsocketService } from './services/websocket.service';
 import { ConstantsService } from './shared/constants/services/constants.service';
 import { SystemService } from './system/services/system.service';
 

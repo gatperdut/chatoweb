@@ -9,6 +9,11 @@ import { MapViewerService } from './services/map-viewer.service';
 import { MapRendererService } from './services/map-renderer.service';
 import { MapAnimatorService } from './services/map-animator.service';
 import { Room } from '../rooms/models/room.model';
+import { Channel } from 'actioncable';
+import { WebsocketService } from '../services/websocket.service';
+import { AuthenticationService } from '../authentication/services/authentication.service';
+import { MapCableEvent } from './cable/map-cable-event.type';
+import { RoomService } from '../rooms/services/room.service';
 
 @Component({
   selector: 'cw-map',
@@ -17,6 +22,8 @@ import { Room } from '../rooms/models/room.model';
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   public rooms: Room[];
+
+  private mapChannel: Channel;
 
   private throttler: ReturnType<typeof setTimeout>;
 
@@ -46,7 +53,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapViewerService: MapViewerService,
     private mapLayoutService: MapLayoutService,
     private mapRendererService: MapRendererService,
-    private mapAnimatorService: MapAnimatorService
+    private mapAnimatorService: MapAnimatorService,
+    private websocketService: WebsocketService,
+    private authenticationService: AuthenticationService,
+    private roomService: RoomService
   ) {
 
   }
@@ -54,7 +64,26 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.rooms = this.activatedRoute.snapshot.data['rooms'];
 
+    this.mapChannel = this.activatedRoute.snapshot.data['mapChannel'];
+
     this.world = this.mapLayoutService.process(this.rooms);
+
+    this.mapChannel = this.websocketService.cable.subscriptions.create(
+      {
+        channel: 'MapChannel',
+        action_cable_uid: this.authenticationService.player.action_cable_uid
+      },
+      {
+        connected: function() {
+          console.log('Connected to MapChannel.');
+        },
+        disconnected: function( ){
+          console.log('Disconnected from MapChannel.');
+        },
+        received: this.handleCable.bind(this)
+      }
+    );
+
   }
 
   ngAfterViewInit(): void {
@@ -83,11 +112,30 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.throttler = null;
   }
 
+  private handleCable(mapCableEvent: MapCableEvent): void {
+    switch(mapCableEvent.model) {
+      case 'room':
+        switch(mapCableEvent.action) {
+          case 'update':
+            const newRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
+            this.world.replaceRoom(newRoom);
+            this.mapRendererService.render(this.svg, this.world, this.z);
+            break;
+          default:
+            throw new Error('Unhandled map room action ' + mapCableEvent.action);
+        }
+        break;
+      default:
+        throw new Error('Unhandled map cable model ' + mapCableEvent.model);
+    }
+  }
 
   ngOnDestroy(): void {
     this.zSubscription.unsubscribe();
 
     this.mapAnimatorService.unselectNodes(this.svg);
+
+    this.mapChannel.unsubscribe();
   }
 
 }

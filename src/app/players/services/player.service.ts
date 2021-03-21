@@ -17,6 +17,7 @@ export class PlayerService {
     return new Player(
       playerData.id,
       playerData.email,
+      playerData.action_cable_uid,
       playerData.nickname,
       playerData.role,
       playerData.image,
