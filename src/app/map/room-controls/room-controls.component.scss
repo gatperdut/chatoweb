@@ -3,8 +3,19 @@
   border: 2px solid #C0C0C0;
   padding: 5px;
 
-  .add-room-container:nth-child(2n) {
-    padding-right: 0 !important;
+  h4 {
+    max-width: 300px;
+  }
+
+  .add-room-container {
+    button {
+      width: 120px;
+      text-align: left;
+    }
+
+    &:nth-child(2n) {
+      padding-right: 0 !important;
+    }
   }
 }
 

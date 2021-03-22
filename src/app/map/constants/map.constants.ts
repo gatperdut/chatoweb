@@ -28,21 +28,21 @@ export type MapIncrement = {
 export const MapIncrements: MapIncrement = {
   n: {
     x: 0,
-    y: -NodeOffset,
+    y: -1,
     z: 0
   },
   e: {
-    x: NodeOffset,
+    x: 1,
     y: 0,
     z: 0
   },
   s: {
     x: 0,
-    y: NodeOffset,
+    y: 1,
     z: 0
   },
   w: {
-    x: -NodeOffset,
+    x: -1,
     y: 0,
     z: 0
   },
@@ -61,8 +61,6 @@ export const MapIncrements: MapIncrement = {
 export type DirectionStringIndex = 'n' | 'e' | 's' | 'w' | 'u' | 'd';
 
 export const Directions: DirectionStringIndex[] = ['n', 'e', 's', 'w', 'u', 'd'];
-// export const Directions: string[] = ['n', 'e', 's', 'w'];
-
 
 export const OppositeDirection = {
   'n': 's',
@@ -76,7 +74,7 @@ export const OppositeDirection = {
 export enum Orientation {
   North = 'NORTH',
   East  = 'EAST',
-  South = 'South',
+  South = 'SOUTH',
   West  = 'WEST',
   Above = 'ABOVE',
   Below = 'BELOW'
@@ -96,4 +94,13 @@ export const DirectionToOrientation = {
   w: Orientation.West,
   u: Orientation.Above,
   d: Orientation.Below
+};
+
+export const DirectionToString = {
+  n: 'north',
+  e: 'east',
+  s: 'south',
+  w: 'west',
+  u: 'up',
+  d: 'down'
 };

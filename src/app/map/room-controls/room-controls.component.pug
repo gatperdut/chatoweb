@@ -1,9 +1,18 @@
 .room-controls(*ngIf="node", fxLayout="column", fxLayoutAlign="start center", fxLayoutGap="20px")
+  h4(fxLayout="row", fxLayoutAlign="space-between center", fxLayoutGap="20px")
+    span {{ node.id }}
+    span.text-1-line {{ node.room.title }}
   button(mat-stroked-button, color="primary", (click)="editRoom()", [disabled]="false")
     mat-icon(fontSet="fas", inline="true", fontIcon="fa-edit")
     | &nbsp; Edit
-  div(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="20px grid")
+  div(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="10px grid")
     .add-room-container(*ngFor="let direction of Directions")
-      button(mat-stroked-button, color="primary", (click)="addRoom(direction)", [disabled]="!!node.room.getAdjacentRoomId(direction)")
+      button(mat-stroked-button, color="primary", (click)="addRoom(direction)", *ngIf="!node.hasAdjacentNode(direction) && !node.hasAdjacentLink(direction)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-plus")
-        | &nbsp; Room North
+        | &nbsp; Room {{ DirectionToString[direction] }}
+      button(mat-stroked-button, color="primary", (click)="linkRoom(direction)", *ngIf="node.hasAdjacentNode(direction) && !node.hasAdjacentLink(direction)")
+        mat-icon(fontSet="fas", inline="true", fontIcon="fa-link")
+        | &nbsp; Room {{ DirectionToString[direction] }}
+      button(mat-stroked-button, color="warn", (click)="unlinkRoom(direction)", *ngIf="node.hasAdjacentLink(direction)")
+        mat-icon(fontSet="fas", inline="true", fontIcon="fa-unlink")
+        | &nbsp; Room {{ DirectionToString[direction] }}

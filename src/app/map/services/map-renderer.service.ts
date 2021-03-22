@@ -70,7 +70,8 @@ export class MapRendererService {
     .attr("width", (node: Node) => NodeSide)
     .attr("height", (node: Node) => NodeSide)
     .attr('stroke', 'black')
-    .attr('fill', '#69a3b2');
+    .attr('fill', '#69a3b2')
+    .style('cursor', 'pointer');
   }
 
   private title(title: any) {

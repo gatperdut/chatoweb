@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { MapViewerService } from '../services/map-viewer.service';
 import { Node } from '../models/node.model';
 import { RoomDetailComponent } from 'src/app/rooms/room-detail/room-detail.component';
-import { Directions, DirectionStringIndex, OppositeDirection } from '../constants/map.constants';
+import { Directions, DirectionStringIndex, DirectionToString, OppositeDirection } from '../constants/map.constants';
 import { RoomService } from 'src/app/rooms/services/room.service';
 import { Room } from 'src/app/rooms/models/room.model';
 
@@ -20,6 +20,8 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
   public node: Node = null;
 
   public Directions = Directions;
+
+  public DirectionToString = DirectionToString;
 
   constructor(
     private mapViewerService: MapViewerService,
@@ -52,5 +54,13 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     room.setAdjacentRoomId(OppositeDirection[direction as DirectionStringIndex], this.node.id);
 
     const dialogRef = this.matDialog.open(RoomDetailComponent, { width: '500px', data: { room: room } });
+  }
+
+  public linkRoom(direction: string): void {
+
+  }
+
+  public unlinkRoom(direction: string): void {
+
   }
 }

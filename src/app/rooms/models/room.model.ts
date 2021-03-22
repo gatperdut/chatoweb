@@ -40,4 +40,8 @@ export class Room implements RoomData {
     return this[direction + 'r_id' as RoomStringIndex];
   }
 
+  public setDoorId(direction: string, id: number): void {
+    this[direction + 'd_id' as RoomStringIndex] = id;;
+  }
+
 }

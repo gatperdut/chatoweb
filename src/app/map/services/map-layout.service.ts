@@ -25,7 +25,7 @@ export class MapLayoutService {
   private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, orientation: Orientation, x: number, y: number, z: number): void {
     world.handleZ(z);
 
-    const node: Node = new Node(room, x, y, z);
+    const node: Node = new Node(world, room, x, y, z);
 
     if (previousNode) {
       const link: Link = new Link(
@@ -34,7 +34,7 @@ export class MapLayoutService {
         orientation
       );
 
-      world[z].links.push(link);
+      world[previousNode.z].links.push(link);
     }
 
     if (world.containsNode(room.id)) {
@@ -56,9 +56,9 @@ export class MapLayoutService {
 
         const mapVector: MapVector = MapIncrements[direction as MapIncrementStringIndex];
 
-        const newX: number = node.x + mapVector.x;
-        const newY: number = node.y + mapVector.y;
-        const newZ: number = node.z = mapVector.z;
+        const newX: number = node.unitX + mapVector.x;
+        const newY: number = node.unitY + mapVector.y;
+        const newZ: number = node.unitZ + mapVector.z;
 
         this.processNodes(world, rooms, nextRoom, node, DirectionToOrientation[direction as DirectionStringIndex], newX, newY, newZ);
       }

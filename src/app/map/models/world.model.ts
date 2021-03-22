@@ -1,6 +1,5 @@
 import { Room } from "src/app/rooms/models/room.model";
 import * as _ from "underscore";
-import { map } from "underscore";
 import { Directions, DirectionStringIndex, DirectionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, OppositeDirection } from "../constants/map.constants";
 import { Level } from "./level.model";
 import { Link } from "./link.model";
@@ -35,6 +34,10 @@ export class World {
     }
   }
 
+  public validZ(z: number): boolean {
+    return z >= this.zMin && z <= this.zMax;
+  }
+
   public findNode(id: number): Node {
     let node: Node = null;
 
@@ -50,6 +53,14 @@ export class World {
 
   public containsNode(id: number): boolean {
     return !!this.findNode(id);
+  }
+
+  public nodeAt(mapVector: MapVector): Node {
+    return this[mapVector.z].nodeAt(mapVector);
+  }
+
+  public linkBetween(source: Node, target: Node): Link {
+    return this[source.unitZ].linkBetween(source, target);
   }
 
   public replaceRoom(room: Room): void {
@@ -79,7 +90,7 @@ export class World {
 
         if (!node) {
           const mapVector: MapVector = MapIncrements[oppositeDirection as MapIncrementStringIndex];
-          node = new Node(room, adjacentNode.x + mapVector.x, adjacentNode.y + mapVector.y, adjacentNode.z + mapVector.z);
+          node = new Node(this, room, adjacentNode.unitX + mapVector.x, adjacentNode.unitY + mapVector.y, adjacentNode.unitZ + mapVector.z);
           this[node.z].nodes.push(node);
         }
 
