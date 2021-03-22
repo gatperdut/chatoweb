@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthenticationWidgetComponent } from "./authentication/authentication-widget/authentication-widget.component";
@@ -99,6 +100,7 @@ import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
     MatMenuModule,
     MatSidenavModule,
     MatSliderModule,
+    MatSlideToggleModule,
     MatTabsModule,
     MatToolbarModule,
     // ChatoWeb

@@ -11,4 +11,12 @@ export class Node {
 
   }
 
+  public get id(): number {
+    return this.room.id;
+  }
+
+  public get idString(): string {
+    return this.id.toString();
+  }
+
 }

@@ -21,7 +21,6 @@ import { RoomService } from '../rooms/services/room.service';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
-  public rooms: Room[];
 
   private mapChannel: Channel;
 
@@ -62,11 +61,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.rooms = this.activatedRoute.snapshot.data['rooms'];
+    const rooms = this.activatedRoute.snapshot.data['rooms'];
 
     this.mapChannel = this.activatedRoute.snapshot.data['mapChannel'];
 
-    this.world = this.mapLayoutService.process(this.rooms);
+    this.world = this.mapLayoutService.process(rooms);
 
     this.mapChannel = this.websocketService.cable.subscriptions.create(
       {
@@ -117,8 +116,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'room':
         switch(mapCableEvent.action) {
           case 'update':
-            const newRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
-            this.world.replaceRoom(newRoom);
+            const updatedRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
+            this.world.replaceRoom(updatedRoom);
+            this.mapRendererService.render(this.svg, this.world, this.z);
+            break;
+          case 'create':
+            const createdRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
+            this.world.insertRoom(createdRoom);
             this.mapRendererService.render(this.svg, this.world, this.z);
             break;
           default:

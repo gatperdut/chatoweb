@@ -4,7 +4,7 @@ export class Room implements RoomData {
 
   constructor(
     public readonly id: number,
-    public readonly area_id: number,
+    public area_id: number,
     public title: string,
     public description: string,
     public description_nighttime: string,
@@ -28,7 +28,15 @@ export class Room implements RoomData {
 
   }
 
-  public adjacentRoomId(direction: string): number {
+  public getAdjacentRoomId(direction: string): number {
+    return this[direction + 'r_id' as RoomStringIndex];
+  }
+
+  public setAdjacentRoomId(direction: string, id: number): void {
+    this[direction + 'r_id' as RoomStringIndex] = id;
+  }
+
+  public getDoorId(direction: string): number {
     return this[direction + 'r_id' as RoomStringIndex];
   }
 

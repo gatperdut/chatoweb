@@ -3,14 +3,17 @@ import { Node } from './node.model';
 
 export class Link {
 
+  public id: string;
+
   public points: number[][];
 
   constructor(
-    public id: string,
     public source: Node,
     public target: Node,
     public orientation: Orientation
   ) {
+    this.id = source.idString + '_' + target.idString;
+
     switch (this.orientation) {
       case Orientation.North:
         this.points = [

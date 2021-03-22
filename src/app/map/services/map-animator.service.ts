@@ -26,7 +26,7 @@ export class MapAnimatorService {
     }
 
     const repeat = () => {
-      svg.select('#node_' + node.room.id)
+      svg.select('#node_' + node.id)
       .transition()
       .duration(1000)
       .style('opacity', 0.6)

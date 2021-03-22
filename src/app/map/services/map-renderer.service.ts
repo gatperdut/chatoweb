@@ -79,7 +79,7 @@ export class MapRendererService {
     .style('height', '65px')
     .style('overflow', 'hidden')
     .style('text-align', 'center')
-    .html((node: Node) => node.room.id + '\n' + node.room.title)
+    .html((node: Node) => node.id + '\n' + node.room.title)
   }
 
   private titleContainer(titleContainer: any): void {
@@ -152,12 +152,12 @@ export class MapRendererService {
   }
 
   private enterRooms(svg: any, world: World, z: number): void {
-    const roomEnter = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id).enter();
+    const roomEnter = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.id).enter();
 
     const room = roomEnter
     .append('g')
     .attr('class', 'node')
-    .attr('id', (node: Node) => 'node_' + node.room.id.toString())
+    .attr('id', (node: Node) => 'node_' + node.idString)
     .attr('transform', world.transform)
     .on('click', (event: any, node: Node) => { event.stopPropagation(); this.mapViewerService.selectNode(node); this.mapAnimatorService.selectNode(svg, node) });
     this.room(room);
@@ -178,7 +178,7 @@ export class MapRendererService {
   }
 
   private updateRooms(svg: any, world: World, z: number): void {
-    const roomUpdate = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id);
+    const roomUpdate = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.id);
     roomUpdate.attr('transform', world.transform);
 
     const roomContainer = roomUpdate.selectAll('.room-container');
@@ -189,7 +189,7 @@ export class MapRendererService {
   }
 
   private exitRooms(svg: any, world: World, z: number): void {
-    svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.room.id).exit().transition().duration(500).ease(d3.easeLinear).style('opacity', 0).remove();
+    svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.id).exit().transition().duration(500).ease(d3.easeLinear).style('opacity', 0).remove();
   }
 
 }

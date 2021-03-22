@@ -4,7 +4,7 @@ export interface RoomData {
 
   readonly id: number;
 
-  readonly area_id: number;
+  area_id: number;
 
   title: string;
 

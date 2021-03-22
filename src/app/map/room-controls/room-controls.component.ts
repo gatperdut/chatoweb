@@ -4,7 +4,9 @@ import { Subscription } from 'rxjs';
 import { MapViewerService } from '../services/map-viewer.service';
 import { Node } from '../models/node.model';
 import { RoomDetailComponent } from 'src/app/rooms/room-detail/room-detail.component';
-import { Directions, DirectionStringIndex } from '../constants/map.constants';
+import { Directions, DirectionStringIndex, OppositeDirection } from '../constants/map.constants';
+import { RoomService } from 'src/app/rooms/services/room.service';
+import { Room } from 'src/app/rooms/models/room.model';
 
 @Component({
   selector: 'cw-room-controls',
@@ -21,6 +23,7 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
 
   constructor(
     private mapViewerService: MapViewerService,
+    private roomService: RoomService,
     private matDialog: MatDialog
   ) {
 
@@ -43,6 +46,11 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
   }
 
   public addRoom(direction: string): void {
+    const room: Room = this.roomService.emptyRoom();
 
+    room.area_id = this.node.room.area_id;
+    room.setAdjacentRoomId(OppositeDirection[direction as DirectionStringIndex], this.node.id);
+
+    const dialogRef = this.matDialog.open(RoomDetailComponent, { width: '500px', data: { room: room } });
   }
 }

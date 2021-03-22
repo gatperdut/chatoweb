@@ -1,16 +1,31 @@
 form.room-detail([formGroup]="roomFormGroup", (ngSubmit)="onSubmit()")
   h2(mat-dialog-title) Room details
   mat-dialog-content
-    div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px")
+    div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px grid")
       mat-form-field
         mat-hint Room's title
         input(type="text", matInput, formControlName="title", spellcheck="false")
       mat-form-field
         mat-hint Room's description
         textarea(type="text", matInput, formControlName="description", spellcheck="false")
+      mat-form-field
+        mat-hint Room's nighttime description
+        textarea(type="text", matInput, formControlName="description_nighttime", spellcheck="false")
+    .mt-3(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
+      mat-slide-toggle(color="primary", formControlName="arena")
+        | Arena
+      mat-slide-toggle(color="primary", formControlName="always_lit")
+        | Always lit
+      mat-slide-toggle(color="primary", formControlName="enclosed")
+        | Enclosed
+    .mt-3(fxLayout="column", fxLayoutAlign="start stretch")
+      mat-label Roughness multiplier:
+      mat-slider.mr-3(color="primary", [max]="1", [min]="0", [step]="0.05", [thumbLabel]="true", formControlName="roughness_multiplier")
+    | {{ roomFormGroup.value | json }}
   mat-dialog-actions(align="end")
     button(mat-dialog-close, mat-button, color="basic") Close
     button(type="submit", mat-raised-button, color="primary", [disabled]="roomFormGroup.invalid || state.loading")
-      span(*ngIf="!state.loading") Update
+      span(*ngIf="!state.loading && room.id") Update
+      span(*ngIf="!state.loading && !room.id") Create
       span(*ngIf="state.loading")
         i.fas.fa-cog.fa-spin

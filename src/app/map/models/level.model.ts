@@ -16,7 +16,7 @@ export class Level {
     return _.find(
       this.nodes,
       (node: Node): boolean => {
-        return node.room.id === id;
+        return node.id === id;
       }
     );
   }

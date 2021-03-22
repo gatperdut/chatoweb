@@ -58,18 +58,19 @@ export const MapIncrements: MapIncrement = {
   }
 };
 
-export const Directions: string[] = ['n', 'e', 's', 'w', 'u', 'd'];
-// export const Directions: string[] = ['n', 'e', 's', 'w'];
-
 export type DirectionStringIndex = 'n' | 'e' | 's' | 'w' | 'u' | 'd';
 
+export const Directions: DirectionStringIndex[] = ['n', 'e', 's', 'w', 'u', 'd'];
+// export const Directions: string[] = ['n', 'e', 's', 'w'];
+
+
 export const OppositeDirection = {
-  n: 's',
-  e: 'w',
-  s: 'n',
-  w: 'e',
-  u: 'd',
-  d: 'u'
+  'n': 's',
+  'e': 'w',
+  's': 'n',
+  'w': 'e',
+  'u': 'd',
+  'd': 'u'
 };
 
 export enum Orientation {
@@ -88,7 +89,7 @@ export const coplanarOrientations: Orientation[] = [
   Orientation.West
 ];
 
-export const directionToOrientation = {
+export const DirectionToOrientation = {
   n: Orientation.North,
   e: Orientation.East,
   s: Orientation.South,

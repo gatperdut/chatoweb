@@ -13,6 +13,33 @@ export class RoomService {
 
   }
 
+  public emptyRoom(): Room {
+    return new Room(
+      null,
+      null,
+      '',
+      '',
+      '',
+      false,
+      false,
+      false,
+      1.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    )
+    ;
+  }
+
   public craftRoom(roomData: RoomData): Room {
     return new Room(
       roomData.id,

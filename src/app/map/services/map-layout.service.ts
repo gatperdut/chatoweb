@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as _ from "underscore";
-import { Directions, DirectionStringIndex, directionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, Orientation } from "../constants/map.constants";
+import { Directions, DirectionStringIndex, DirectionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, Orientation } from "../constants/map.constants";
 import { RoomStringIndex } from "../../rooms/models/room.data";
 import { Node } from "../models/node.model";
 import { World } from "../models/world.model";
@@ -29,7 +29,6 @@ export class MapLayoutService {
 
     if (previousNode) {
       const link: Link = new Link(
-        previousNode.room.id.toString() + '_' + node.room.id.toString(),
         previousNode,
         node,
         orientation
@@ -47,7 +46,7 @@ export class MapLayoutService {
     _.each(
       Directions,
       (direction: string): void => {
-        const nextRoomId: number = room.adjacentRoomId(direction as RoomStringIndex);
+        const nextRoomId: number = room.getAdjacentRoomId(direction as RoomStringIndex);
 
         const nextRoom: Room = this.findRoom(rooms, nextRoomId);
 
@@ -61,7 +60,7 @@ export class MapLayoutService {
         const newY: number = node.y + mapVector.y;
         const newZ: number = node.z = mapVector.z;
 
-        this.processNodes(world, rooms, nextRoom, node, directionToOrientation[direction as DirectionStringIndex], newX, newY, newZ);
+        this.processNodes(world, rooms, nextRoom, node, DirectionToOrientation[direction as DirectionStringIndex], newX, newY, newZ);
       }
     );
   }
