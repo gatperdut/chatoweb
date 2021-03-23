@@ -16,8 +16,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthenticationWidgetComponent } from "./authentication/authentication-widget/authentication-widget.component";
 import { AuthenticationComponent } from "./authentication/authentication.component";
 import { ConfirmationComponent } from "./authentication/confirmation/confirmation.component";
@@ -44,6 +47,7 @@ import { MapComponent } from './map/map.component';
 import { MapControlsComponent } from './map/map-controls/map-controls.component';
 import { RoomControlsComponent } from './map/room-controls/room-controls.component';
 import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
+import { SnackBarComponent } from './snack-bar/snack-bar.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +76,8 @@ import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
     MapComponent,
     MapControlsComponent,
     RoomControlsComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    SnackBarComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent,
@@ -100,9 +105,13 @@ import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
     MatMenuModule,
     MatSidenavModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatSlideToggleModule,
     MatTabsModule,
     MatToolbarModule,
+    MatTooltipModule,
+    // CDK
+    ClipboardModule,
     // ChatoWeb
     CwRoutingModule
   ],

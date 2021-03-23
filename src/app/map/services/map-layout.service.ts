@@ -37,7 +37,7 @@ export class MapLayoutService {
       world[previousNode.z].links.push(link);
     }
 
-    if (world.containsNode(room.id)) {
+    if (world.hasNode(room.id)) {
       return;
     }
 

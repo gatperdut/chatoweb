@@ -1,8 +1,10 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable, throwError } from "rxjs";
+import { catchError, map, tap } from "rxjs/operators";
+import { SnackBarService } from "src/app/snack-bar/services/snack-bar.service";
 import { environment } from "src/environments/environment";
+import * as _ from "underscore";
 import { RoomData } from "../models/room.data";
 import { Room } from "../models/room.model";
 import { RoomService } from "./room.service";
@@ -14,7 +16,8 @@ export class RoomActionsService {
 
   constructor(
     private httpClient: HttpClient,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private snackBarService: SnackBarService
   ) {
 
   }
@@ -30,21 +33,56 @@ export class RoomActionsService {
     );
   }
 
-  public create(room: Room): Observable<RoomData> {
+  public create(roomData: RoomData): Observable<RoomData> {
     return this.httpClient.post<RoomData>(
       environment.cmBaseUrl + '/rooms',
       {
-        room: room
+        room: roomData
       }
-    );
+    )
+    .pipe(
+      tap(
+        (roomData: RoomData): void => {
+          this.snackBarService.ok('Room #' + roomData.id + ' created.');
+        }
+      ),
+      catchError(
+        (httpErrorResponse: HttpErrorResponse): Observable<RoomData> => {
+          this.snackBarService.bad('Could not create room.', httpErrorResponse.error.errors);
+          return throwError(httpErrorResponse.error);
+        }
+      )
+    )
   }
 
-  public update(room: Room): Observable<RoomData> {
-    return this.httpClient.put<RoomData>(
-      environment.cmBaseUrl + '/rooms/' + room.id,
-      {
-        room: room
+  private stringifyError(errors: { [key: string]: string }): string {
+    return _.map(
+      _.keys(errors),
+      (key: string): string => {
+        return `${key}: ${errors[key]}`
       }
+    ).join('')
+  }
+
+  public update(roomData: RoomData): Observable<RoomData> {
+    return this.httpClient.put<RoomData>(
+      environment.cmBaseUrl + '/rooms/' + roomData.id,
+      {
+        room: roomData
+      }
+    )
+    .pipe(
+      tap(
+        (roomData: RoomData): void => {
+          this.snackBarService.ok('Room #' + roomData.id + ' updated.')
+        }
+      ),
+      catchError(
+        (httpErrorResponse: HttpErrorResponse): Observable<RoomData> => {
+          this.snackBarService.bad('Could not update room', httpErrorResponse.error.errors);
+          return throwError(httpErrorResponse.error);
+        }
+      )
     );
   }
 

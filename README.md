@@ -4,6 +4,8 @@
 
 * Authenticate button: disable and show spinner while automaticSignin is running.
 
+* Error handling in action services.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.4.
 
 ## Development server

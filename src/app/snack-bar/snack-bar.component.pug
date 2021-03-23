@@ -1,0 +1,6 @@
+h4.mb-2.mt-2 {{ data.message }}
+mat-list
+  mat-list-item(*ngFor="let error of errorsArray") {{ error }}
+div(fxLayout="row", fxLayoutAlign="space-between")
+  button(mat-stroked-button, color="primary", (click)="toggleCopying()", [disabled]="!errorsArray.length", [cdkCopyToClipboard]="copy()", #tooltip="matTooltip", matTooltip="Copied", [matTooltipDisabled]="!copying") Copy to clipboard
+  button(mat-stroked-button, color="primary", (click)="close()") Close

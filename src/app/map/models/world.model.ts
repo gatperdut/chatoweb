@@ -51,7 +51,7 @@ export class World {
     return node;
   }
 
-  public containsNode(id: number): boolean {
+  public hasNode(id: number): boolean {
     return !!this.findNode(id);
   }
 
@@ -59,8 +59,16 @@ export class World {
     return this[mapVector.z].nodeAt(mapVector);
   }
 
+  public hasNodeAt(mapVector: MapVector): boolean {
+    return !!this.nodeAt(mapVector);
+  }
+
   public linkBetween(source: Node, target: Node): Link {
     return this[source.unitZ].linkBetween(source, target);
+  }
+
+  public hasLinkBetween(source: Node, target: Node): boolean {
+    return !!this.linkBetween(source, target);
   }
 
   public replaceRoom(room: Room): void {
