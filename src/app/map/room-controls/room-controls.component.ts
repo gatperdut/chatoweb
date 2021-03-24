@@ -4,10 +4,12 @@ import { Subscription } from 'rxjs';
 import { MapViewerService } from '../services/map-viewer.service';
 import { Node } from '../models/node.model';
 import { RoomDetailComponent } from 'src/app/rooms/room-detail/room-detail.component';
-import { DirectionStringIndex, MapUtils } from '../constants/map.constants';
+import { DirectionStringIndex, MapUtils, NodeAction } from '../constants/map.constants';
 import { RoomService } from 'src/app/rooms/services/room.service';
 import { RoomActionsService } from 'src/app/rooms/services/room-actions.service';
 import { RoomData } from 'src/app/rooms/models/room.data';
+import { Link } from '../models/link.model';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'cw-room-controls',
@@ -23,6 +25,8 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
   public Directions = MapUtils.Directions;
 
   public DirectionToString = MapUtils.DirectionToString;
+
+  public NodeAction = NodeAction
 
   constructor(
     private mapViewerService: MapViewerService,
@@ -61,7 +65,11 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public addRoom(direction: DirectionStringIndex): void {
+  public canCreateRoom(node: Node, direction: DirectionStringIndex): boolean {
+    return !node.hasAdjacentNode(direction) && !node.hasLink(direction);
+  }
+
+  public createRoom(direction: DirectionStringIndex): void {
     const roomData: RoomData = this.roomService.emptyRoom();
 
     roomData.area_id = this.node.room.area_id;
@@ -81,7 +89,28 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     );
   }
 
+  public canLinkRoom(node: Node, direction: DirectionStringIndex): boolean {
+    return node.hasAdjacentNode(direction) && !node.hasLink(direction);
+  }
+
   public linkRoom(direction: DirectionStringIndex): void {
+    const roomData: RoomData = { ...this.node.room };
+
+    const adjacentNode: Node = this.node.adjacentNode(direction);
+
+    this.roomService.setAdjacentRoomId(roomData, direction, adjacentNode.id);
+
+    this.roomActionsService.update(roomData).subscribe();
+  }
+
+  public canUnlinkRoom(node: Node, direction: DirectionStringIndex): boolean {
+    const link: Link = node.link(direction);
+
+    return !_.include(node.world.bridges, link);
+  }
+
+  public showUnlinkRoom(node: Node, direction: DirectionStringIndex): boolean {
+    return node.hasLink(direction);
 
   }
 

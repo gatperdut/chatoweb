@@ -40,12 +40,12 @@ export class MapLayoutService {
       return;
     }
 
-    world[z].nodes.push(node);
+    world.addNode(node);
 
     _.each(
       MapUtils.Directions,
       (direction: DirectionStringIndex): void => {
-        const nextRoomId: number = room.getAdjacentRoomId(direction);
+        const nextRoomId: number = room.getConnectedRoomId(direction);
 
         const nextRoom: Room = this.findRoom(rooms, nextRoomId);
 
@@ -68,6 +68,8 @@ export class MapLayoutService {
     const world: World = new World();
 
     this.processNodes(world, rooms, rooms[0], null, null, 0, 0, 0);
+
+    world.setConnectivity();
 
     return world;
   }

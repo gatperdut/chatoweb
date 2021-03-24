@@ -29,11 +29,11 @@ export class Room implements RoomData {
 
   }
 
-  public getAdjacentRoomId(direction: DirectionStringIndex): number {
+  public getConnectedRoomId(direction: DirectionStringIndex): number {
     return this[direction + 'r_id' as RoomStringIndex];
   }
 
-  public setAdjacentRoomId(direction: DirectionStringIndex, id: number): void {
+  public setConnectedRoomId(direction: DirectionStringIndex, id: number): void {
     this[direction + 'r_id' as RoomStringIndex] = id;
   }
 

@@ -120,16 +120,16 @@ export class MapRendererService {
     this.exitLinks(svg, world, z);
   }
 
-  private coplanarLinks(links: Link[]): Link[] {
+  private coplanarLinks(links: Link[], z: number): Link[] {
     return links.filter(
       (link: Link): boolean => {
-        return MapUtils.coplanarDirections.includes(link.direction)
+        return MapUtils.coplanarDirections.includes(link.direction) && link.source.unitZ === z;
       }
     );
   }
 
   private enterLinks(svg: any, world: World, z: number): void {
-    const linkEnter = svg.selectAll('.link').data(this.coplanarLinks(world.links), (link: Link) => link.id).enter();
+    const linkEnter = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).enter();
 
     const link = linkEnter
     .append('g')
@@ -142,7 +142,7 @@ export class MapRendererService {
   }
 
   private updateLinks(svg: any, world: World, z: number): void {
-    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links), (link: Link) => link.id)
+    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id)
     linkUpdate.attr('transform', world.transform);
 
     const linkArrow = linkUpdate.selectAll('.arrow');
@@ -150,7 +150,7 @@ export class MapRendererService {
   }
 
   private exitLinks(svg: any, world: World, z: number): void {
-    svg.selectAll('.link').data(this.coplanarLinks(world.links), (link: Link) => link.id).exit().remove();
+    svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).exit().remove();
   }
 
   private enterRooms(svg: any, world: World, z: number): void {

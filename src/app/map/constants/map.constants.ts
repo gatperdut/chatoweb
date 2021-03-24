@@ -5,7 +5,7 @@ export type MapVector = {
   readonly x: number;
   readonly y: number;
   readonly z: number;
-}
+};
 
 export type MapIncrement = {
   readonly n: MapVector;
@@ -14,9 +14,19 @@ export type MapIncrement = {
   readonly w: MapVector;
   readonly u: MapVector;
   readonly d: MapVector;
-}
+};
 
 export type DirectionStringIndex = 'n' | 'e' | 's' | 'w' | 'u' | 'd';
+
+export enum NodeAction {
+  Create = 'CREATE',
+  Link   = 'LINK',
+  Unlink = 'UNLINK',
+  None   = 'NONE'
+}
+
+export type NodeActions = { [key in DirectionStringIndex]: NodeAction }
+
 
 export class MapUtils {
   static readonly NodeOffset: number = 300;
@@ -30,36 +40,12 @@ export class MapUtils {
   static readonly Directions: DirectionStringIndex[] = ['n', 'e', 's', 'w', 'u', 'd'];
 
   static readonly MapIncrements: MapIncrement = {
-    n: {
-      x: 0,
-      y: -1,
-      z: 0
-    },
-    e: {
-      x: 1,
-      y: 0,
-      z: 0
-    },
-    s: {
-      x: 0,
-      y: 1,
-      z: 0
-    },
-    w: {
-      x: -1,
-      y: 0,
-      z: 0
-    },
-    u: {
-      x: 0,
-      y: 0,
-      z: 1
-    },
-    d: {
-      x: 0,
-      y: 0,
-      z: -1
-    }
+    n: { x:  0, y: -1, z:  0 },
+    e: { x:  1, y:  0, z:  0 },
+    s: { x:  0, y:  1, z:  0 },
+    w: { x: -1, y:  0, z:  0 },
+    u: { x:  0, y:  0, z:  1 },
+    d: { x:  0, y:  0, z: -1 }
   };
 
   static readonly OppositeDirection = {

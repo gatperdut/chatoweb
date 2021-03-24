@@ -1,5 +1,6 @@
 import { Room } from "src/app/rooms/models/room.model";
-import { DirectionStringIndex, MapVector, MapUtils } from "../constants/map.constants";
+import * as _ from "underscore";
+import { DirectionStringIndex, MapVector, MapUtils, NodeActions, NodeAction } from "../constants/map.constants";
 import { Level } from "./level.model";
 import { Link } from "./link.model";
 import { World } from "./world.model";
@@ -11,6 +12,15 @@ export class Node {
   public z: number;
 
   public level: Level;
+
+  public nodeActions: NodeActions = {
+    n: null,
+    e: null,
+    s: null,
+    w: null,
+    u: null,
+    d: null
+  };
 
   constructor(
     public world: World,
@@ -32,6 +42,31 @@ export class Node {
 
   public get idString(): string {
     return this.id.toString();
+  }
+
+  public actionIs(direction: DirectionStringIndex, nodeAction: NodeAction): boolean {
+    return this.nodeActions[direction] === nodeAction;
+  }
+
+  public setNodeActions(): void {
+    _.each(
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
+        switch(true) {
+          case !this.hasAdjacentNode(direction) && !this.hasLink(direction):
+            this.nodeActions[direction] = NodeAction.Create;
+            break;
+          case this.hasAdjacentNode(direction) && !this.hasLink(direction):
+            this.nodeActions[direction] = NodeAction.Link;
+            break;
+          case this.hasLink(direction):
+            this.nodeActions[direction] = NodeAction.Unlink;
+            break;
+          default:
+            this.nodeActions[direction] = NodeAction.None;
+        }
+      }
+    )
   }
 
   public adjacentMapVector(direction: DirectionStringIndex): MapVector {
@@ -62,7 +97,7 @@ export class Node {
     return !!this.adjacentNode(direction);
   }
 
-  public adjacentLink(direction: DirectionStringIndex): Link {
+  public link(direction: DirectionStringIndex): Link {
     const adjacentNode: Node = this.adjacentNode(direction);
 
     if (!adjacentNode) {
@@ -72,8 +107,8 @@ export class Node {
     return this.world.linkBetween(this, adjacentNode);
   }
 
-  public hasAdjacentLink(direction: DirectionStringIndex): boolean {
-    return !!this.adjacentLink(direction);
+  public hasLink(direction: DirectionStringIndex): boolean {
+    return !!this.link(direction);
   }
 
 }

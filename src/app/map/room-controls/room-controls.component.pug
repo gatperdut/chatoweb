@@ -7,12 +7,12 @@
     | &nbsp; Edit
   div(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="10px grid")
     .add-room-container(*ngFor="let direction of Directions")
-      button(mat-stroked-button, color="primary", (click)="addRoom(direction)", *ngIf="!node.hasAdjacentNode(direction) && !node.hasAdjacentLink(direction)")
+      button(mat-stroked-button, color="primary", (click)="createRoom(direction)", *ngIf="canCreateRoom(node, direction)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-plus")
         | &nbsp; Room {{ DirectionToString[direction] }}
-      button(mat-stroked-button, color="primary", (click)="linkRoom(direction)", *ngIf="node.hasAdjacentNode(direction) && !node.hasAdjacentLink(direction)")
+      button(mat-stroked-button, color="primary", (click)="linkRoom(direction)", *ngIf="canLinkRoom(node, direction)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-link")
         | &nbsp; Room {{ DirectionToString[direction] }}
-      button(mat-stroked-button, color="warn", (click)="unlinkRoom(direction)", *ngIf="node.hasAdjacentLink(direction)")
+      button(mat-stroked-button, color="warn", (click)="unlinkRoom(direction)", *ngIf="showUnlinkRoom(node, direction)", [disabled]="!canUnlinkRoom(node, direction)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-unlink")
         | &nbsp; Room {{ DirectionToString[direction] }}
