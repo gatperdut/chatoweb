@@ -1,5 +1,6 @@
 import { Room } from "src/app/rooms/models/room.model";
-import { MapIncrement, MapIncrements, MapIncrementStringIndex, MapVector, NodeOffset } from "../constants/map.constants";
+import { DirectionStringIndex, MapVector, MapUtils } from "../constants/map.constants";
+import { Level } from "./level.model";
 import { Link } from "./link.model";
 import { World } from "./world.model";
 
@@ -9,6 +10,8 @@ export class Node {
   public y: number;
   public z: number;
 
+  public level: Level;
+
   constructor(
     public world: World,
     public room: Room,
@@ -16,8 +19,10 @@ export class Node {
     public unitY: number,
     public unitZ: number
   ) {
-    this.x = this.unitX * NodeOffset;
-    this.y = this.unitY * NodeOffset;
+    this.level = this.world[this.unitZ];
+
+    this.x = this.unitX * MapUtils.NodeOffset;
+    this.y = this.unitY * MapUtils.NodeOffset;
     this.z = this.unitZ * 1;
   }
 
@@ -29,8 +34,8 @@ export class Node {
     return this.id.toString();
   }
 
-  public adjacentMapVector(direction: string): MapVector {
-    const mapVector: MapVector = MapIncrements[direction as MapIncrementStringIndex]
+  public adjacentMapVector(direction: DirectionStringIndex): MapVector {
+    const mapVector: MapVector = MapUtils.MapIncrements[direction]
 
     return {
       x: this.unitX + mapVector.x,
@@ -43,7 +48,7 @@ export class Node {
     return this.unitX === mapVector.x && this.unitY === mapVector.y && this.unitZ === mapVector.z;
   };
 
-  public adjacentNode(direction: string): Node {
+  public adjacentNode(direction: DirectionStringIndex): Node {
     const mapVector: MapVector = this.adjacentMapVector(direction);
 
     if (!this.world.validZ(mapVector.z)) {
@@ -53,11 +58,11 @@ export class Node {
     return this.world.nodeAt(mapVector);
   }
 
-  public hasAdjacentNode(direction: string): boolean {
+  public hasAdjacentNode(direction: DirectionStringIndex): boolean {
     return !!this.adjacentNode(direction);
   }
 
-  public adjacentLink(direction: string): Link {
+  public adjacentLink(direction: DirectionStringIndex): Link {
     const adjacentNode: Node = this.adjacentNode(direction);
 
     if (!adjacentNode) {
@@ -67,7 +72,7 @@ export class Node {
     return this.world.linkBetween(this, adjacentNode);
   }
 
-  public hasAdjacentLink(direction: string): boolean {
+  public hasAdjacentLink(direction: DirectionStringIndex): boolean {
     return !!this.adjacentLink(direction);
   }
 

@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as _ from "underscore";
-import { Directions, DirectionStringIndex, DirectionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, Orientation } from "../constants/map.constants";
-import { RoomStringIndex } from "../../rooms/models/room.data";
+import { DirectionStringIndex, MapUtils, MapVector } from "../constants/map.constants";
 import { Node } from "../models/node.model";
 import { World } from "../models/world.model";
 import { Link } from "../models/link.model";
@@ -22,19 +21,19 @@ export class MapLayoutService {
     return _.findWhere(rooms, { id: id });
   }
 
-  private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, orientation: Orientation, x: number, y: number, z: number): void {
+  private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, direction: DirectionStringIndex, x: number, y: number, z: number): void {
     world.handleZ(z);
 
     const node: Node = new Node(world, room, x, y, z);
 
-    if (previousNode) {
+    if (previousNode && !world.hasLinkBetween(node, previousNode)) {
       const link: Link = new Link(
+        world,
         previousNode,
-        node,
-        orientation
+        node
       );
 
-      world[previousNode.z].links.push(link);
+      world.links.push(link);
     }
 
     if (world.hasNode(room.id)) {
@@ -44,9 +43,9 @@ export class MapLayoutService {
     world[z].nodes.push(node);
 
     _.each(
-      Directions,
-      (direction: string): void => {
-        const nextRoomId: number = room.getAdjacentRoomId(direction as RoomStringIndex);
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
+        const nextRoomId: number = room.getAdjacentRoomId(direction);
 
         const nextRoom: Room = this.findRoom(rooms, nextRoomId);
 
@@ -54,13 +53,13 @@ export class MapLayoutService {
           return;
         }
 
-        const mapVector: MapVector = MapIncrements[direction as MapIncrementStringIndex];
+        const mapVector: MapVector = MapUtils.MapIncrements[direction];
 
         const newX: number = node.unitX + mapVector.x;
         const newY: number = node.unitY + mapVector.y;
         const newZ: number = node.unitZ + mapVector.z;
 
-        this.processNodes(world, rooms, nextRoom, node, DirectionToOrientation[direction as DirectionStringIndex], newX, newY, newZ);
+        this.processNodes(world, rooms, nextRoom, node, direction, newX, newY, newZ);
       }
     );
   }

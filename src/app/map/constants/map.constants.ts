@@ -1,20 +1,11 @@
-export const NodeOffset: number = 300;
-
-export const NodeSide: number = 150;
-
-export const NodeHalfSide: number = NodeSide / 2;
-
-export const LinkOffset: number = 20;
-
-export const LinkMidpoint: number = (NodeOffset - NodeSide) / 2;
+import { Node } from '../models/node.model';
+import * as _ from "underscore";
 
 export type MapVector = {
   readonly x: number;
   readonly y: number;
   readonly z: number;
 }
-
-export type MapIncrementStringIndex = 'n' | 'e' | 's' | 'w' | 'u' | 'd';
 
 export type MapIncrement = {
   readonly n: MapVector;
@@ -25,82 +16,96 @@ export type MapIncrement = {
   readonly d: MapVector;
 }
 
-export const MapIncrements: MapIncrement = {
-  n: {
-    x: 0,
-    y: -1,
-    z: 0
-  },
-  e: {
-    x: 1,
-    y: 0,
-    z: 0
-  },
-  s: {
-    x: 0,
-    y: 1,
-    z: 0
-  },
-  w: {
-    x: -1,
-    y: 0,
-    z: 0
-  },
-  u: {
-    x: 0,
-    y: 0,
-    z: 1
-  },
-  d: {
-    x: 0,
-    y: 0,
-    z: -1
-  }
-};
-
 export type DirectionStringIndex = 'n' | 'e' | 's' | 'w' | 'u' | 'd';
 
-export const Directions: DirectionStringIndex[] = ['n', 'e', 's', 'w', 'u', 'd'];
+export class MapUtils {
+  static readonly NodeOffset: number = 300;
 
-export const OppositeDirection = {
-  'n': 's',
-  'e': 'w',
-  's': 'n',
-  'w': 'e',
-  'u': 'd',
-  'd': 'u'
-};
+  static readonly NodeSide: number = 150;
 
-export enum Orientation {
-  North = 'NORTH',
-  East  = 'EAST',
-  South = 'SOUTH',
-  West  = 'WEST',
-  Above = 'ABOVE',
-  Below = 'BELOW'
+  static readonly NodeHalfSide: number = MapUtils.NodeSide / 2;
+
+  static readonly LinkMidpoint: number = (MapUtils.NodeOffset - MapUtils.NodeSide) / 2;
+
+  static readonly Directions: DirectionStringIndex[] = ['n', 'e', 's', 'w', 'u', 'd'];
+
+  static readonly MapIncrements: MapIncrement = {
+    n: {
+      x: 0,
+      y: -1,
+      z: 0
+    },
+    e: {
+      x: 1,
+      y: 0,
+      z: 0
+    },
+    s: {
+      x: 0,
+      y: 1,
+      z: 0
+    },
+    w: {
+      x: -1,
+      y: 0,
+      z: 0
+    },
+    u: {
+      x: 0,
+      y: 0,
+      z: 1
+    },
+    d: {
+      x: 0,
+      y: 0,
+      z: -1
+    }
+  };
+
+  static readonly OppositeDirection = {
+    'n': 's' as DirectionStringIndex,
+    'e': 'w' as DirectionStringIndex,
+    's': 'n' as DirectionStringIndex,
+    'w': 'e' as DirectionStringIndex,
+    'u': 'd' as DirectionStringIndex,
+    'd': 'u' as DirectionStringIndex
+  };
+
+  static readonly coplanarDirections: DirectionStringIndex[] = ['n', 'e', 's', 'w'];
+
+  static readonly DirectionToString = {
+    n: 'north',
+    e: 'east',
+    s: 'south',
+    w: 'west',
+    u: 'up',
+    d: 'down'
+  };
+
+  static directionFromCoords(source: Node, target: Node): DirectionStringIndex {
+    const mapVector: MapVector = {
+      x: target.unitX - source.unitX,
+      y: target.unitY - source.unitY,
+      z: target.unitZ - source.unitZ
+    };
+
+    return _.find(
+      _.keys(MapUtils.MapIncrements),
+      (key: string): boolean => {
+        const keyStringIndex = key as DirectionStringIndex;
+        return MapUtils.MapIncrements[keyStringIndex].x === mapVector.x && MapUtils.MapIncrements[keyStringIndex].y === mapVector.y && MapUtils.MapIncrements[keyStringIndex].z === mapVector.z;
+      }
+    ) as DirectionStringIndex;
+  }
+
 }
 
-export const coplanarOrientations: Orientation[] = [
-  Orientation.North,
-  Orientation.East,
-  Orientation.South,
-  Orientation.West
-];
 
-export const DirectionToOrientation = {
-  n: Orientation.North,
-  e: Orientation.East,
-  s: Orientation.South,
-  w: Orientation.West,
-  u: Orientation.Above,
-  d: Orientation.Below
-};
 
-export const DirectionToString = {
-  n: 'north',
-  e: 'east',
-  s: 'south',
-  w: 'west',
-  u: 'up',
-  d: 'down'
-};
+
+
+
+
+
+
+

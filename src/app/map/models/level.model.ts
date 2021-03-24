@@ -7,8 +7,7 @@ export class Level {
 
   constructor(
     public z: number,
-    public nodes: Node[] = [],
-    public links: Link[] = []
+    public nodes: Node[] = []
   ) {
 
   }
@@ -35,10 +34,6 @@ export class Level {
       this.nodes,
       (node: Node): boolean => node.locatedAt(mapVector)
     )
-  }
-
-  public linkBetween(source: Node, target: Node): Link {
-    return _.find(this.links, { id: source.idString + '_' + target.idString });
   }
 
 }

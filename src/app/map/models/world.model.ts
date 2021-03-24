@@ -1,6 +1,6 @@
 import { Room } from "src/app/rooms/models/room.model";
 import * as _ from "underscore";
-import { Directions, DirectionStringIndex, DirectionToOrientation, MapIncrements, MapIncrementStringIndex, MapVector, OppositeDirection } from "../constants/map.constants";
+import { DirectionStringIndex, MapUtils, MapVector } from "../constants/map.constants";
 import { Level } from "./level.model";
 import { Link } from "./link.model";
 import { Node } from './node.model'
@@ -13,7 +13,8 @@ export class World {
 
   constructor(
     public zMax: number = 0,
-    public zMin: number = 0
+    public zMin: number = 0,
+    public links: Link[] = []
   ) {
 
   }
@@ -64,48 +65,72 @@ export class World {
   }
 
   public linkBetween(source: Node, target: Node): Link {
-    return this[source.unitZ].linkBetween(source, target);
+    return _.find(
+      this.links,
+      (link: Link): boolean => {
+        return link.isBetween(source, target);
+      }
+    );
   }
 
   public hasLinkBetween(source: Node, target: Node): boolean {
     return !!this.linkBetween(source, target);
   }
 
-  public replaceRoom(room: Room): void {
-    const node: Node = this.findNode(room.id);
-
-    if (!node) {
-      return;
-    }
-
-    node.room = room;
+  public removeLink(link: Link) {
+    const index = _.indexOf(this.links, link);
+    this.links.splice(index, 1);
   }
 
-  public insertRoom(room: Room): void {
+  public updateRoom(room: Room): void {
+    const node: Node = this.findNode(room.id);
+
+    node.room = room;
+
+    _.each(
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
+        const adjacentRoomId: number = room.getAdjacentRoomId(direction);
+        if (adjacentRoomId) {
+          const adjacentNode: Node = this.findNode(adjacentRoomId);
+          if (!this.hasLinkBetween(node, adjacentNode)) {
+            const link: Link = new Link(this, node, adjacentNode);
+            this.links.push(link);
+          }
+        }
+        else {
+          const adjacentLink: Link = node.adjacentLink(direction);
+          if (adjacentLink) {
+            this.removeLink(adjacentLink);
+          }
+        }
+      }
+    );
+  }
+
+  public createRoom(room: Room): void {
     let node: Node = null;
 
     _.each(
-      Directions,
-      (direction: string): void => {
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
         const adjacentRoomId: number = room.getAdjacentRoomId(direction);
         if (!adjacentRoomId) {
           return;
         }
 
-        const oppositeDirection = OppositeDirection[direction as DirectionStringIndex];
+        const oppositeDirection = MapUtils.OppositeDirection[direction];
 
         const adjacentNode = this.findNode(adjacentRoomId);
 
         if (!node) {
-          const mapVector: MapVector = MapIncrements[oppositeDirection as MapIncrementStringIndex];
+          const mapVector: MapVector = MapUtils.MapIncrements[oppositeDirection];
           node = new Node(this, room, adjacentNode.unitX + mapVector.x, adjacentNode.unitY + mapVector.y, adjacentNode.unitZ + mapVector.z);
           this[node.z].nodes.push(node);
         }
 
-        const directLink: Link = new Link(node, adjacentNode, DirectionToOrientation[direction as DirectionStringIndex]);
-        const reverseLink: Link = new Link(adjacentNode, node, DirectionToOrientation[oppositeDirection as DirectionStringIndex]);
-        this[node.z].links.push(directLink);
-        this[node.z].links.push(reverseLink);
+        const link: Link = new Link(this, node, adjacentNode);
+        this.links.push(link);
       }
     );
   }

@@ -25,5 +25,5 @@ form.room-detail([formGroup]="roomFormGroup", (ngSubmit)="onSubmit()")
   mat-dialog-actions(align="end")
     button([mat-dialog-close]="null", mat-button, color="basic") Close
     button(type="submit", mat-raised-button, color="primary", [disabled]="roomFormGroup.invalid")
-      span(*ngIf="room.id") Update
-      span(*ngIf="!room.id") Create
+      span(*ngIf="roomData.id") Update
+      span(*ngIf="!roomData.id") Create

@@ -55,15 +55,6 @@ export class RoomActionsService {
     )
   }
 
-  private stringifyError(errors: { [key: string]: string }): string {
-    return _.map(
-      _.keys(errors),
-      (key: string): string => {
-        return `${key}: ${errors[key]}`
-      }
-    ).join('')
-  }
-
   public update(roomData: RoomData): Observable<RoomData> {
     return this.httpClient.put<RoomData>(
       environment.cmBaseUrl + '/rooms/' + roomData.id,

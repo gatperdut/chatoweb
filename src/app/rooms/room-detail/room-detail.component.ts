@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Directions } from 'src/app/map/constants/map.constants';
+import { DirectionStringIndex, MapUtils } from 'src/app/map/constants/map.constants';
 import * as _ from 'underscore';
 import { RoomData } from '../models/room.data';
 import { Room } from '../models/room.model';
+import { RoomService } from '../services/room.service';
 
 @Component({
   selector: 'cw-room-detail',
@@ -13,23 +14,20 @@ import { Room } from '../models/room.model';
 })
 export class RoomDetailComponent implements OnInit {
 
-  public room: Room;
-
-  public roomData: RoomData
+  public roomData: RoomData;
 
   public roomFormGroup: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { room: Room },
-    private matDialogRef: MatDialogRef<RoomDetailComponent>
+    @Inject(MAT_DIALOG_DATA) public data: { roomData: RoomData },
+    private matDialogRef: MatDialogRef<RoomDetailComponent>,
+    private roomService: RoomService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.room = this.data.room;
-
-    this.roomData = { ...this.room };
+    this.roomData = this.data.roomData;
 
     this.roomFormGroup = new FormGroup(
       {
@@ -45,9 +43,9 @@ export class RoomDetailComponent implements OnInit {
       }
     );
     _.each(
-      Directions,
-      (direction: string): void => {
-        this.roomFormGroup.addControl(direction + 'r_id', new FormControl(this.room.getAdjacentRoomId(direction)));
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
+        this.roomFormGroup.addControl(direction + 'r_id', new FormControl(this.roomService.getAdjacentRoomId(this.roomData, direction)));
       }
     )
     this.roomFormGroup.addControl

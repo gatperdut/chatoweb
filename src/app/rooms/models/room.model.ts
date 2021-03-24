@@ -1,3 +1,4 @@
+import { DirectionStringIndex } from "src/app/map/constants/map.constants";
 import { RoomData, RoomStringIndex } from "./room.data";
 
 export class Room implements RoomData {
@@ -28,19 +29,19 @@ export class Room implements RoomData {
 
   }
 
-  public getAdjacentRoomId(direction: string): number {
+  public getAdjacentRoomId(direction: DirectionStringIndex): number {
     return this[direction + 'r_id' as RoomStringIndex];
   }
 
-  public setAdjacentRoomId(direction: string, id: number): void {
+  public setAdjacentRoomId(direction: DirectionStringIndex, id: number): void {
     this[direction + 'r_id' as RoomStringIndex] = id;
   }
 
-  public getDoorId(direction: string): number {
+  public getDoorId(direction: DirectionStringIndex): number {
     return this[direction + 'r_id' as RoomStringIndex];
   }
 
-  public setDoorId(direction: string, id: number): void {
+  public setDoorId(direction: DirectionStringIndex, id: number): void {
     this[direction + 'd_id' as RoomStringIndex] = id;;
   }
 

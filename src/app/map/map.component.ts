@@ -117,12 +117,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         switch(mapCableEvent.action) {
           case 'update':
             const updatedRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
-            this.world.replaceRoom(updatedRoom);
+            this.world.updateRoom(updatedRoom);
             this.mapRendererService.render(this.svg, this.world, this.z);
             break;
           case 'create':
             const createdRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
-            this.world.insertRoom(createdRoom);
+            this.world.createRoom(createdRoom);
             this.mapRendererService.render(this.svg, this.world, this.z);
             break;
           default:

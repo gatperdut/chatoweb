@@ -4,9 +4,8 @@ import { Subscription } from 'rxjs';
 import { MapViewerService } from '../services/map-viewer.service';
 import { Node } from '../models/node.model';
 import { RoomDetailComponent } from 'src/app/rooms/room-detail/room-detail.component';
-import { Directions, DirectionStringIndex, DirectionToString, OppositeDirection } from '../constants/map.constants';
+import { DirectionStringIndex, MapUtils } from '../constants/map.constants';
 import { RoomService } from 'src/app/rooms/services/room.service';
-import { Room } from 'src/app/rooms/models/room.model';
 import { RoomActionsService } from 'src/app/rooms/services/room-actions.service';
 import { RoomData } from 'src/app/rooms/models/room.data';
 
@@ -21,9 +20,9 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
 
   public node: Node = null;
 
-  public Directions = Directions;
+  public Directions = MapUtils.Directions;
 
-  public DirectionToString = DirectionToString;
+  public DirectionToString = MapUtils.DirectionToString;
 
   constructor(
     private mapViewerService: MapViewerService,
@@ -47,7 +46,9 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
   }
 
   public editRoom(): void {
-    this.matDialog.open(RoomDetailComponent, { width: '500px', data: { room: this.node.room } })
+    const roomData: RoomData = { ...this.node.room }
+
+    this.matDialog.open(RoomDetailComponent, { width: '500px', data: { roomData: roomData } })
     .afterClosed()
     .subscribe(
       (roomData: RoomData) => {
@@ -60,13 +61,14 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public addRoom(direction: string): void {
-    const room: Room = this.roomService.emptyRoom();
-    room.area_id = this.node.room.area_id;
+  public addRoom(direction: DirectionStringIndex): void {
+    const roomData: RoomData = this.roomService.emptyRoom();
 
-    room.setAdjacentRoomId(OppositeDirection[direction as DirectionStringIndex], this.node.id);
+    roomData.area_id = this.node.room.area_id;
 
-    this.matDialog.open(RoomDetailComponent, { width: '500px', data: { room: room } })
+    this.roomService.setAdjacentRoomId(roomData, MapUtils.OppositeDirection[direction], this.node.id);
+
+    this.matDialog.open(RoomDetailComponent, { width: '500px', data: { roomData: roomData } })
     .afterClosed()
     .subscribe(
       (roomData: RoomData) => {
@@ -79,13 +81,15 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public linkRoom(direction: string): void {
+  public linkRoom(direction: DirectionStringIndex): void {
 
   }
 
-  public unlinkRoom(direction: string): void {
-    this.node.room.setAdjacentRoomId(direction, null);
+  public unlinkRoom(direction: DirectionStringIndex): void {
+    const roomData: RoomData = { ...this.node.room };
 
-    this.roomActionsService.update(this.node.room);
+    this.roomService.setAdjacentRoomId(roomData, direction, null);
+
+    this.roomActionsService.update(roomData).subscribe();
   }
 }

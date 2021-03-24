@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as d3 from "d3";
-import { coplanarOrientations, NodeSide } from "../constants/map.constants";
+import { MapUtils } from "../constants/map.constants";
 import { Link } from "../models/link.model";
 import { Node } from '../models/node.model';
 import { World } from "../models/world.model";
@@ -33,7 +33,7 @@ export class MapRendererService {
     .attr("refY", 0)
     .attr("markerWidth", 10)
     .attr("markerHeight", 10)
-    .attr("orient", "auto")
+    .attr("orient", "auto-start-reverse")
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
   }
@@ -67,8 +67,8 @@ export class MapRendererService {
     roomContainer
     .attr("x", (node: Node, i: number) => node.x)
     .attr("y", (node: Node, i: number) => node.y)
-    .attr("width", (node: Node) => NodeSide)
-    .attr("height", (node: Node) => NodeSide)
+    .attr("width", (node: Node) => MapUtils.NodeSide)
+    .attr("height", (node: Node) => MapUtils.NodeSide)
     .attr('stroke', 'black')
     .attr('fill', '#69a3b2')
     .style('cursor', 'pointer');
@@ -104,7 +104,8 @@ export class MapRendererService {
     .attr('d', (link: Link) => this.linkCurve(link.points))
     .attr('stroke', 'black')
     .attr('fill', 'none')
-    .attr("marker-end", "url(#arrowhead)");
+    .attr("marker-end", "url(#arrowhead)")
+    .attr("marker-start", "url(#arrowhead)");
   }
 
   public render(svg: any, world: World, z: number): void {
@@ -122,13 +123,13 @@ export class MapRendererService {
   private coplanarLinks(links: Link[]): Link[] {
     return links.filter(
       (link: Link): boolean => {
-        return coplanarOrientations.includes(link.orientation)
+        return MapUtils.coplanarDirections.includes(link.direction)
       }
     );
   }
 
   private enterLinks(svg: any, world: World, z: number): void {
-    const linkEnter = svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id).enter();
+    const linkEnter = svg.selectAll('.link').data(this.coplanarLinks(world.links), (link: Link) => link.id).enter();
 
     const link = linkEnter
     .append('g')
@@ -141,7 +142,7 @@ export class MapRendererService {
   }
 
   private updateLinks(svg: any, world: World, z: number): void {
-    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id)
+    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links), (link: Link) => link.id)
     linkUpdate.attr('transform', world.transform);
 
     const linkArrow = linkUpdate.selectAll('.arrow');
@@ -149,7 +150,7 @@ export class MapRendererService {
   }
 
   private exitLinks(svg: any, world: World, z: number): void {
-    svg.selectAll('.link').data(this.coplanarLinks(world[z].links), (link: Link) => link.id).exit().remove();
+    svg.selectAll('.link').data(this.coplanarLinks(world.links), (link: Link) => link.id).exit().remove();
   }
 
   private enterRooms(svg: any, world: World, z: number): void {

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
+import { DirectionStringIndex } from "src/app/map/constants/map.constants";
 import * as _ from "underscore";
-import { RoomData } from "../../rooms/models/room.data";
+import { RoomData, RoomStringIndex } from "../../rooms/models/room.data";
 import { Room } from "../models/room.model";
 
 @Injectable({
@@ -9,35 +10,35 @@ import { Room } from "../models/room.model";
 export class RoomService {
 
   constructor(
+
   ) {
 
   }
 
-  public emptyRoom(): Room {
-    return new Room(
-      null,
-      null,
-      '',
-      '',
-      '',
-      false,
-      false,
-      false,
-      1.0,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    )
-    ;
+  public emptyRoom(): RoomData {
+    return {
+      id: null,
+      area_id: null,
+      title: '',
+      description: '',
+      description_nighttime: '',
+      arena: false,
+      always_lit: false,
+      enclosed: false,
+      roughness_multiplier: 1.0,
+      nr_id: null,
+      er_id: null,
+      sr_id: null,
+      wr_id: null,
+      ur_id: null,
+      dr_id: null,
+      nd_id: null,
+      ed_id: null,
+      sd_id: null,
+      wd_id: null,
+      ud_id: null,
+      dd_id: null
+    };
   }
 
   public craftRoom(roomData: RoomData): Room {
@@ -64,6 +65,22 @@ export class RoomService {
       roomData.ud_id,
       roomData.dd_id,
     );
+  }
+
+  public getAdjacentRoomId(roomData: RoomData, direction: DirectionStringIndex): number {
+    return roomData[direction + 'r_id' as RoomStringIndex];
+  }
+
+  public setAdjacentRoomId(roomData: RoomData, direction: DirectionStringIndex, id: number): void {
+    roomData[direction + 'r_id' as RoomStringIndex] = id;
+  }
+
+  public getDoorId(roomData: RoomData, direction: DirectionStringIndex): number {
+    return roomData[direction + 'r_id' as RoomStringIndex];
+  }
+
+  public setDoorId(roomData: RoomData, direction: DirectionStringIndex, id: number): void {
+    roomData[direction + 'd_id' as RoomStringIndex] = id;;
   }
 
   public craftRooms(roomsData: RoomData[]): Room[] {
