@@ -225,7 +225,6 @@ export class World {
         bridgesDFS.bind(this)(this, v, v);
       }
     }
-    console.log(this.bridges);
   }
 
 }

@@ -27,7 +27,6 @@ export enum NodeAction {
 
 export type NodeActions = { [key in DirectionStringIndex]: NodeAction }
 
-
 export class MapUtils {
   static readonly NodeOffset: number = 300;
 

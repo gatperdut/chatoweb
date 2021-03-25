@@ -52,18 +52,21 @@ export class Node {
     _.each(
       MapUtils.Directions,
       (direction: DirectionStringIndex): void => {
-        switch(true) {
-          case !this.hasAdjacentNode(direction) && !this.hasLink(direction):
-            this.nodeActions[direction] = NodeAction.Create;
-            break;
-          case this.hasAdjacentNode(direction) && !this.hasLink(direction):
-            this.nodeActions[direction] = NodeAction.Link;
-            break;
-          case this.hasLink(direction):
+        if (!this.hasAdjacentNode(direction) && !this.hasLink(direction)) {
+          this.nodeActions[direction] = NodeAction.Create;
+        }
+        else if (this.hasAdjacentNode(direction) && !this.hasLink(direction)) {
+          this.nodeActions[direction] = NodeAction.Link;
+        }
+        else {
+          const link: Link = this.link(direction);
+
+          if (!_.include(this.world.bridges, link)) {
             this.nodeActions[direction] = NodeAction.Unlink;
-            break;
-          default:
+          }
+          else {
             this.nodeActions[direction] = NodeAction.None;
+          }
         }
       }
     )

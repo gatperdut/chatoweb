@@ -65,10 +65,6 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public canCreateRoom(node: Node, direction: DirectionStringIndex): boolean {
-    return !node.hasAdjacentNode(direction) && !node.hasLink(direction);
-  }
-
   public createRoom(direction: DirectionStringIndex): void {
     const roomData: RoomData = this.roomService.emptyRoom();
 
@@ -89,10 +85,6 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public canLinkRoom(node: Node, direction: DirectionStringIndex): boolean {
-    return node.hasAdjacentNode(direction) && !node.hasLink(direction);
-  }
-
   public linkRoom(direction: DirectionStringIndex): void {
     const roomData: RoomData = { ...this.node.room };
 
@@ -101,17 +93,6 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     this.roomService.setAdjacentRoomId(roomData, direction, adjacentNode.id);
 
     this.roomActionsService.update(roomData).subscribe();
-  }
-
-  public canUnlinkRoom(node: Node, direction: DirectionStringIndex): boolean {
-    const link: Link = node.link(direction);
-
-    return !_.include(node.world.bridges, link);
-  }
-
-  public showUnlinkRoom(node: Node, direction: DirectionStringIndex): boolean {
-    return node.hasLink(direction);
-
   }
 
   public unlinkRoom(direction: DirectionStringIndex): void {
