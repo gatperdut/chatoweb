@@ -14,6 +14,7 @@ import { ItemTemplatesComponent } from './item-templates/item-templates.componen
 import { PlayersComponent } from './players/players.component';
 import { MapComponent } from './map/map.component';
 import { RoomsResolver } from './rooms/resolvers/rooms.resolver';
+import { DoorsResolver } from './rooms/resolvers/doors.resolver';
 
 const routes: Routes = [
   {
@@ -65,7 +66,8 @@ const routes: Routes = [
           AuthenticationGuard
         ],
         resolve: {
-          rooms: RoomsResolver
+          rooms: RoomsResolver,
+          doors: DoorsResolver
         }
       },
       {
