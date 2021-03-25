@@ -27,13 +27,11 @@ export class MapLayoutService {
     const node: Node = new Node(world, room, x, y, z);
 
     if (previousNode && !world.hasLinkBetween(node, previousNode)) {
-      const link: Link = new Link(
-        world,
-        previousNode,
-        node
-      );
+      const directLink: Link = new Link(world, previousNode, node);
+      const reverseLink: Link = new Link(world, node, previousNode);
 
-      world.links.push(link);
+      world.links.push(directLink);
+      world.links.push(reverseLink);
     }
 
     if (world.hasNode(room.id)) {

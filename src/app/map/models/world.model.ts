@@ -101,18 +101,35 @@ export class World {
     _.each(
       MapUtils.Directions,
       (direction: DirectionStringIndex): void => {
-        const adjacentRoomId: number = room.getConnectedRoomId(direction);
-        if (adjacentRoomId) {
-          const adjacentNode: Node = this.findNode(adjacentRoomId);
-          if (!this.hasLinkBetween(node, adjacentNode)) {
-            const link: Link = new Link(this, node, adjacentNode);
-            this.links.push(link);
+        const adjacentNode: Node = node.adjacentNode(direction);
+
+        if (!adjacentNode) {
+          return
+        }
+
+        let directLink: Link = this.linkBetween(node, adjacentNode);
+        let reverseLink: Link = this.linkBetween(adjacentNode, node);
+
+        if (node.room.getConnectedRoomId(direction) === adjacentNode.id) {
+          adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], node.id);
+
+          if (!directLink) {
+            directLink = new Link(this, node, adjacentNode);
+            this.links.push(directLink);
+          }
+          if (!reverseLink) {
+            reverseLink = new Link(this, adjacentNode, node);
+            this.links.push(reverseLink);
           }
         }
         else {
-          const adjacentLink: Link = node.link(direction);
-          if (adjacentLink) {
-            this.removeLink(adjacentLink);
+          adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], null);
+
+          if (directLink) {
+            this.removeLink(directLink);
+          }
+          if (reverseLink) {
+            this.removeLink(reverseLink);
           }
         }
       }
@@ -127,23 +144,25 @@ export class World {
     _.each(
       MapUtils.Directions,
       (direction: DirectionStringIndex): void => {
-        const adjacentRoomId: number = room.getConnectedRoomId(direction);
-        if (!adjacentRoomId) {
+        if (!room.getConnectedRoomId(direction)) {
           return;
         }
 
-        const oppositeDirection = MapUtils.OppositeDirection[direction];
-
-        const adjacentNode = this.findNode(adjacentRoomId);
+        const adjacentNode: Node = this.findNode(room.getConnectedRoomId(direction));
 
         if (!node) {
-          const mapVector: MapVector = MapUtils.MapIncrements[oppositeDirection];
-          node = new Node(this, room, adjacentNode.unitX + mapVector.x, adjacentNode.unitY + mapVector.y, adjacentNode.unitZ + mapVector.z);
+          const nodeMapVector: MapVector = adjacentNode.adjacentMapVector(MapUtils.OppositeDirection[direction]);
+          node = new Node(this, room, nodeMapVector.x, nodeMapVector.y, nodeMapVector.z);
           this.addNode(node);
         }
 
-        const link: Link = new Link(this, node, adjacentNode);
-        this.links.push(link);
+        adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], node.id);
+
+        const directLink: Link = new Link(this, node, adjacentNode);
+        const reverseLink: Link = new Link(this, adjacentNode, node);
+
+        this.links.push(directLink);
+        this.links.push(reverseLink);
       }
     );
 
@@ -181,7 +200,7 @@ export class World {
             if (pre[w] === - 1) {
               bridgesDFS(world, v, w);
               low[v] = Math.min(low[v], low[w]);
-              if (low[w] == pre[w]) {
+              if (low[w] === pre[w]) {
                 const directLink: Link = world.linkBetween(world.nodes[v], world.nodes[w]);
                 const reverseLink: Link = world.linkBetween(world.nodes[w], world.nodes[v]);
                 world.bridges.push(directLink);
@@ -202,10 +221,11 @@ export class World {
     }
 
     for (let v = 0; v < this.nodes.length; v++) {
-      if (pre[v] == -1) {
+      if (pre[v] === -1) {
         bridgesDFS.bind(this)(this, v, v);
       }
     }
+    console.log(this.bridges);
   }
 
 }

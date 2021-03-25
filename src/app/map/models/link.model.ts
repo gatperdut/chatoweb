@@ -49,11 +49,8 @@ export class Link {
   }
 
   public isBetween(source: Node, target: Node): boolean {
-    return (source.id === this.source.id && target.id === this.target.id) || (source.id === this.target.id && target.id === this.source.id);
+    return source.id === this.source.id && target.id === this.target.id;
   }
 
-}
-function directionFromCoords(source: Node, target: Node): DirectionStringIndex {
-  throw new Error('Function not implemented.');
 }
 
