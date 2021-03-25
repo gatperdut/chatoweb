@@ -67,7 +67,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.mapChannel = this.activatedRoute.snapshot.data['mapChannel'];
 
-    this.world = this.mapLayoutService.process(rooms);
+    this.world = this.mapLayoutService.process(rooms, doors);
 
     this.mapChannel = this.websocketService.cable.subscriptions.create(
       {

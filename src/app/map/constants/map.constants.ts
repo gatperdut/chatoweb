@@ -27,6 +27,12 @@ export enum NodeAction {
 
 export type NodeActions = { [key in DirectionStringIndex]: NodeAction }
 
+export enum Orientation {
+  Vertical    = 'VERTICAL',
+  Horizontal  = 'HORIZONTAL',
+  Transversal = 'TRANSVERSAL'
+}
+
 export class MapUtils {
   static readonly NodeOffset: number = 300;
 
@@ -84,13 +90,3 @@ export class MapUtils {
   }
 
 }
-
-
-
-
-
-
-
-
-
-

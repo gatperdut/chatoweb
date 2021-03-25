@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as d3 from "d3";
-import { MapUtils } from "../constants/map.constants";
+import { MapUtils, Orientation } from "../constants/map.constants";
 import { Link } from "../models/link.model";
 import { Node } from '../models/node.model';
 import { World } from "../models/world.model";
@@ -108,6 +108,32 @@ export class MapRendererService {
     .attr("marker-start", "url(#arrowhead)");
   }
 
+  private linkDoor(linkDoor: any): void {
+    linkDoor
+		.attr('height', '33px')
+    .attr('width', '30px')
+    .attr(
+      'transform',
+      (link: Link) => {
+        let x: number;
+        let y: number;
+        switch (link.door.orientation) {
+          case Orientation.Horizontal:
+            x = Math.abs(link.points[0][0] - link.points[1][0]) / 2 + MapUtils.NodeSide - 15;
+            y = link.points[0][1] - 40;
+            break;
+          case Orientation.Vertical:
+            x = link.points[0][0] + 10;
+            y = Math.abs(link.points[0][1] - link.points[1][1]) / 2 + MapUtils.NodeSide - 16;
+            break;
+        }
+        return `translate(${x}, ${y})`;
+      }
+    )
+    .style('font-size', '30px')
+    .html('<i class="fa fa-dungeon"></i>');
+  }
+
   public render(svg: any, world: World, z: number): void {
     svg.on('click', () => { this.mapViewerService.selectNode(null); this.mapAnimatorService.selectNode(svg, null)});
 
@@ -139,6 +165,11 @@ export class MapRendererService {
     const linkArrow = link.append('path')
     .attr('class', 'arrow');
     this.linkArrow(linkArrow);
+
+    const linkDoor = link
+    .filter((link: Link) => link.door).append('foreignObject')
+    .attr('class', 'door');
+    this.linkDoor(linkDoor);
   }
 
   private updateLinks(svg: any, world: World, z: number): void {

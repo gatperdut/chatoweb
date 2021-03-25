@@ -1,3 +1,4 @@
+import { Door } from 'src/app/rooms/models/door.model';
 import { DirectionStringIndex, MapUtils } from '../constants/map.constants';
 import { Level } from './level.model';
 import { Node } from './node.model';
@@ -14,7 +15,8 @@ export class Link {
   constructor(
     public world: World,
     public source: Node,
-    public target: Node
+    public target: Node,
+    public door: Door
   ) {
     this.id = source.idString + '_' + target.idString;
 
@@ -49,7 +51,7 @@ export class Link {
   }
 
   public isBetween(source: Node, target: Node): boolean {
-    return source.id === this.source.id && target.id === this.target.id;
+    return (source.id === this.source.id && target.id === this.target.id) || (target.id === this.source.id && source.id === this.target.id);
   }
 
 }

@@ -5,6 +5,7 @@ import { Node } from "../models/node.model";
 import { World } from "../models/world.model";
 import { Link } from "../models/link.model";
 import { Room } from "src/app/rooms/models/room.model";
+import { Door } from "src/app/rooms/models/door.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,17 +22,23 @@ export class MapLayoutService {
     return _.findWhere(rooms, { id: id });
   }
 
-  private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, direction: DirectionStringIndex, x: number, y: number, z: number): void {
+  private findDoor(doors: Door[], firstNode: Node, secondNode: Node): Door {
+    return _.find(
+      doors,
+      (door: Door): boolean => door.isBetween(firstNode, secondNode)
+    );
+  }
+
+  private processNodes(world: World, rooms: Room[], room: Room, previousNode: Node, direction: DirectionStringIndex, doors: Door[], x: number, y: number, z: number): void {
     world.handleZ(z);
 
     const node: Node = new Node(world, room, x, y, z);
 
     if (previousNode && !world.hasLinkBetween(node, previousNode)) {
-      const directLink: Link = new Link(world, previousNode, node);
-      const reverseLink: Link = new Link(world, node, previousNode);
+      const door: Door = this.findDoor(doors, node, previousNode);
+      const link: Link = new Link(world, previousNode, node, door);
 
-      world.links.push(directLink);
-      world.links.push(reverseLink);
+      world.links.push(link);
     }
 
     if (world.hasNode(room.id)) {
@@ -57,15 +64,15 @@ export class MapLayoutService {
         const newY: number = node.unitY + mapVector.y;
         const newZ: number = node.unitZ + mapVector.z;
 
-        this.processNodes(world, rooms, nextRoom, node, direction, newX, newY, newZ);
+        this.processNodes(world, rooms, nextRoom, node, direction, doors, newX, newY, newZ);
       }
     );
   }
 
-  public process(rooms: Room[]): World {
+  public process(rooms: Room[], doors: Door[]): World {
     const world: World = new World();
 
-    this.processNodes(world, rooms, rooms[0], null, null, 0, 0, 0);
+    this.processNodes(world, rooms, rooms[0], null, null, doors, 0, 0, 0);
 
     world.setConnectivity();
 

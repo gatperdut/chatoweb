@@ -107,29 +107,21 @@ export class World {
           return
         }
 
-        let directLink: Link = this.linkBetween(node, adjacentNode);
-        let reverseLink: Link = this.linkBetween(adjacentNode, node);
+        let link: Link = this.linkBetween(node, adjacentNode);
 
         if (node.room.getConnectedRoomId(direction) === adjacentNode.id) {
           adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], node.id);
 
-          if (!directLink) {
-            directLink = new Link(this, node, adjacentNode);
-            this.links.push(directLink);
-          }
-          if (!reverseLink) {
-            reverseLink = new Link(this, adjacentNode, node);
-            this.links.push(reverseLink);
+          if (!link) {
+            link = new Link(this, node, adjacentNode, null);
+            this.links.push(link);
           }
         }
         else {
           adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], null);
 
-          if (directLink) {
-            this.removeLink(directLink);
-          }
-          if (reverseLink) {
-            this.removeLink(reverseLink);
+          if (link) {
+            this.removeLink(link);
           }
         }
       }
@@ -158,11 +150,9 @@ export class World {
 
         adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], node.id);
 
-        const directLink: Link = new Link(this, node, adjacentNode);
-        const reverseLink: Link = new Link(this, adjacentNode, node);
+        const link: Link = new Link(this, node, adjacentNode, null);
 
-        this.links.push(directLink);
-        this.links.push(reverseLink);
+        this.links.push(link);
       }
     );
 
@@ -201,10 +191,8 @@ export class World {
               bridgesDFS(world, v, w);
               low[v] = Math.min(low[v], low[w]);
               if (low[w] === pre[w]) {
-                const directLink: Link = world.linkBetween(world.nodes[v], world.nodes[w]);
-                const reverseLink: Link = world.linkBetween(world.nodes[w], world.nodes[v]);
-                world.bridges.push(directLink);
-                world.bridges.push(reverseLink);
+                const link: Link = world.linkBetween(world.nodes[v], world.nodes[w]);
+                world.bridges.push(link);
               }
             }
             else if (u != w) {
