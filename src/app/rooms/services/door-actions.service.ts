@@ -77,4 +77,23 @@ export class DoorActionsService {
     );
   }
 
+  public destroy(id: number): Observable<DoorData> {
+    return this.httpClient.delete<DoorData>(
+      environment.cmBaseUrl + '/doors/' + id
+    )
+    .pipe(
+      tap(
+        (doorData: DoorData): void => {
+          this.snackBarService.ok('Door #' + doorData.id + ' updated.')
+        }
+      ),
+      catchError(
+        (httpErrorResponse: HttpErrorResponse): Observable<DoorData> => {
+          this.snackBarService.bad('Could not remove door', httpErrorResponse.error.errors);
+          return throwError(httpErrorResponse.error);
+        }
+      )
+    );
+  }
+
 }

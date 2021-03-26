@@ -149,20 +149,23 @@ export class MapRendererService {
     .attr('class', 'arrow');
     this.linkArrow(linkArrow);
 
-    const linkDoor = link
-    .filter((link: Link) => link.door).append('foreignObject')
+    const linkDoor = link.filter((link: Link) => !!link.door).append('foreignObject')
     .attr('class', 'door');
     this.linkDoor(linkDoor);
   }
 
   private updateLinks(svg: any, world: World, z: number): void {
-    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id)
+    svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).filter((link: Link) => link.door).append('foreignObject')
+    .attr('class', 'door');
+
+    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id);
     linkUpdate.attr('transform', world.transform);
 
-    const linkArrow = linkUpdate.selectAll('.arrow');
+    const linkArrow = linkUpdate.select('.arrow');
     this.linkArrow(linkArrow);
 
-    const linkDoor = linkUpdate.selectAll('.door');
+
+    const linkDoor = linkUpdate.select('.door');
     this.linkDoor(linkDoor);
   }
 

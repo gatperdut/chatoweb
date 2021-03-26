@@ -143,6 +143,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
             this.world.createDoor(createdDoor);
             this.mapRendererService.render(this.svg, this.world, this.z);
             break;
+          case 'destroy':
+            const doorData: DoorData = <DoorData>mapCableEvent.data;
+            this.world.destroyDoor(doorData.id);
+            this.mapRendererService.render(this.svg, this.world, this.z);
+          break;
           default:
             throw new Error('Unhandled map door action ' + mapCableEvent.action);
         }

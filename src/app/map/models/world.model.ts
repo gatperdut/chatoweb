@@ -94,6 +94,15 @@ export class World {
     return !!this.linkBetween(source, target);
   }
 
+  public linkWithDoor(id: number): Link {
+    return _.find(
+      this.links,
+      (link: Link): boolean => {
+        return link.doorId === id;
+      }
+    );
+  }
+
   public createDoor(door: Door): void {
     const firstNode: Node = this.findNode(door.firstRoomId);
     const secondNode: Node = this.findNode(door.secondRoomId);
@@ -104,6 +113,23 @@ export class World {
 
     firstNode.room.setDoorId(MapUtils.OppositeDirection[door.firstRoomDirection], door.id);
     secondNode.room.setDoorId(MapUtils.OppositeDirection[door.secondRoomDirection], door.id);
+
+    this.setConnectivity();
+  }
+
+  public destroyDoor(id: number): void {
+    const link: Link = this.linkWithDoor(id);
+
+    if (link.source.room.id === link.door.firstRoomId) {
+      link.source.room.setDoorId(link.door.secondRoomDirection, null);
+      link.target.room.setDoorId(link.door.firstRoomDirection, null);
+    }
+    else {
+      link.source.room.setDoorId(link.door.firstRoomDirection, null);
+      link.target.room.setDoorId(link.door.secondRoomDirection, null);
+    }
+
+    link.door = null;
 
     this.setConnectivity();
   }

@@ -13,6 +13,7 @@ import { DoorService } from 'src/app/rooms/services/door.service';
 import { DoorData } from 'src/app/rooms/models/door.data';
 import { DoorActionsService } from 'src/app/rooms/services/door-actions.service';
 import { DoorDetailComponent } from 'src/app/rooms/door-detail/door-detail.component';
+import { Link } from '../models/link.model';
 
 @Component({
   selector: 'cw-room-controls',
@@ -130,6 +131,8 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
   }
 
   public removeDoor(direction: DirectionStringIndex): void {
+    const link: Link = this.node.link(direction);
 
+    this.doorActionsService.destroy(link.door.id).subscribe();
   }
 }

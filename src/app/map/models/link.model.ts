@@ -27,6 +27,10 @@ export class Link {
     this.setCoords();
   }
 
+  public get doorId(): number {
+    return this.door ? this.door.id : null;
+  }
+
   private setCoords(): void {
     switch (this.direction) {
       case 'n':
@@ -77,4 +81,3 @@ export class Link {
   }
 
 }
-
