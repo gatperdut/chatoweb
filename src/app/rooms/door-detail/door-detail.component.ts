@@ -31,9 +31,12 @@ export class DoorDetailComponent implements OnInit {
     this.doorFormGroup = new FormGroup(
       {
         id: new FormControl(this.doorData.id),
-        short_desc: new FormControl(this.doorData.short_desc, [Validators.required]),
-        long_desc: new FormControl(this.doorData.long_desc, [Validators.required]),
-        full_desc: new FormControl(this.doorData.full_desc, [Validators.required]),
+        // short_desc: new FormControl(this.doorData.short_desc, [Validators.required]),
+        // long_desc: new FormControl(this.doorData.long_desc, [Validators.required]),
+        // full_desc: new FormControl(this.doorData.full_desc, [Validators.required]),
+        short_desc: new FormControl('sdf', [Validators.required]),
+        long_desc: new FormControl('sdf', [Validators.required]),
+        full_desc: new FormControl('sdf', [Validators.required]),
         open: new FormControl(this.doorData.open, [Validators.required]),
         see_through: new FormControl(this.doorData.see_through, [Validators.required])
       }

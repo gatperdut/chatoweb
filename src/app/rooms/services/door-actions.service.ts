@@ -84,7 +84,7 @@ export class DoorActionsService {
     .pipe(
       tap(
         (doorData: DoorData): void => {
-          this.snackBarService.ok('Door #' + doorData.id + ' updated.')
+          this.snackBarService.ok('Door removed.')
         }
       ),
       catchError(

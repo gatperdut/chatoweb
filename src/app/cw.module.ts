@@ -49,6 +49,7 @@ import { RoomControlsComponent } from './map/room-controls/room-controls.compone
 import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
 import { DoorDetailComponent } from './rooms/door-detail/door-detail.component';
+import { DoorControlsComponent } from './map/door-controls/door-controls.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { DoorDetailComponent } from './rooms/door-detail/door-detail.component';
     RoomControlsComponent,
     RoomDetailComponent,
     SnackBarComponent,
-    DoorDetailComponent
+    DoorDetailComponent,
+    DoorControlsComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent,

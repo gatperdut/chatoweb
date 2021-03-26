@@ -114,7 +114,8 @@ export class MapRendererService {
     .attr('width', '30px')
     .attr('transform', (link: Link) => `translate(${link.doorCoords[0]}, ${link.doorCoords[1]})`)
     .style('font-size', '30px')
-    .html('<i class="fa fa-dungeon"></i>');
+    .html('<i class="fa fa-dungeon"></i>')
+    .style('cursor', 'pointer');
   }
 
   public render(svg: any, world: World, z: number): void {
@@ -143,23 +144,34 @@ export class MapRendererService {
     const link = linkEnter
     .append('g')
     .attr('class', 'link')
-    .attr('transform', world.transform);
+    .attr('id', (link: Link) => 'link_' + link.id)
+    .attr('transform', world.transform)
+    .on('click', (event: any, link: Link) => { event.stopPropagation(); this.mapViewerService.selectLink(link); this.mapAnimatorService.selectLink(svg, link) });
 
-    const linkArrow = link.append('path')
+    const linkArrow = link
+    .append('path')
     .attr('class', 'arrow');
     this.linkArrow(linkArrow);
 
-    const linkDoor = link.filter((link: Link) => !!link.door).append('foreignObject')
+    const linkDoor = link.filter((link: Link) => link.door)
+    .append('foreignObject')
     .attr('class', 'door');
     this.linkDoor(linkDoor);
   }
 
   private updateLinks(svg: any, world: World, z: number): void {
-    svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).filter((link: Link) => link.door).append('foreignObject')
+    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id);
+
+    linkUpdate
+    .select('foreignObject')
+    .remove();
+
+    linkUpdate.filter((link: Link) => link.door)
+    .append('foreignObject')
     .attr('class', 'door');
 
-    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id);
-    linkUpdate.attr('transform', world.transform);
+    linkUpdate
+    .attr('transform', world.transform);
 
     const linkArrow = linkUpdate.select('.arrow');
     this.linkArrow(linkArrow);
@@ -170,7 +182,9 @@ export class MapRendererService {
   }
 
   private exitLinks(svg: any, world: World, z: number): void {
-    svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).exit().remove();
+    svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id)
+    .exit()
+    .remove();
   }
 
   private enterRooms(svg: any, world: World, z: number): void {
