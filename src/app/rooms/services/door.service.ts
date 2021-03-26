@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { DirectionStringIndex } from "src/app/map/constants/map.constants";
+import { DirectionStringIndex, RoomStringIndex } from "src/app/map/constants/map.constants";
 import * as _ from "underscore";
 import { DoorData } from "../models/door.data";
 import { Door } from "../models/door.model";
-import { RoomStringIndex } from "../models/room.data";
 
 @Injectable({
   providedIn: 'root'
@@ -50,11 +49,11 @@ export class DoorService {
     );
   }
 
-  public getAdjacentDoorId(doorData: DoorData, direction: DirectionStringIndex): number {
+  public getAdjacentRoomId(doorData: DoorData, direction: DirectionStringIndex): number {
     return doorData[direction + 'r_id' as RoomStringIndex];
   }
 
-  public setAdjacentDoorId(doorData: DoorData, direction: DirectionStringIndex, id: number): void {
+  public setAdjacentRoomId(doorData: DoorData, direction: DirectionStringIndex, id: number): void {
     doorData[direction + 'r_id' as RoomStringIndex] = id;
   }
 

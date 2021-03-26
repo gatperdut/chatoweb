@@ -1,5 +1,5 @@
-import { DirectionStringIndex } from "src/app/map/constants/map.constants";
-import { RoomData, RoomStringIndex } from "./room.data";
+import { DirectionStringIndex, RoomStringIndex } from "src/app/map/constants/map.constants";
+import { RoomData } from "./room.data";
 
 export class Room implements RoomData {
 

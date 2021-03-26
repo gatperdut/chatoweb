@@ -48,6 +48,7 @@ import { MapControlsComponent } from './map/map-controls/map-controls.component'
 import { RoomControlsComponent } from './map/room-controls/room-controls.component';
 import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
+import { DoorDetailComponent } from './rooms/door-detail/door-detail.component';
 
 @NgModule({
   declarations: [
@@ -77,11 +78,13 @@ import { SnackBarComponent } from './snack-bar/snack-bar.component';
     MapControlsComponent,
     RoomControlsComponent,
     RoomDetailComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    DoorDetailComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    DoorDetailComponent
   ],
   imports: [
     // Angular

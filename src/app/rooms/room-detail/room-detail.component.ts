@@ -47,8 +47,7 @@ export class RoomDetailComponent implements OnInit {
       (direction: DirectionStringIndex): void => {
         this.roomFormGroup.addControl(direction + 'r_id', new FormControl(this.roomService.getAdjacentRoomId(this.roomData, direction)));
       }
-    )
-    this.roomFormGroup.addControl
+    );
   }
 
   public onSubmit(): void {

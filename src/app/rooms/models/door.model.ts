@@ -1,6 +1,5 @@
-import { DirectionStringIndex, Orientation } from "src/app/map/constants/map.constants";
+import { DirectionStringIndex, Orientation, RoomStringIndex } from "src/app/map/constants/map.constants";
 import { DoorData } from "./door.data";
-import { RoomStringIndex } from "./room.data";
 import { Node } from "../../map/models/node.model";
 
 export class Door implements DoorData {
@@ -35,12 +34,34 @@ export class Door implements DoorData {
     }
   }
 
-  public getConnectedRoomId(direction: DirectionStringIndex): number {
-    return this[direction + 'r_id' as RoomStringIndex];
+  public get firstRoomDirection(): DirectionStringIndex {
+    switch (this.orientation) {
+      case Orientation.Vertical:
+        return 'n';
+      case Orientation.Horizontal:
+        return 'e';
+      case Orientation.Transversal:
+        return 'u';
+    }
   }
 
-  public setConnectedRoomId(direction: DirectionStringIndex, id: number): void {
-    this[direction + 'r_id' as RoomStringIndex] = id;
+  public get secondRoomDirection(): DirectionStringIndex {
+    switch (this.orientation) {
+      case Orientation.Vertical:
+        return 's';
+      case Orientation.Horizontal:
+        return 'w';
+      case Orientation.Transversal:
+        return 'd';
+    }
+  }
+
+  public get firstRoomId(): number {
+    return this[this.firstRoomDirection + '_r_id' as RoomStringIndex];
+  }
+
+  public get secondRoomId(): number {
+    return this[this.secondRoomDirection + '_r_id' as RoomStringIndex];
   }
 
   public isBetween(firstNode: Node, secondNode: Node): boolean {
@@ -51,7 +72,7 @@ export class Door implements DoorData {
         return (this.er_id === firstNode.id && this.wr_id === secondNode.id) || (this.er_id === secondNode.id && this.wr_id === firstNode.id);
       case Orientation.Transversal:
         return (this.ur_id === firstNode.id && this.dr_id === secondNode.id) || (this.ur_id === secondNode.id && this.dr_id === firstNode.id);
-      }
+    }
   }
 
 }

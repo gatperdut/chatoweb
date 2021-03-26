@@ -1,0 +1,21 @@
+form.door-detail([formGroup]="doorFormGroup", (ngSubmit)="onSubmit()")
+  h2(mat-dialog-title) Door details
+  mat-dialog-content
+    div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px grid")
+      mat-form-field
+        mat-hint Short description
+        input(type="text", matInput, formControlName="short_desc", spellcheck="false")
+      mat-form-field
+        mat-hint Long description
+        input(type="text", matInput, formControlName="long_desc", spellcheck="false")
+      mat-form-field
+        mat-hint Full description
+        input(type="text", matInput, formControlName="full_desc", spellcheck="false")
+    .mt-3(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
+      mat-slide-toggle(color="primary", formControlName="see_through")
+        | See-through
+  mat-dialog-actions(align="end")
+    button([mat-dialog-close]="null", mat-button, color="basic") Close
+    button(type="submit", mat-raised-button, color="primary", [disabled]="doorFormGroup.invalid")
+      span(*ngIf="doorData.id") Update
+      span(*ngIf="!doorData.id") Create

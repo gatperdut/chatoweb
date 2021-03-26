@@ -1,7 +1,3 @@
-export type RoomStringIndex = 'nr_id' | 'er_id' | 'sr_id' | 'wr_id' | 'ur_id' | 'dr_id';
-
-export type DoorStringIndex = 'nd_id' | 'ed_id' | 'sd_id' | 'wd_id' | 'ud_id' | 'dd_id';
-
 export interface RoomData {
 
   readonly id: number;

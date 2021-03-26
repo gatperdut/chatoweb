@@ -1,6 +1,6 @@
 import { Room } from "src/app/rooms/models/room.model";
 import * as _ from "underscore";
-import { DirectionStringIndex, MapVector, MapUtils, NodeActions, NodeAction } from "../constants/map.constants";
+import { DirectionStringIndex, MapVector, MapUtils, NodeActions, NodeAction, DoorActions, DoorAction } from "../constants/map.constants";
 import { Level } from "./level.model";
 import { Link } from "./link.model";
 import { World } from "./world.model";
@@ -21,6 +21,15 @@ export class Node {
     u: null,
     d: null
   };
+
+  public doorActions: DoorActions = {
+    n: null,
+    e: null,
+    s: null,
+    w: null,
+    u: null,
+    d: null
+  }
 
   constructor(
     public world: World,
@@ -44,11 +53,15 @@ export class Node {
     return this.id.toString();
   }
 
-  public actionIs(direction: DirectionStringIndex, nodeAction: NodeAction): boolean {
+  public nodeActionIs(direction: DirectionStringIndex, nodeAction: NodeAction): boolean {
     return this.nodeActions[direction] === nodeAction;
   }
 
-  public setNodeActions(): void {
+  public doorActionIs(direction: DirectionStringIndex, doorAction: DoorAction): boolean {
+    return this.doorActions[direction] === doorAction;
+  }
+
+  private setNodeActions(): void {
     _.each(
       MapUtils.Directions,
       (direction: DirectionStringIndex): void => {
@@ -70,6 +83,29 @@ export class Node {
         }
       }
     )
+  }
+
+  private setDoorActions(): void {
+    _.each(
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
+        const link: Link = this.link(direction);
+        if (!link) {
+          this.doorActions[direction] = DoorAction.None;
+        }
+        else if (link.door) {
+          this.doorActions[direction] = DoorAction.Remove;
+        }
+        else {
+          this.doorActions[direction] = DoorAction.Create;
+        }
+      }
+    );
+  }
+
+  public setActions(): void {
+    this.setNodeActions();
+    this.setDoorActions();
   }
 
   public adjacentMapVector(direction: DirectionStringIndex): MapVector {

@@ -4,12 +4,15 @@ import { Subscription } from 'rxjs';
 import { MapViewerService } from '../services/map-viewer.service';
 import { Node } from '../models/node.model';
 import { RoomDetailComponent } from 'src/app/rooms/room-detail/room-detail.component';
-import { DirectionStringIndex, MapUtils, NodeAction } from '../constants/map.constants';
+import { DirectionStringIndex, DoorAction, MapUtils, NodeAction } from '../constants/map.constants';
 import { RoomService } from 'src/app/rooms/services/room.service';
 import { RoomActionsService } from 'src/app/rooms/services/room-actions.service';
 import { RoomData } from 'src/app/rooms/models/room.data';
-import { Link } from '../models/link.model';
 import * as _ from 'underscore';
+import { DoorService } from 'src/app/rooms/services/door.service';
+import { DoorData } from 'src/app/rooms/models/door.data';
+import { DoorActionsService } from 'src/app/rooms/services/door-actions.service';
+import { DoorDetailComponent } from 'src/app/rooms/door-detail/door-detail.component';
 
 @Component({
   selector: 'cw-room-controls',
@@ -26,12 +29,16 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
 
   public DirectionToString = MapUtils.DirectionToString;
 
-  public NodeAction = NodeAction
+  public NodeAction = NodeAction;
+
+  public DoorAction = DoorAction;
 
   constructor(
     private mapViewerService: MapViewerService,
     private roomService: RoomService,
+    private doorService: DoorService,
     private roomActionsService: RoomActionsService,
+    private doorActionsService: DoorActionsService,
     private matDialog: MatDialog
   ) {
 
@@ -101,5 +108,28 @@ export class RoomControlsComponent implements OnInit, OnDestroy {
     this.roomService.setAdjacentRoomId(roomData, direction, null);
 
     this.roomActionsService.update(roomData).subscribe();
+  }
+
+  public createDoor(direction: DirectionStringIndex): void {
+    const doorData = this.doorService.emptyDoor();
+
+    this.doorService.setAdjacentRoomId(doorData, direction, this.node.room.getConnectedRoomId(direction));
+    this.doorService.setAdjacentRoomId(doorData, MapUtils.OppositeDirection[direction], this.node.id);
+
+    this.matDialog.open(DoorDetailComponent, { width: '500px', data: { doorData: doorData } })
+    .afterClosed()
+    .subscribe(
+      (doorData: DoorData) => {
+        if (!doorData) {
+          return;
+        }
+
+        this.doorActionsService.create(doorData).subscribe();
+      }
+    );
+  }
+
+  public removeDoor(direction: DirectionStringIndex): void {
+
   }
 }

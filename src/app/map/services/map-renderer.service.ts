@@ -101,7 +101,7 @@ export class MapRendererService {
 
   private linkArrow(linkArrow: any): void {
     linkArrow
-    .attr('d', (link: Link) => this.linkCurve(link.points))
+    .attr('d', (link: Link) => this.linkCurve(link.lineCoords))
     .attr('stroke', 'black')
     .attr('fill', 'none')
     .attr("marker-end", "url(#arrowhead)")
@@ -112,24 +112,7 @@ export class MapRendererService {
     linkDoor
 		.attr('height', '33px')
     .attr('width', '30px')
-    .attr(
-      'transform',
-      (link: Link) => {
-        let x: number;
-        let y: number;
-        switch (link.door.orientation) {
-          case Orientation.Horizontal:
-            x = Math.abs(link.points[0][0] - link.points[1][0]) / 2 + MapUtils.NodeSide - 15;
-            y = link.points[0][1] - 40;
-            break;
-          case Orientation.Vertical:
-            x = link.points[0][0] + 10;
-            y = Math.abs(link.points[0][1] - link.points[1][1]) / 2 + MapUtils.NodeSide - 16;
-            break;
-        }
-        return `translate(${x}, ${y})`;
-      }
-    )
+    .attr('transform', (link: Link) => `translate(${link.doorCoords[0]}, ${link.doorCoords[1]})`)
     .style('font-size', '30px')
     .html('<i class="fa fa-dungeon"></i>');
   }

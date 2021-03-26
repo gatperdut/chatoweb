@@ -3,13 +3,13 @@ form.room-detail([formGroup]="roomFormGroup", (ngSubmit)="onSubmit()")
   mat-dialog-content
     div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px grid")
       mat-form-field
-        mat-hint Room's title
+        mat-hint Title
         input(type="text", matInput, formControlName="title", spellcheck="false")
       mat-form-field
-        mat-hint Room's description
+        mat-hint Description
         textarea(type="text", matInput, formControlName="description", spellcheck="false")
       mat-form-field
-        mat-hint Room's nighttime description
+        mat-hint Nighttime description
         textarea(type="text", matInput, formControlName="description_nighttime", spellcheck="false")
     .mt-3(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
       mat-slide-toggle(color="primary", formControlName="arena")

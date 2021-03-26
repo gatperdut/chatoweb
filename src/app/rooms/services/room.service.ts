@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { DirectionStringIndex } from "src/app/map/constants/map.constants";
+import { DirectionStringIndex, RoomStringIndex } from "src/app/map/constants/map.constants";
 import * as _ from "underscore";
-import { RoomData, RoomStringIndex } from "../../rooms/models/room.data";
+import { RoomData } from "../../rooms/models/room.data";
 import { Room } from "../models/room.model";
 
 @Injectable({

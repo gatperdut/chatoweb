@@ -8,7 +8,9 @@ export class Link {
 
   public id: string;
 
-  public points: number[][];
+  public lineCoords: number[][];
+
+  public doorCoords: number[];
 
   public direction: DirectionStringIndex;
 
@@ -24,27 +26,43 @@ export class Link {
 
     switch (this.direction) {
       case 'n':
-        this.points = [
+        this.lineCoords = [
           [source.x + MapUtils.NodeHalfSide, source.y],
           [target.x + MapUtils.NodeHalfSide, target.y + MapUtils.NodeSide]
         ];
+        this.doorCoords = [
+          this.lineCoords[0][0] + 10,
+          this.lineCoords[0][1] - Math.abs(this.lineCoords[0][1] - this.lineCoords[1][1]) / 2 - 15,
+        ];
         break;
       case 'e':
-        this.points = [
+        this.lineCoords = [
           [source.x + MapUtils.NodeSide, source.y + MapUtils.NodeHalfSide],
           [target.x, target.y + MapUtils.NodeHalfSide]
         ];
+        this.doorCoords = [
+          this.lineCoords[0][0] + Math.abs(this.lineCoords[0][0] - this.lineCoords[1][0]) / 2 - 15,
+          this.lineCoords[0][1] - 40
+        ];
         break;
       case 's':
-        this.points = [
+        this.lineCoords = [
           [source.x + MapUtils.NodeHalfSide, source.y + MapUtils.NodeSide],
           [target.x + MapUtils.NodeHalfSide, target.y]
         ];
+        this.doorCoords = [
+          this.lineCoords[0][0] + 10,
+          this.lineCoords[0][1] + Math.abs(this.lineCoords[0][1] - this.lineCoords[1][1]) / 2 - 15,
+        ];
         break;
       case 'w':
-        this.points = [
+        this.lineCoords = [
           [source.x, source.y + MapUtils.NodeHalfSide],
           [target.x + MapUtils.NodeSide, target.y + MapUtils.NodeHalfSide]
+        ];
+        this.doorCoords = [
+          this.lineCoords[0][0] - Math.abs(this.lineCoords[0][0] - this.lineCoords[1][0]) / 2 - 15,
+          this.lineCoords[0][1] - 40
         ];
         break;
     }

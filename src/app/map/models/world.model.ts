@@ -1,3 +1,4 @@
+import { Door } from "src/app/rooms/models/door.model";
 import { Room } from "src/app/rooms/models/room.model";
 import * as _ from "underscore";
 import { DirectionStringIndex, MapUtils, MapVector } from "../constants/map.constants";
@@ -93,6 +94,49 @@ export class World {
     return !!this.linkBetween(source, target);
   }
 
+  public createDoor(door: Door): void {
+    const firstNode: Node = this.findNode(door.firstRoomId);
+    const secondNode: Node = this.findNode(door.secondRoomId);
+
+    const link: Link = this.linkBetween(firstNode, secondNode);
+
+    link.door = door;
+
+    firstNode.room.setDoorId(MapUtils.OppositeDirection[door.firstRoomDirection], door.id);
+    secondNode.room.setDoorId(MapUtils.OppositeDirection[door.secondRoomDirection], door.id);
+
+    this.setConnectivity();
+  }
+
+  public createRoom(room: Room): void {
+    let node: Node = null;
+
+    _.each(
+      MapUtils.Directions,
+      (direction: DirectionStringIndex): void => {
+        if (!room.getConnectedRoomId(direction)) {
+          return;
+        }
+
+        const adjacentNode: Node = this.findNode(room.getConnectedRoomId(direction));
+
+        if (!node) {
+          const nodeMapVector: MapVector = adjacentNode.adjacentMapVector(MapUtils.OppositeDirection[direction]);
+          node = new Node(this, room, nodeMapVector.x, nodeMapVector.y, nodeMapVector.z);
+          this.addNode(node);
+        }
+
+        adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], node.id);
+
+        const link: Link = new Link(this, node, adjacentNode, null);
+
+        this.links.push(link);
+      }
+    );
+
+    this.setConnectivity();
+  }
+
   public updateRoom(room: Room): void {
     const node: Node = this.findNode(room.id);
 
@@ -130,42 +174,13 @@ export class World {
     this.setConnectivity();
   }
 
-  public createRoom(room: Room): void {
-    let node: Node = null;
-
-    _.each(
-      MapUtils.Directions,
-      (direction: DirectionStringIndex): void => {
-        if (!room.getConnectedRoomId(direction)) {
-          return;
-        }
-
-        const adjacentNode: Node = this.findNode(room.getConnectedRoomId(direction));
-
-        if (!node) {
-          const nodeMapVector: MapVector = adjacentNode.adjacentMapVector(MapUtils.OppositeDirection[direction]);
-          node = new Node(this, room, nodeMapVector.x, nodeMapVector.y, nodeMapVector.z);
-          this.addNode(node);
-        }
-
-        adjacentNode.room.setConnectedRoomId(MapUtils.OppositeDirection[direction], node.id);
-
-        const link: Link = new Link(this, node, adjacentNode, null);
-
-        this.links.push(link);
-      }
-    );
-
-    this.setConnectivity();
-  }
-
   public setConnectivity(): void {
     this.findBridges();
 
     _.each(
       this.nodes,
       (node: Node): void => {
-        node.setNodeActions();
+        node.setActions();
       }
     );
   }

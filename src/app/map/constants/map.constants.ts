@@ -27,11 +27,23 @@ export enum NodeAction {
 
 export type NodeActions = { [key in DirectionStringIndex]: NodeAction }
 
+export enum DoorAction {
+  Create = 'CREATE',
+  Remove = 'REMOVE',
+  None   = 'NONE'
+}
+
+export type DoorActions = { [key in DirectionStringIndex]: DoorAction }
+
 export enum Orientation {
   Vertical    = 'VERTICAL',
   Horizontal  = 'HORIZONTAL',
   Transversal = 'TRANSVERSAL'
 }
+
+export type RoomStringIndex = 'nr_id' | 'er_id' | 'sr_id' | 'wr_id' | 'ur_id' | 'dr_id';
+
+export type DoorStringIndex = 'nd_id' | 'ed_id' | 'sd_id' | 'wd_id' | 'ud_id' | 'dd_id';
 
 export class MapUtils {
   static readonly NodeOffset: number = 300;

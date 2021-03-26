@@ -14,6 +14,10 @@ import { WebsocketService } from '../services/websocket.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { MapCableEvent } from './cable/map-cable-event.type';
 import { RoomService } from '../rooms/services/room.service';
+import { DoorService } from '../rooms/services/door.service';
+import { Door } from '../rooms/models/door.model';
+import { RoomData } from '../rooms/models/room.data';
+import { DoorData } from '../rooms/models/door.data';
 
 @Component({
   selector: 'cw-map',
@@ -55,7 +59,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapAnimatorService: MapAnimatorService,
     private websocketService: WebsocketService,
     private authenticationService: AuthenticationService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private doorService: DoorService
   ) {
 
   }
@@ -117,18 +122,27 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     switch(mapCableEvent.model) {
       case 'room':
         switch(mapCableEvent.action) {
-          case 'update':
-            const updatedRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
-            this.world.updateRoom(updatedRoom);
+          case 'create':
+            const createdRoom: Room = this.roomService.craftRoom(<RoomData>mapCableEvent.data);
+            this.world.createRoom(createdRoom);
             this.mapRendererService.render(this.svg, this.world, this.z);
             break;
-          case 'create':
-            const createdRoom: Room = this.roomService.craftRoom(mapCableEvent.room);
-            this.world.createRoom(createdRoom);
+          case 'update':
+            const updatedRoom: Room = this.roomService.craftRoom(<RoomData>mapCableEvent.data);
+            this.world.updateRoom(updatedRoom);
             this.mapRendererService.render(this.svg, this.world, this.z);
             break;
           default:
             throw new Error('Unhandled map room action ' + mapCableEvent.action);
+        }
+        break;
+      case 'door':
+        switch(mapCableEvent.action) {
+          case 'create':
+            const createdDoor: Door = this.doorService.craftDoor(<DoorData>mapCableEvent.data);
+            this.world.createDoor(createdDoor);
+            this.mapRendererService.render(this.svg, this.world, this.z);
+            break
         }
         break;
       default:
