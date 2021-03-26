@@ -24,11 +24,15 @@ export class Link {
 
     this.direction = MapUtils.directionFromCoords(source, target);
 
+    this.setCoords();
+  }
+
+  private setCoords(): void {
     switch (this.direction) {
       case 'n':
         this.lineCoords = [
-          [source.x + MapUtils.NodeHalfSide, source.y],
-          [target.x + MapUtils.NodeHalfSide, target.y + MapUtils.NodeSide]
+          [this.source.x + MapUtils.NodeHalfSide, this.source.y],
+          [this.target.x + MapUtils.NodeHalfSide, this.target.y + MapUtils.NodeSide]
         ];
         this.doorCoords = [
           this.lineCoords[0][0] + 10,
@@ -37,8 +41,8 @@ export class Link {
         break;
       case 'e':
         this.lineCoords = [
-          [source.x + MapUtils.NodeSide, source.y + MapUtils.NodeHalfSide],
-          [target.x, target.y + MapUtils.NodeHalfSide]
+          [this.source.x + MapUtils.NodeSide, this.source.y + MapUtils.NodeHalfSide],
+          [this.target.x, this.target.y + MapUtils.NodeHalfSide]
         ];
         this.doorCoords = [
           this.lineCoords[0][0] + Math.abs(this.lineCoords[0][0] - this.lineCoords[1][0]) / 2 - 15,
@@ -47,8 +51,8 @@ export class Link {
         break;
       case 's':
         this.lineCoords = [
-          [source.x + MapUtils.NodeHalfSide, source.y + MapUtils.NodeSide],
-          [target.x + MapUtils.NodeHalfSide, target.y]
+          [this.source.x + MapUtils.NodeHalfSide, this.source.y + MapUtils.NodeSide],
+          [this.target.x + MapUtils.NodeHalfSide, this.target.y]
         ];
         this.doorCoords = [
           this.lineCoords[0][0] + 10,
@@ -57,8 +61,8 @@ export class Link {
         break;
       case 'w':
         this.lineCoords = [
-          [source.x, source.y + MapUtils.NodeHalfSide],
-          [target.x + MapUtils.NodeSide, target.y + MapUtils.NodeHalfSide]
+          [this.source.x, this.source.y + MapUtils.NodeHalfSide],
+          [this.target.x + MapUtils.NodeSide, this.target.y + MapUtils.NodeHalfSide]
         ];
         this.doorCoords = [
           this.lineCoords[0][0] - Math.abs(this.lineCoords[0][0] - this.lineCoords[1][0]) / 2 - 15,

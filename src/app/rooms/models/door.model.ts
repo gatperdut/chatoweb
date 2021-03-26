@@ -57,11 +57,11 @@ export class Door implements DoorData {
   }
 
   public get firstRoomId(): number {
-    return this[this.firstRoomDirection + '_r_id' as RoomStringIndex];
+    return this[this.firstRoomDirection + 'r_id' as RoomStringIndex];
   }
 
   public get secondRoomId(): number {
-    return this[this.secondRoomDirection + '_r_id' as RoomStringIndex];
+    return this[this.secondRoomDirection + 'r_id' as RoomStringIndex];
   }
 
   public isBetween(firstNode: Node, secondNode: Node): boolean {

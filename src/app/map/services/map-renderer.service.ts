@@ -161,6 +161,9 @@ export class MapRendererService {
 
     const linkArrow = linkUpdate.selectAll('.arrow');
     this.linkArrow(linkArrow);
+
+    const linkDoor = linkUpdate.selectAll('.door');
+    this.linkDoor(linkDoor);
   }
 
   private exitLinks(svg: any, world: World, z: number): void {
