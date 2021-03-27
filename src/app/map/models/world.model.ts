@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import { Door } from "src/app/rooms/models/door.model";
 import { Room } from "src/app/rooms/models/room.model";
 import * as _ from "underscore";
@@ -9,8 +10,6 @@ import { Node } from './node.model'
 export class World {
 
   [z: number]: Level;
-
-  public transform: any;
 
   public nodes: Node[] = [];
 

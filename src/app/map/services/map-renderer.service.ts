@@ -38,22 +38,14 @@ export class MapRendererService {
     .attr("d", "M0,-5L10,0L0,5");
   }
 
-  public zoom(svg: any, world: World): void {
-    svg.call(
-      d3.zoom()
-      .scaleExtent([1/4, 1])
-      .on(
-        'zoom',
-        (event: any) => {
-          world.transform = event.transform;
-          svg
-          .selectAll([
-            '.node',
-            '.link'
-          ])
-          .attr('transform', world.transform);
-        }
-      )
+  public zoom(svg: any): any {
+    return d3.zoom()
+    .scaleExtent([1/4, 1])
+    .on(
+      'zoom',
+      (event: any) => {
+        svg.select('.map').attr('transform', event.transform);
+      }
     );
   }
 
@@ -67,8 +59,8 @@ export class MapRendererService {
     roomContainer
     .attr("x", (node: Node, i: number) => node.x)
     .attr("y", (node: Node, i: number) => node.y)
-    .attr("width", (node: Node) => MapUtils.NodeSide)
-    .attr("height", (node: Node) => MapUtils.NodeSide)
+    .attr("width", MapUtils.NodeSide)
+    .attr("height", MapUtils.NodeSide)
     .attr('stroke', 'black')
     .attr('fill', '#69a3b2')
     .style('cursor', 'pointer');
@@ -118,16 +110,16 @@ export class MapRendererService {
     .style('cursor', 'pointer');
   }
 
-  public render(svg: any, world: World, z: number): void {
-    svg.on('click', () => { this.mapViewerService.selectNode(null); this.mapAnimatorService.selectNode(svg, world, null)});
+  public render(svg: any, zoom: any, world: World, z: number): void {
+    svg.on('click', () => { this.mapViewerService.selectNode(null); this.mapAnimatorService.selectNode(svg, world, zoom, null)});
 
-    this.enterRooms(svg, world, z);
-    this.updateRooms(svg, world, z);
-    this.exitRooms(svg, world, z);
+    this.enterRooms(svg, zoom, world, z);
+    this.updateRooms(svg, zoom, world, z);
+    this.exitRooms(svg, zoom, world, z);
 
-    this.enterLinks(svg, world, z);
-    this.updateLinks(svg, world, z);
-    this.exitLinks(svg, world, z);
+    this.enterLinks(svg, zoom, world, z);
+    this.updateLinks(svg, zoom, world, z);
+    this.exitLinks(svg, zoom, world, z);
   }
 
   private coplanarLinks(links: Link[], z: number): Link[] {
@@ -138,14 +130,13 @@ export class MapRendererService {
     );
   }
 
-  private enterLinks(svg: any, world: World, z: number): void {
-    const linkEnter = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).enter();
+  private enterLinks(svg: any, zoom: any, world: World, z: number): void {
+    const linkEnter = svg.select('.map').selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id).enter();
 
     const link = linkEnter
     .append('g')
     .attr('class', 'link')
     .attr('id', (link: Link) => 'link_' + link.id)
-    .attr('transform', world.transform)
     .on('click', (event: any, link: Link) => { event.stopPropagation(); this.mapViewerService.selectLink(link); this.mapAnimatorService.selectLink(svg, link) });
 
     const linkArrow = link
@@ -159,8 +150,8 @@ export class MapRendererService {
     this.linkDoor(linkDoor);
   }
 
-  private updateLinks(svg: any, world: World, z: number): void {
-    const linkUpdate = svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id);
+  private updateLinks(svg: any, zoom: any, world: World, z: number): void {
+    const linkUpdate = svg.select('.map').selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id);
 
     linkUpdate
     .select('foreignObject')
@@ -170,9 +161,6 @@ export class MapRendererService {
     .append('foreignObject')
     .attr('class', 'door');
 
-    linkUpdate
-    .attr('transform', world.transform);
-
     const linkArrow = linkUpdate.select('.arrow');
     this.linkArrow(linkArrow);
 
@@ -181,21 +169,20 @@ export class MapRendererService {
     this.linkDoor(linkDoor);
   }
 
-  private exitLinks(svg: any, world: World, z: number): void {
-    svg.selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id)
+  private exitLinks(svg: any, zoom: any, world: World, z: number): void {
+    svg.select('.map').selectAll('.link').data(this.coplanarLinks(world.links, z), (link: Link) => link.id)
     .exit()
     .remove();
   }
 
-  private enterRooms(svg: any, world: World, z: number): void {
-    const roomEnter = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.id).enter();
+  private enterRooms(svg: any, zoom: any, world: World, z: number): void {
+    const roomEnter = svg.select('.map').selectAll('.node').data(world[z].nodes, (node: Node) => node.id).enter();
 
     const room = roomEnter
     .append('g')
     .attr('class', 'node')
     .attr('id', (node: Node) => 'node_' + node.idString)
-    .attr('transform', world.transform)
-    .on('click', (event: any, node: Node) => { event.stopPropagation(); this.mapViewerService.selectNode(node); this.mapAnimatorService.selectNode(svg, world, node) });
+    .on('click', (event: any, node: Node) => { event.stopPropagation(); this.mapViewerService.selectNode(node); this.mapAnimatorService.selectNode(svg, world, zoom, node) });
     this.room(room);
 
     const roomContainer = room
@@ -213,9 +200,8 @@ export class MapRendererService {
     .attr('class', 'title');
   }
 
-  private updateRooms(svg: any, world: World, z: number): void {
-    const roomUpdate = svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.id);
-    roomUpdate.attr('transform', world.transform);
+  private updateRooms(svg: any, zoom: any, world: World, z: number): void {
+    const roomUpdate = svg.select('.map').selectAll('.node').data(world[z].nodes, (node: Node) => node.id);
 
     const roomContainer = roomUpdate.selectAll('.room-container');
     this.roomContainer(roomContainer);
@@ -224,8 +210,8 @@ export class MapRendererService {
     this.titleContainer(titleContainer);
   }
 
-  private exitRooms(svg: any, world: World, z: number): void {
-    svg.selectAll('.node').data(world[z].nodes, (node: Node) => node.id).exit().transition().duration(500).ease(d3.easeLinear).style('opacity', 0).remove();
+  private exitRooms(svg: any, zoom: any, world: World, z: number): void {
+    svg.select('.map').selectAll('.node').data(world[z].nodes, (node: Node) => node.id).exit().transition().duration(500).ease(d3.easeLinear).style('opacity', 0).remove();
   }
 
 }

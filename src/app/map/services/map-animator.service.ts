@@ -39,21 +39,20 @@ export class MapAnimatorService {
     .on('end', () => this.blink(svg, selector));
   }
 
-  private homeIn(svg: any, world: World, node: Node): any {
-    const zoomTransform: any = world.transform;
-
+  private homeIn(svg: any, world: World, zoom: any, node: Node): any {
     const halfWidth: number = Math.round(parseInt(svg.attr('width')) / 2);
     const halfHeight: number = Math.round(parseInt(svg.attr('height')) / 2);
 
     const x: number = -node.x - MapUtils.NodeHalfSide;
     const y: number = -node.y - MapUtils.NodeHalfSide;
 
-    const transform: string = "translate(" + halfWidth + "," + halfHeight + ") scale(" + zoomTransform.k + ") translate(" + x + "," + y + ")";
+    var transform = d3.zoomIdentity
+    .translate(x + halfWidth, y + halfHeight);
 
-    return svg.selectAll('.node,.link').transition().duration(1000).attr("transform", transform);
+    return svg.transition().duration(1000).call(zoom.transform, transform);
   }
 
-  public selectNode(svg: any, world: World, node: Node): void {
+  public selectNode(svg: any, world: World, zoom: any, node: Node): void {
     this.unselectNodes(svg);
     this.unselectLinks(svg);
 
@@ -61,7 +60,7 @@ export class MapAnimatorService {
       return;
     }
 
-    this.homeIn(svg, world, node)
+    this.homeIn(svg, world, zoom, node)
     .on('end', () => this.blink(svg, '#node_' + node.id));
   }
 

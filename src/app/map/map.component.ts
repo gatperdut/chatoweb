@@ -32,6 +32,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public world: World;
 
+  private zoom: any;
+
   public z: number;
 
   private svg: any;
@@ -97,16 +99,20 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.svg = this.container.append("svg");
 
+    this.svg.append('g').attr('class', 'map');
+
     this.mapRendererService.markers(this.svg);
 
-    this.mapRendererService.zoom(this.svg, this.world);
-    this.world.transform = d3.zoomIdentity;
+    this.zoom = this.mapRendererService.zoom(this.svg);
+
+    this.svg.call(this.zoom);
+
     this.resize();
 
     this.zSubscription = this.mapViewerService.zSubject.subscribe(
       (z: number): void => {
         this.z = z;
-        this.mapRendererService.render(this.svg, this.world, this.z);
+        this.mapRendererService.render(this.svg, this.zoom, this.world, this.z);
       }
     );
   }
@@ -126,12 +132,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           case 'create':
             const createdRoom: Room = this.roomService.craftRoom(<RoomData>mapCableEvent.data);
             this.world.createRoom(createdRoom);
-            this.mapRendererService.render(this.svg, this.world, this.z);
+            this.mapRendererService.render(this.svg, this.zoom, this.world, this.z);
             break;
           case 'update':
             const updatedRoom: Room = this.roomService.craftRoom(<RoomData>mapCableEvent.data);
             this.world.updateRoom(updatedRoom);
-            this.mapRendererService.render(this.svg, this.world, this.z);
+            this.mapRendererService.render(this.svg, this.zoom, this.world, this.z);
             break;
           default:
             throw new Error('Unhandled map room action ' + mapCableEvent.action);
@@ -142,12 +148,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           case 'create':
             const createdDoor: Door = this.doorService.craftDoor(<DoorData>mapCableEvent.data);
             this.world.createDoor(createdDoor);
-            this.mapRendererService.render(this.svg, this.world, this.z);
+            this.mapRendererService.render(this.svg, this.zoom, this.world, this.z);
             break;
           case 'destroy':
             const doorData: DoorData = <DoorData>mapCableEvent.data;
             this.world.destroyDoor(doorData.id);
-            this.mapRendererService.render(this.svg, this.world, this.z);
+            this.mapRendererService.render(this.svg, this.zoom, this.world, this.z);
           break;
           default:
             throw new Error('Unhandled map door action ' + mapCableEvent.action);
