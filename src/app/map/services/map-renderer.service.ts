@@ -119,7 +119,7 @@ export class MapRendererService {
   }
 
   public render(svg: any, world: World, z: number): void {
-    svg.on('click', () => { this.mapViewerService.selectNode(null); this.mapAnimatorService.selectNode(svg, null)});
+    svg.on('click', () => { this.mapViewerService.selectNode(null); this.mapAnimatorService.selectNode(svg, world, null)});
 
     this.enterRooms(svg, world, z);
     this.updateRooms(svg, world, z);
@@ -195,7 +195,7 @@ export class MapRendererService {
     .attr('class', 'node')
     .attr('id', (node: Node) => 'node_' + node.idString)
     .attr('transform', world.transform)
-    .on('click', (event: any, node: Node) => { event.stopPropagation(); this.mapViewerService.selectNode(node); this.mapAnimatorService.selectNode(svg, node) });
+    .on('click', (event: any, node: Node) => { event.stopPropagation(); this.mapViewerService.selectNode(node); this.mapAnimatorService.selectNode(svg, world, node) });
     this.room(room);
 
     const roomContainer = room

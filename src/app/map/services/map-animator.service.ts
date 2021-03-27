@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
+import * as d3 from "d3";
+import { MapUtils } from "../constants/map.constants";
 import { Link } from "../models/link.model";
 import { Node } from '../models/node.model';
+import { World } from "../models/world.model";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +28,7 @@ export class MapAnimatorService {
     .interrupt();
   }
 
-  private repeat = (svg: any, selector: string) => {
+  private blink(svg: any, selector: string) {
     svg.select(selector)
     .transition()
     .duration(1000)
@@ -33,10 +36,24 @@ export class MapAnimatorService {
     .transition()
     .duration(1000)
     .style('opacity', 1)
-    .on('end', () => this.repeat(svg, selector));
+    .on('end', () => this.blink(svg, selector));
   }
 
-  public selectNode(svg: any, node: Node): void {
+  private homeIn(svg: any, world: World, node: Node): any {
+    const zoomTransform: any = world.transform;
+
+    const halfWidth: number = Math.round(parseInt(svg.attr('width')) / 2);
+    const halfHeight: number = Math.round(parseInt(svg.attr('height')) / 2);
+
+    const x: number = -node.x - MapUtils.NodeHalfSide;
+    const y: number = -node.y - MapUtils.NodeHalfSide;
+
+    const transform: string = "translate(" + halfWidth + "," + halfHeight + ") scale(" + zoomTransform.k + ") translate(" + x + "," + y + ")";
+
+    return svg.selectAll('.node,.link').transition().duration(1000).attr("transform", transform);
+  }
+
+  public selectNode(svg: any, world: World, node: Node): void {
     this.unselectNodes(svg);
     this.unselectLinks(svg);
 
@@ -44,7 +61,8 @@ export class MapAnimatorService {
       return;
     }
 
-    this.repeat(svg, '#node_' + node.id);
+    this.homeIn(svg, world, node)
+    .on('end', () => this.blink(svg, '#node_' + node.id));
   }
 
   public selectLink(svg: any, link: Link): void {
@@ -55,7 +73,7 @@ export class MapAnimatorService {
       return;
     }
 
-    this.repeat(svg, '#link_' + link.id);
+    this.blink(svg, '#link_' + link.id);
   }
 
 }

@@ -100,6 +100,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapRendererService.markers(this.svg);
 
     this.mapRendererService.zoom(this.svg, this.world);
+    this.world.transform = d3.zoomIdentity;
     this.resize();
 
     this.zSubscription = this.mapViewerService.zSubject.subscribe(
