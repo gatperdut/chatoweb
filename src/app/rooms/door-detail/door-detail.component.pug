@@ -16,6 +16,6 @@ form.door-detail([formGroup]="doorFormGroup", (ngSubmit)="onSubmit()")
         | See-through
   mat-dialog-actions(align="end")
     button([mat-dialog-close]="null", mat-button, color="basic") Close
-    button(type="submit", mat-raised-button, color="primary", [disabled]="doorFormGroup.invalid")
+    button(type="submit", mat-raised-button, color="primary", [disabled]="doorFormGroup.invalid || doorFormGroup.pristine")
       span(*ngIf="doorData.id") Update
       span(*ngIf="!doorData.id") Create

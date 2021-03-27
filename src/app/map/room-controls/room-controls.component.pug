@@ -5,8 +5,8 @@
   button(mat-stroked-button, color="primary", (click)="editRoom()", [disabled]="false")
     mat-icon(fontSet="fas", inline="true", fontIcon="fa-edit")
     | &nbsp; Edit
-  div(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="10px grid")
-    .buttons-container(*ngFor="let direction of Directions")
+  .buttons-container(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="10px grid")
+    div(*ngFor="let direction of Directions")
       button(mat-stroked-button, color="primary", (click)="createRoom(direction)", *ngIf="node.nodeActionIs(direction, NodeAction.Create)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-plus")
         | &nbsp; Room {{ DirectionToString[direction] }}
@@ -16,8 +16,8 @@
       button(mat-stroked-button, color="warn", (click)="unlinkRoom(direction)", *ngIf="node.nodeActionIs(direction, NodeAction.Unlink) || node.nodeActionIs(direction, NodeAction.None)", [disabled]="node.nodeActionIs(direction, NodeAction.None)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-unlink")
         | &nbsp; Room {{ DirectionToString[direction] }}
-  div(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="10px grid")
-    .buttons-container(*ngFor="let direction of Directions")
+  .buttons-container(fxLayout="row wrap", fxLayoutAlign="center center", fxLayoutGap="10px grid")
+    div(*ngFor="let direction of Directions")
       button(mat-stroked-button, color="primary", (click)="createDoor(direction)", *ngIf="node.doorActionIs(direction, DoorAction.Create) || node.doorActionIs(direction, DoorAction.None)", [disabled]="node.doorActionIs(direction, DoorAction.None)")
         mat-icon(fontSet="fas", inline="true", fontIcon="fa-plus")
         | &nbsp; Door {{ DirectionToString[direction] }}

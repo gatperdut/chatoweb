@@ -1,3 +1,10 @@
-.door-controls(*ngIf="link", fxLayout="column", fxLayoutAlign="start center", fxLayoutGap="20px")
+.door-controls(*ngIf="link && link.door", fxLayout="column", fxLayoutAlign="start center", fxLayoutGap="20px")
   h4(fxLayout="row", fxLayoutAlign="center center", fxLayoutGap="20px")
     span {{ link.id }}
+  .buttons-container(fxLayout="row", fxLayoutAlign="center center", fxLayoutGap="10px")
+    button(mat-stroked-button, color="primary", (click)="editDoor()")
+      mat-icon(fontSet="fas", inline="true", fontIcon="fa-edit")
+      | &nbsp; Door
+    button(mat-stroked-button, color="warn", (click)="removeDoor()")
+      mat-icon(fontSet="fas", inline="true", fontIcon="fa-trash")
+      | &nbsp; Door

@@ -39,12 +39,12 @@ export class MapAnimatorService {
     .on('end', () => this.blink(svg, selector));
   }
 
-  private homeIn(svg: any, world: World, zoom: any, node: Node): any {
+  private homeIn(svg: any, world: World, zoom: any, elemX: number, elemY: number): any {
     const halfWidth: number = Math.round(parseInt(svg.attr('width')) / 2);
     const halfHeight: number = Math.round(parseInt(svg.attr('height')) / 2);
 
-    const x: number = -node.x - MapUtils.NodeHalfSide;
-    const y: number = -node.y - MapUtils.NodeHalfSide;
+    const x: number = -elemX - MapUtils.NodeHalfSide;
+    const y: number = -elemY - MapUtils.NodeHalfSide;
 
     var transform = d3.zoomIdentity
     .translate(x + halfWidth, y + halfHeight);
@@ -60,11 +60,11 @@ export class MapAnimatorService {
       return;
     }
 
-    this.homeIn(svg, world, zoom, node)
+    this.homeIn(svg, world, zoom, node.x, node.y)
     .on('end', () => this.blink(svg, '#node_' + node.id));
   }
 
-  public selectLink(svg: any, link: Link): void {
+  public selectLink(svg: any, world: World, zoom: any, link: Link): void {
     this.unselectNodes(svg);
     this.unselectLinks(svg);
 
@@ -72,6 +72,8 @@ export class MapAnimatorService {
       return;
     }
 
+    this.homeIn(svg, world, zoom, link.doorCoords[0], link.doorCoords[1])
+    .on('end', () => this.blink(svg, '#link_' + link.id));
     this.blink(svg, '#link_' + link.id);
   }
 

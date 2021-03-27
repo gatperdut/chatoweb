@@ -24,6 +24,6 @@ form.room-detail([formGroup]="roomFormGroup", (ngSubmit)="onSubmit()")
     | {{ roomFormGroup.value | json }}
   mat-dialog-actions(align="end")
     button([mat-dialog-close]="null", mat-button, color="basic") Close
-    button(type="submit", mat-raised-button, color="primary", [disabled]="roomFormGroup.invalid")
+    button(type="submit", mat-raised-button, color="primary", [disabled]="roomFormGroup.invalid || roomFormGroup.pristine")
       span(*ngIf="roomData.id") Update
       span(*ngIf="!roomData.id") Create

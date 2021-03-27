@@ -84,7 +84,8 @@ export class MapRendererService {
     .style('border', '1px solid black')
     .style('border-bottom', 'none')
     .style('background-color', '#498392')
-    .style('padding', 5);
+    .style('padding', 5)
+    .style('cursor', 'pointer');
 
     const title = titleContainer.select('.title');
 
@@ -137,7 +138,7 @@ export class MapRendererService {
     .append('g')
     .attr('class', 'link')
     .attr('id', (link: Link) => 'link_' + link.id)
-    .on('click', (event: any, link: Link) => { event.stopPropagation(); this.mapViewerService.selectLink(link); this.mapAnimatorService.selectLink(svg, link) });
+    .on('click', (event: any, link: Link) => { event.stopPropagation(); this.mapViewerService.selectLink(link); this.mapAnimatorService.selectLink(svg, world, zoom, link) });
 
     const linkArrow = link
     .append('path')
