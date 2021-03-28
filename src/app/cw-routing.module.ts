@@ -15,6 +15,7 @@ import { PlayersComponent } from './players/players.component';
 import { MapComponent } from './map/map.component';
 import { RoomsResolver } from './rooms/resolvers/rooms.resolver';
 import { DoorsResolver } from './rooms/resolvers/doors.resolver';
+import { ItemTemplatesResolver } from './item-templates/resolvers/item-templates.resolver';
 
 const routes: Routes = [
   {
@@ -50,7 +51,10 @@ const routes: Routes = [
       },
       {
         path: 'item-templates',
-        component: ItemTemplatesComponent
+        component: ItemTemplatesComponent,
+        resolve: {
+          itemTemplates: ItemTemplatesResolver
+        }
       },
       {
         path: 'players',

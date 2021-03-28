@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ItemTemplate } from './models/item-template.model';
 
 @Component({
   selector: 'cw-item-templates',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemTemplatesComponent implements OnInit {
 
-  constructor() { }
+  public itemTemplates: ItemTemplate[];
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+  ) {
+
+  }
 
   ngOnInit(): void {
+    this.itemTemplates = this.activatedRoute.snapshot.data['itemTemplates'];
   }
 
 }

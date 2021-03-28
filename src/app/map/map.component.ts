@@ -68,11 +68,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const rooms = this.activatedRoute.snapshot.data['rooms'];
+    const rooms: Room[] = this.activatedRoute.snapshot.data['rooms'];
 
-    const doors = this.activatedRoute.snapshot.data['doors'];
-
-    this.mapChannel = this.activatedRoute.snapshot.data['mapChannel'];
+    const doors: Door[] = this.activatedRoute.snapshot.data['doors'];
 
     this.world = this.mapLayoutService.process(rooms, doors);
 
