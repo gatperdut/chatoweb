@@ -86,7 +86,7 @@ export class RoomService {
   public craftRooms(roomsData: RoomData[]): Room[] {
     return _.map(
       roomsData,
-      this.craftRoom
+      this.craftRoom.bind(this)
     );
   }
 

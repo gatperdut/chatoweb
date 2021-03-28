@@ -7,6 +7,7 @@ import { environment } from "src/environments/environment";
 import * as _ from "underscore";
 import { ItemTemplateData } from "../models/item-template.data";
 import { ItemTemplate } from "../models/item-template.model";
+import { ItemTemplateService } from "./item-template.service";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class ItemTemplateActionsService {
     )
     .pipe(
       map(
-        this.itemTemplateService.craftRooms.bind(this.itemTemplateService)
+        this.itemTemplateService.craftItemTemplates.bind(this.itemTemplateService)
       )
     );
   }

@@ -1,2 +1,12 @@
-h3 Item Templates
-| {{ itemTemplates | json }}
+div(fxLayout="column", fxLayoutAlign="start center")
+  h3 Item Templates
+  table.mat-elevation-z8(mat-table, [dataSource]="itemTemplates")
+    ng-container(matColumnDef="code")
+      th(mat-header-cell, *matHeaderCellDef="") Code
+      td(mat-cell *matCellDef="let itemTemplate") {{ itemTemplate.code }}
+    ng-container(matColumnDef="short_desc")
+      th(mat-header-cell, *matHeaderCellDef="") Short desc.
+      td(mat-cell, *matCellDef="let itemTemplate") {{ itemTemplate.short_desc }}
+
+    tr(mat-header-row, *matHeaderRowDef="displayedColumns")
+    tr(mat-row, *matRowDef="let row; columns: displayedColumns;")

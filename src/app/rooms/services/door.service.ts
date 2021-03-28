@@ -60,7 +60,7 @@ export class DoorService {
   public craftDoors(doorsData: DoorData[]): Door[] {
     return _.map(
       doorsData,
-      this.craftDoor
+      this.craftDoor.bind(this)
     );
   }
 

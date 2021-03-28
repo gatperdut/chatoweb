@@ -21,7 +21,7 @@ export class Character implements CharacterData {
     public attribute_set: AttributeSet,
     public skill_set: SkillSet
   ) {
-    console.log(this.skill_set);
+
   }
 
 }

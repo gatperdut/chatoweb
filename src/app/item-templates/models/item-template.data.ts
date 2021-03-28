@@ -1,3 +1,5 @@
+import { WeaponStatTemplateData } from "./weapon_stat_template.data";
+
 export interface ItemTemplateData {
 
   readonly id: number;
@@ -19,5 +21,7 @@ export interface ItemTemplateData {
   is_quiver: boolean;
 
   possible_slots: string[];
+
+  weapon_stat_template: WeaponStatTemplateData;
 
 }

@@ -33,7 +33,7 @@ export class PlayerService {
   public craftPlayers(playersData: PlayerData[]): Player[] {
     return _.map(
       playersData,
-      this.craftPlayer
+      this.craftPlayer.bind(this)
     );
   }
 

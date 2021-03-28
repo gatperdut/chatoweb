@@ -1,4 +1,5 @@
 import { ItemTemplateData } from "./item-template.data";
+import { WeaponStatTemplate } from "./weapon_stat_template.model";
 
 export class ItemTemplate implements ItemTemplateData {
 
@@ -13,8 +14,13 @@ export class ItemTemplate implements ItemTemplateData {
     public is_sheath: boolean,
     public is_quiver: boolean,
     public possible_slots: string[],
+    public weapon_stat_template: WeaponStatTemplate
   ) {
+    this.weapon_stat_template = null;
+  }
 
+  public get isWeapon(): boolean {
+    return !!this.weapon_stat_template;
   }
 
 }

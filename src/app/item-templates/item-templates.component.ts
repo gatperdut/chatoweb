@@ -11,6 +11,8 @@ export class ItemTemplatesComponent implements OnInit {
 
   public itemTemplates: ItemTemplate[];
 
+  public readonly displayedColumns: String[] = ['code', 'short_desc'];
+
   constructor(
     private activatedRoute: ActivatedRoute,
   ) {
