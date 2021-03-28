@@ -15,8 +15,8 @@ export class ItemTemplateService {
 
   }
 
-  public emptyItemTemplate(weaponStatTemplate: boolean): ItemTemplateData {
-    const itemTemplateData: ItemTemplateData = {
+  public emptyItemTemplate(): ItemTemplateData {
+    return {
       id: null,
       code: '',
       short_desc: '',
@@ -29,12 +29,6 @@ export class ItemTemplateService {
       possible_slots: [],
       weapon_stat_template: null
     };
-
-    if (weaponStatTemplate) {
-      itemTemplateData.weapon_stat_template = this.weaponStatTemplateService.emptyWeaponStatTemplate()
-    }
-
-    return itemTemplateData;
   }
 
   public craftItemTemplate(itemTemplateData: ItemTemplateData): ItemTemplate {

@@ -23,4 +23,12 @@ export class ItemTemplate implements ItemTemplateData {
     return !!this.weapon_stat_template;
   }
 
+  public get isMelee(): boolean {
+    return this.isWeapon && this.weapon_stat_template.isMelee
+  }
+
+  public get isRanged(): boolean {
+    return this.isWeapon && this.weapon_stat_template.isRanged
+  }
+
 }
