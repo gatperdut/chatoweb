@@ -51,6 +51,10 @@ import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
 import { DoorDetailComponent } from './rooms/door-detail/door-detail.component';
 import { DoorControlsComponent } from './map/door-controls/door-controls.component';
+import { WeaponStatTemplateFormComponent } from "./item-templates/item-template-form/weapon-stat-template-form/weapon-stat-template-form.component";
+import { MeleeStatTemplateFormComponent } from "./item-templates/item-template-form/weapon-stat-template-form/melee-stat-template-form/melee-stat-template-form.component";
+import { RangedStatTemplateFormComponent } from "./item-templates/item-template-form/weapon-stat-template-form/ranged-stat-template-form/ranged-stat-template-form.component";
+import { ItemTemplateFormComponent } from './item-templates/item-template-form/item-template-form.component';
 
 @NgModule({
   declarations: [
@@ -71,10 +75,6 @@ import { DoorControlsComponent } from './map/door-controls/door-controls.compone
     CharacterDetailComponent,
     AuthenticationDialogComponent,
     CharacterAttributesComponent,
-    // Directives
-    DelayedInputDirective,
-    // Pipes
-    SignPipe,
     CharacterSkillsComponent,
     MapComponent,
     MapControlsComponent,
@@ -82,7 +82,15 @@ import { DoorControlsComponent } from './map/door-controls/door-controls.compone
     RoomDetailComponent,
     SnackBarComponent,
     DoorDetailComponent,
-    DoorControlsComponent
+    DoorControlsComponent,
+    WeaponStatTemplateFormComponent,
+    MeleeStatTemplateFormComponent,
+    RangedStatTemplateFormComponent,
+    // Directives
+    DelayedInputDirective,
+    // Pipes
+    SignPipe,
+    ItemTemplateFormComponent
   ],
   entryComponents: [
     AuthenticationDialogComponent,

@@ -23,4 +23,12 @@ export class ItemTemplatesComponent implements OnInit {
     this.itemTemplates = this.activatedRoute.snapshot.data['itemTemplates'];
   }
 
+  public createMeleeWeapon(): void {
+
+  }
+
+  public createRangedWeapon(): void {
+
+  }
+
 }
