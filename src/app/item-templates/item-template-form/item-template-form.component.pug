@@ -1,0 +1,9 @@
+form.item-template-form([formGroup]="itemTemplateFormGroup", (ngSubmit)="onSubmit()")
+  h2(mat-dialog-title) Item template details
+  mat-dialog-content
+    | {{ itemTemplateData | json }}
+  mat-dialog-actions(align="end")
+    button([mat-dialog-close]="null", mat-button, color="basic") Close
+    button(type="submit", mat-raised-button, color="primary", [disabled]="itemTemplateFormGroup.invalid || itemTemplateFormGroup.pristine")
+      span(*ngIf="itemTemplateData.id") Update
+      span(*ngIf="!itemTemplateData.id") Create

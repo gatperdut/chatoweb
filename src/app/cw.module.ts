@@ -95,7 +95,8 @@ import { ItemTemplateFormComponent } from './item-templates/item-template-form/i
   entryComponents: [
     AuthenticationDialogComponent,
     RoomDetailComponent,
-    DoorDetailComponent
+    DoorDetailComponent,
+    ItemTemplateFormComponent
   ],
   imports: [
     // Angular
