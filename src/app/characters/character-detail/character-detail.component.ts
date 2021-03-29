@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from 'src/app/shared/animations/fade-in.animation';
-import { chipSeparatorKeysCodes } from 'src/app/shared/chips/chips.constants';
+import { ChipSeparatorKeysCodes } from 'src/app/shared/chips/chips.constants';
 import { ConstantsService } from 'src/app/shared/constants/services/constants.service';
 import { Character } from '../models/character.model';
 
@@ -21,7 +21,7 @@ export class CharacterDetailComponent implements OnInit {
 
   public characterFormGroup: FormGroup;
 
-  public chipSeparatorKeysCodes = chipSeparatorKeysCodes;
+  public ChipSeparatorKeysCodes = ChipSeparatorKeysCodes;
 
   constructor(
     private activatedRoute: ActivatedRoute,

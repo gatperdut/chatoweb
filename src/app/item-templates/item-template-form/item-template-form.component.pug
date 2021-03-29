@@ -2,19 +2,36 @@ form.item-template-form([formGroup]="itemTemplateFormGroup", (ngSubmit)="onSubmi
   h2(mat-dialog-title) Item template details
   mat-dialog-content
     div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px grid")
+
       mat-form-field
         mat-hint Short description
         input(type="text", matInput, formControlName="short_desc", spellcheck="false")
+
       mat-form-field
         mat-hint Long description
         input(type="text", matInput, formControlName="long_desc", spellcheck="false")
+
       mat-form-field
         mat-hint Full description
         textarea(type="text", matInput, formControlName="full_desc", spellcheck="false")
+
       .mt-3(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
         mat-slide-toggle(color="primary", formControlName="is_sheath") Sheath?
         mat-slide-toggle(color="primary", formControlName="is_quiver") Quiver?
+
+      mat-form-field(fxFill)
+        mat-label Wear slots
+        mat-select(formControlName="possible_slots", multiple)
+          mat-select-trigger
+            mat-chip-list
+              mat-chip(*ngFor="let possibleSlot of itemTemplateFormGroup.get('possible_slots').value", [removable]="true", (removed)="onPossibleSlotRemoved(possibleSlot)")
+                | {{ possibleSlot }}
+                mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
+          mat-option(*ngFor="let possibleSlot of Slots", [value]="possibleSlot")
+            | {{ possibleSlot }}
+
       cw-weapon-stat-template-form([itemTemplateFormGroup]="itemTemplateFormGroup", [weaponStatTemplateData]="itemTemplateData.weapon_stat_template", *ngIf="itemTemplateData.weapon_stat_template")
+
   mat-dialog-actions(align="end")
     button([mat-dialog-close]="null", mat-button, color="basic") Close
     button(type="submit", mat-raised-button, color="primary", [disabled]="itemTemplateFormGroup.invalid || itemTemplateFormGroup.pristine")
