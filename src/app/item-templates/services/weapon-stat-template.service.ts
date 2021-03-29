@@ -20,10 +20,10 @@ export class WeaponStatTemplateService {
     return {
       id: null,
       item_template_id: null,
-      grip: '',
-      roll_mod: null,
-      critical_mod: null,
-      base: '',
+      grip: 'one_handed',
+      roll_mod: 0,
+      critical_mod: 0,
+      base: 'dagger',
       melee_stat_template: null,
       ranged_stat_template: null
     };

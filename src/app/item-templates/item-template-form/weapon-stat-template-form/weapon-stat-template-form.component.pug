@@ -1,2 +1,9 @@
-form([formGroup]="weaponStatTemplateFormGroup", fxLayout="column", fxLayoutAlign="start center")
-  div(*ngIf="weaponStatTemplateData.melee_stat_template")
+div([formGroup]="weaponStatTemplateFormGroup", fxLayout="column", fxLayoutAlign="start center")
+  mat-button-toggle-group.mt-2(formControlName="grip")
+    mat-button-toggle(value="one_handed")
+      small One-handed
+    mat-button-toggle(value="two_handed")
+      small Two-handed
+    mat-button-toggle(value="both")
+      small Both grips
+
