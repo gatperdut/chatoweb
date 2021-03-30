@@ -9,3 +9,8 @@ div([formGroup]="rangedStatTemplateFormGroup", fxLayout="column", fxLayoutGap="1
 
   div(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
     mat-slide-toggle(color="primary", formControlName="can_remain_loaded") Can remain loaded?
+
+  mat-label Range suitability, better to worse:
+  mat-list.range-suitability-list(dense, cdkDropList, (cdkDropListDropped)="dropRangeSuitability($event)")
+    mat-list-item(*ngFor="let rangeSuitability of rangedStatTemplateFormGroup.get('ranges_suitability').value", cdkDrag)
+      | {{ rangeSuitability }}

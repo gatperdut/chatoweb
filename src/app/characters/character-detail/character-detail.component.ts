@@ -4,6 +4,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from 'src/app/shared/animations/fade-in.animation';
 import { ChipSeparatorKeysCodes } from 'src/app/shared/chips/chips.constants';
+import { addChip, removeChip } from 'src/app/shared/chips/chips.helper';
 import { ConstantsService } from 'src/app/shared/constants/services/constants.service';
 import { Character } from '../models/character.model';
 
@@ -23,6 +24,10 @@ export class CharacterDetailComponent implements OnInit {
 
   public ChipSeparatorKeysCodes = ChipSeparatorKeysCodes;
 
+  public addChip = addChip;
+
+  public removeChip = removeChip;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     public constantsService: ConstantsService
@@ -35,26 +40,11 @@ export class CharacterDetailComponent implements OnInit {
 
     this.characterFormGroup = new FormGroup(
       {
-        name: new FormControl(
-          this.character.name,
-          [Validators.required]
-        ),
-        short_desc: new FormControl(
-          this.character.short_desc,
-          [Validators.required]
-        ),
-        long_desc: new FormControl(
-          this.character.long_desc,
-          [Validators.required]
-        ),
-        full_desc: new FormControl(
-          this.character.full_desc,
-          [Validators.required]
-        ),
-        kwords: new FormControl(
-          this.character.kwords,
-          [Validators.minLength(1)]
-        ),
+        name: new FormControl(this.character.name, [Validators.required]),
+        short_desc: new FormControl(this.character.short_desc, [Validators.required]),
+        long_desc: new FormControl(this.character.long_desc, [Validators.required]),
+        full_desc: new FormControl(this.character.full_desc, [Validators.required]),
+        kwords: new FormControl(this.character.kwords, [Validators.minLength(1)]),
         attribute_set: new FormGroup({}),
         skill_set: new FormGroup({})
       }
@@ -63,27 +53,6 @@ export class CharacterDetailComponent implements OnInit {
 
   public update(): void {
     console.log('UPDATE!');
-  }
-
-  public add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value || '';
-
-    if (value.trim()) {
-      this.characterFormGroup.controls.kwords.value.push(value.trim());
-    }
-
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  public remove(kword: string): void {
-    const index = this.characterFormGroup.controls.kwords.value.indexOf(kword);
-
-    if (index >= 0) {
-      this.characterFormGroup.controls.kwords.value.splice(index, 1);
-    }
   }
 
 }

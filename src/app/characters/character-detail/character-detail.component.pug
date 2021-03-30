@@ -40,10 +40,10 @@
         mat-form-field(fxFill)
           mat-label Character's keywords
           mat-chip-list(#kwordsChipList="", formControlName="kwords")
-            mat-chip(*ngFor="let kword of characterFormGroup.controls.kwords.value", (removed)="remove(kword)")
+            mat-chip(*ngFor="let kword of characterFormGroup.controls.kwords.value", (removed)="removeChip(kword, characterFormGroup, 'kwords')")
               | {{ kword }}
               mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
-            input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="ChipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="add($event)")
+            input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="ChipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="addChip($event, characterFormGroup, 'kwords')")
 
         mat-tab-group(fxFill, dynamicHeight)
           mat-tab(label="Attributes")

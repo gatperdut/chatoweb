@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChipSeparatorKeysCodes } from 'src/app/shared/chips/chips.constants';
+import { addChip, removeChip } from 'src/app/shared/chips/chips.helper';
 import { Slots } from 'src/app/shared/constants/slots.constants';
 import * as _ from 'underscore';
 import { ItemTemplateData } from '../models/item-template.data';
@@ -18,9 +19,13 @@ export class ItemTemplateFormComponent implements OnInit {
 
   public itemTemplateFormGroup: FormGroup;
 
-  public chipSeparatorKeysCodes = ChipSeparatorKeysCodes;
+  public ChipSeparatorKeysCodes = ChipSeparatorKeysCodes;
 
   public Slots: string[] = Slots;
+
+  public addChip = addChip;
+
+  public removeChip = removeChip;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { itemTemplateData: ItemTemplateData },
@@ -39,6 +44,7 @@ export class ItemTemplateFormComponent implements OnInit {
         short_desc: new FormControl(this.itemTemplateData.short_desc, [Validators.required]),
         long_desc: new FormControl(this.itemTemplateData.long_desc, [Validators.required]),
         full_desc: new FormControl(this.itemTemplateData.full_desc, [Validators.required]),
+        kwords: new FormControl(this.itemTemplateData.kwords, [Validators.minLength(1)]),
         is_sheath: new FormControl(this.itemTemplateData.is_sheath, [Validators.required]),
         is_quiver: new FormControl(this.itemTemplateData.is_quiver, [Validators.required]),
         possible_slots: new FormControl(this.itemTemplateData.possible_slots, []),

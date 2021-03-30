@@ -17,6 +17,14 @@ form.item-template-form([formGroup]="itemTemplateFormGroup", (ngSubmit)="onSubmi
         mat-label Full description
         textarea(type="text", matInput, formControlName="full_desc", spellcheck="false")
 
+      mat-form-field(fxFill)
+        mat-label Keywords
+        mat-chip-list(#kwordsChipList="", formControlName="kwords")
+          mat-chip(*ngFor="let kword of itemTemplateFormGroup.controls.kwords.value", (removed)="removeChip(kword, itemTemplateFormGroup, 'kwords')")
+            | {{ kword }}
+            mat-icon(matChipRemove, fontSet="fas", fontIcon="fa-times")
+          input(placeholder="Add a keyword", [matChipInputFor]="kwordsChipList", [matChipInputSeparatorKeyCodes]="ChipSeparatorKeysCodes", [matChipInputAddOnBlur]="true", (matChipInputTokenEnd)="addChip($event, itemTemplateFormGroup, 'kwords')")
+
       div(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
         mat-slide-toggle(color="primary", formControlName="is_sheath") Sheath?
         mat-slide-toggle(color="primary", formControlName="is_quiver") Quiver?

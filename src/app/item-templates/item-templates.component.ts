@@ -71,7 +71,12 @@ export class ItemTemplatesComponent implements OnInit {
           return;
         }
 
-        this.itemTemplateActionsService.update(modifiedItemTemplateData).subscribe();
+        if (modifiedItemTemplateData.id) {
+          this.itemTemplateActionsService.update(modifiedItemTemplateData).subscribe();
+        }
+        else {
+          this.itemTemplateActionsService.create(modifiedItemTemplateData).subscribe();
+        }
       }
     );
   }

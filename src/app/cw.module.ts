@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -130,6 +131,7 @@ import { ItemTemplateFormComponent } from './item-templates/item-template-form/i
     MatTooltipModule,
     // CDK
     ClipboardModule,
+    DragDropModule,
     // ChatoWeb
     CwRoutingModule
   ],

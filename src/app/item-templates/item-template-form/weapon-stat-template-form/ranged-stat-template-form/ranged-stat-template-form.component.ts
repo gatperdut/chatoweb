@@ -1,7 +1,9 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RangedStatTemplateData } from 'src/app/item-templates/models/ranged-stat-template.data';
 import { MissileTypes } from 'src/app/shared/constants/missile-types.constants';
+import { RangeSuitabilities } from 'src/app/shared/constants/range-suitabilities.constants';
 
 @Component({
   selector: 'cw-ranged-stat-template-form',
@@ -17,6 +19,8 @@ export class RangedStatTemplateFormComponent implements OnInit {
   public rangedStatTemplateFormGroup: FormGroup;
 
   public MissileTypes: string[] = MissileTypes;
+
+  public RangeSuitabilities: string[] = RangeSuitabilities;
 
   constructor() {
 
@@ -38,6 +42,10 @@ export class RangedStatTemplateFormComponent implements OnInit {
 
   private setForm(): void {
     this.weaponStatTemplateFormGroup.addControl('ranged_stat_template', this.rangedStatTemplateFormGroup);
+  }
+
+  public dropRangeSuitability(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.rangedStatTemplateFormGroup.get('ranges_suitability').value, event.previousIndex, event.currentIndex);
   }
 
 }

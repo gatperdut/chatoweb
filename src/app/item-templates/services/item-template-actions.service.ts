@@ -37,7 +37,7 @@ export class ItemTemplateActionsService {
     return this.httpClient.post<ItemTemplateData>(
       environment.cmBaseUrl + '/item_templates',
       {
-        item_templates: itemTemplateData
+        item_template: itemTemplateData
       }
     )
     .pipe(
