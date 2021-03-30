@@ -1,0 +1,11 @@
+div([formGroup]="rangedStatTemplateFormGroup", fxLayout="column", fxLayoutGap="10px")
+
+  mat-label Type of missiles fired:
+  div(fxLayout="row", fxLayoutAlign="space-around")
+    mat-button-toggle-group(formControlName="missile_type")
+      mat-button-toggle(*ngFor="let missileType of MissileTypes", [value]="missileType")
+        small {{ missileType }}
+
+
+  div(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
+    mat-slide-toggle(color="primary", formControlName="can_remain_loaded") Can remain loaded?

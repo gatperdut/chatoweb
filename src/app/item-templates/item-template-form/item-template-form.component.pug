@@ -1,25 +1,27 @@
 form.item-template-form([formGroup]="itemTemplateFormGroup", (ngSubmit)="onSubmit()")
   h2(mat-dialog-title) Item template details
   mat-dialog-content
-    div(fxLayout="column", fxLayoutAlign="start stretch", fxLayoutGap="20px grid")
+    div(fxLayout="column", fxLayoutGap="20px grid")
 
       mat-form-field
-        mat-hint Short description
+        mat-label Short description
         input(type="text", matInput, formControlName="short_desc", spellcheck="false")
+        mat-hint e.g. a short-haired, brown-eyed man
 
       mat-form-field
-        mat-hint Long description
+        mat-label Long description
         input(type="text", matInput, formControlName="long_desc", spellcheck="false")
+        mat-hint e.g. A short-haired, brown-eyed man loiters here.
 
       mat-form-field
-        mat-hint Full description
+        mat-label Full description
         textarea(type="text", matInput, formControlName="full_desc", spellcheck="false")
 
-      .mt-3(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
+      div(fxLayout="row wrap", fxLayoutAlign="start stretch", fxLayoutGap="20px")
         mat-slide-toggle(color="primary", formControlName="is_sheath") Sheath?
         mat-slide-toggle(color="primary", formControlName="is_quiver") Quiver?
 
-      mat-form-field(fxFill)
+      mat-form-field
         mat-label Wear slots
         mat-select(formControlName="possible_slots", multiple)
           mat-select-trigger

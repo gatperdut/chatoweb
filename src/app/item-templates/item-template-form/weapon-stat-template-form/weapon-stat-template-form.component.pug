@@ -1,9 +1,23 @@
-div([formGroup]="weaponStatTemplateFormGroup", fxLayout="column", fxLayoutAlign="start center")
-  mat-button-toggle-group.mt-2(formControlName="grip")
-    mat-button-toggle(value="one_handed")
-      small One-handed
-    mat-button-toggle(value="two_handed")
-      small Two-handed
-    mat-button-toggle(value="both")
-      small Both grips
+div([formGroup]="weaponStatTemplateFormGroup", fxLayout="column", fxLayoutGap="10px")
+  mat-form-field
+    mat-label Base
+    mat-select(formControlName="base")
+      mat-option(*ngFor="let weaponBase of WeaponBases", [value]="weaponBase")
+        | {{ weaponBase }}
 
+  mat-label Grip:
+  div(fxLayout="row", fxLayoutAlign="space-around")
+    mat-button-toggle-group(formControlName="grip")
+      mat-button-toggle(*ngFor="let grip of Grips", [value]="grip")
+        small {{ grip }}
+
+  mat-form-field(fxFlex)
+    mat-label Roll modifier
+    input(type="number", matInput, formControlName="roll_mod")
+
+  mat-form-field(fxFlex)
+    mat-label Critical modifier
+    input(type="number", matInput, formControlName="critical_mod")
+
+  cw-melee-stat-template-form([weaponStatTemplateFormGroup]="weaponStatTemplateFormGroup", [meleeStatTemplateData]="weaponStatTemplateData.melee_stat_template", *ngIf="weaponStatTemplateData.melee_stat_template")
+  cw-ranged-stat-template-form([weaponStatTemplateFormGroup]="weaponStatTemplateFormGroup", [rangedStatTemplateData]="weaponStatTemplateData.ranged_stat_template", *ngIf="weaponStatTemplateData.ranged_stat_template")

@@ -5,10 +5,12 @@ import { ItemTemplateFormComponent } from './item-template-form/item-template-fo
 import { ItemTemplateData } from './models/item-template.data';
 import { ItemTemplate } from './models/item-template.model';
 import { MeleeStatTemplateData } from './models/melee-stat-template.data';
+import { RangedStatTemplateData } from './models/ranged-stat-template.data';
 import { WeaponStatTemplateData } from './models/weapon_stat_template.data';
 import { ItemTemplateActionsService } from './services/item-template-actions.service';
 import { ItemTemplateService } from './services/item-template.service';
 import { MeleeStatTemplateService } from './services/melee-stat-template.service';
+import { RangedStatTemplateService } from './services/ranged-stat-template.service';
 import { WeaponStatTemplateService } from './services/weapon-stat-template.service';
 
 @Component({
@@ -28,6 +30,7 @@ export class ItemTemplatesComponent implements OnInit {
     private itemTemplateService: ItemTemplateService,
     private weaponStatTemplateService: WeaponStatTemplateService,
     private meleeStatTemplateService: MeleeStatTemplateService,
+    private rangedStatTemplateService: RangedStatTemplateService,
     private itemTemplateActionsService: ItemTemplateActionsService
   ) {
 
@@ -45,21 +48,32 @@ export class ItemTemplatesComponent implements OnInit {
     weaponStatTemplateData.melee_stat_template = meleeStatTemplateData;
     itemTemplateData.weapon_stat_template = weaponStatTemplateData;
 
-    this.matDialog.open(ItemTemplateFormComponent, { width: '500px', data: { itemTemplateData: itemTemplateData } })
-    .afterClosed()
-    .subscribe(
-      (itemTemplateData: ItemTemplateData) => {
-        if (!itemTemplateData) {
-          return;
-        }
-
-        this.itemTemplateActionsService.update(itemTemplateData).subscribe();
-      }
-    );
+    this.openDialog(itemTemplateData);
   }
 
   public createRangedWeapon(): void {
+    const itemTemplateData: ItemTemplateData = this.itemTemplateService.emptyItemTemplate();
+    const weaponStatTemplateData: WeaponStatTemplateData = this.weaponStatTemplateService.emptyWeaponStatTemplate();
+    const rangedStatTemplateData: RangedStatTemplateData = this.rangedStatTemplateService.emptyRangedStatTemplate();
 
+    weaponStatTemplateData.ranged_stat_template = rangedStatTemplateData;
+    itemTemplateData.weapon_stat_template = weaponStatTemplateData;
+
+    this.openDialog(itemTemplateData);
+  }
+
+  private openDialog(itemTemplateData: ItemTemplateData) {
+    this.matDialog.open(ItemTemplateFormComponent, { width: '500px', data: { itemTemplateData: itemTemplateData } })
+    .afterClosed()
+    .subscribe(
+      (modifiedItemTemplateData: ItemTemplateData) => {
+        if (!modifiedItemTemplateData) {
+          return;
+        }
+
+        this.itemTemplateActionsService.update(modifiedItemTemplateData).subscribe();
+      }
+    );
   }
 
 }
